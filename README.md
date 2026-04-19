@@ -4,6 +4,14 @@ Dashboard NOC com consultas assistidas por IA para operacao de ambiente Zabbix. 
 
 O foco do sistema e substituir telas baseadas em mock por dados reais do Zabbix e preparar uma camada intermediaria compatível com uma futura integracao MCP/IA.
 
+## Participantes
+
+- Juan Grochowski - D30224
+- Awo Rodrigues - D29997
+- Wallacy Matheus - D27030
+- Walen Kidely - D30213
+- Zhou Chen - D29031
+
 ## Status Atual
 
 Implementado:
