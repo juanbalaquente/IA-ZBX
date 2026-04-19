@@ -1,0 +1,30 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Install @types/node",
+			"type": "shell",
+			"command": "npm install --save-dev @types/node"
+		},
+		{
+			"label": "Install @types/node with bypass",
+			"type": "shell",
+			"command": "powershell -ExecutionPolicy Bypass -Command 'npm install --save-dev @types/node'"
+		},
+		{
+			"label": "Start development server",
+			"type": "shell",
+			"command": "npm run dev"
+		},
+		{
+			"label": "Start dev server with bypass",
+			"type": "shell",
+			"command": "powershell -ExecutionPolicy Bypass -Command 'npm run dev'"
+		},
+		{
+			"label": "Start dev server",
+			"type": "shell",
+			"command": "powershell -ExecutionPolicy Bypass -Command 'npm run dev'"
+		}
+	]
+}

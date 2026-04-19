@@ -1,0 +1,5 @@
+{
+  "gitdoc.enabled": true,
+  "chatgpt.runCodexInWindowsSubsystemForLinux": false,
+  "chatgpt.openOnStartup": false
+}
