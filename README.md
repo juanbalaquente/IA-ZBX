@@ -7,10 +7,11 @@ O foco do sistema e substituir telas baseadas em mock por dados reais do Zabbix 
 ## Participantes
 
 - Juan Grochowski - D30224
-- Awo Rodrigues - D29997
+- Awo Carvalho - D29997
 - Wallacy Matheus - D27030
 - Walen Kidely - D30213
 - Zhou Chen - D29031
+- Fernando Marques - D28363
 
 ## Status Atual
 
@@ -35,7 +36,8 @@ Implementado:
   - Consultas IA
   - Settings/Diagnostico
 - Camada MCP simulada.
-- Parser de consultas operacionais em linguagem natural.
+- Agente NOC opcional via Groq/Llama para consultas em linguagem natural.
+- Parser local de consultas operacionais como fallback.
 - Testes automatizados para a camada de IA.
 
 ## Stack
@@ -48,6 +50,7 @@ Implementado:
 - Lucide React
 - Vitest
 - Zabbix JSON-RPC API
+- Groq API opcional para agente IA
 
 ## Estrutura do Projeto
 
@@ -84,6 +87,7 @@ src/
     SettingsPage.tsx
   services/
     api.ts                  # Cliente base Zabbix JSON-RPC
+    agentClient.ts          # Cliente frontend do agente IA com fallback local
     aiQueryService.ts       # Parser e resolucao de consultas IA
     aiQueryService.test.ts  # Testes automatizados do parser
     mcpClient.ts            # Camada MCP simulada
@@ -92,6 +96,8 @@ src/
     index.ts
   utils/
     retry.ts
+server/
+  aiAgentServer.mjs         # Backend local do agente NOC via Groq/Llama
 ```
 
 ## Requisitos
@@ -132,6 +138,27 @@ Tambem e aceito:
 VITE_API_KEY=seu_token_aqui
 ```
 
+### Agente IA via Groq
+
+Para usar agente real na tela `/ia`, adicione tambem:
+
+```env
+GROQ_API_KEY=sua_chave_groq
+GROQ_MODEL=llama-3.1-8b-instant
+```
+
+Opcionalmente, o backend do agente tambem aceita variaveis sem prefixo `VITE_`:
+
+```env
+ZABBIX_API_BASE_URL=https://seu-zabbix.com.br/zabbix/zabbix.php
+ZABBIX_API_TOKEN=seu_token_zabbix
+ZABBIX_USER=seu_usuario
+ZABBIX_PASSWORD=sua_senha
+AI_AGENT_PORT=8787
+```
+
+Se essas variaveis sem `VITE_` nao existirem, o servidor do agente usa as variaveis `VITE_API_BASE_URL`, `VITE_API_TOKEN`, `VITE_API_KEY`, `VITE_ZABBIX_USER` e `VITE_ZABBIX_PASSWORD` do `.env.local`.
+
 ### Observacoes importantes
 
 - `.env.local` esta no `.gitignore` e nao deve ser commitado.
@@ -157,6 +184,22 @@ Se token e usuario/senha existirem ao mesmo tempo, o fluxo efetivo prioriza `use
 ## Comandos
 
 Rodar desenvolvimento:
+
+```bash
+npm run dev
+```
+
+Rodar o agente IA local:
+
+```bash
+npm run ai:server
+```
+
+Para desenvolvimento com agente, use dois terminais:
+
+```bash
+npm run ai:server
+```
 
 ```bash
 npm run dev
@@ -191,6 +234,35 @@ npm run test
 | `/logs` | Eventos recentes High/Disaster |
 | `/ia` | Console de consultas operacionais |
 | `/settings` | Diagnostico da integracao Zabbix |
+
+## Agente IA
+
+O projeto possui duas camadas para a tela `/ia`:
+
+1. Agente NOC via Groq/Llama
+   - Roda no backend local `server/aiAgentServer.mjs`.
+   - Usa `GROQ_API_KEY`, que nunca deve ir para o frontend.
+   - Consulta dados reais do Zabbix no servidor.
+   - Envia ao modelo apenas um contexto operacional compacto.
+   - Responde com analise em linguagem natural.
+
+2. Parser local
+   - Continua existindo em `src/services/aiQueryService.ts`.
+   - Entra automaticamente como fallback se o agente estiver indisponivel.
+
+Fluxo:
+
+```text
+Frontend /ia
+  -> src/services/agentClient.ts
+    -> /ai-api/query
+      -> server/aiAgentServer.mjs
+        -> Zabbix API
+        -> Groq/Llama
+    -> fallback: aiQueryService.ts
+```
+
+O proxy `/ai-api` do Vite aponta para `http://localhost:8787`.
 
 ## Dados Zabbix Utilizados
 
@@ -304,6 +376,24 @@ Normaliza dados crus do Zabbix para os tipos usados pela UI:
 Camada intermediaria simulando MCP.
 
 Hoje apenas chama `zabbixService`, mas foi separada para no futuro ser substituida por uma API MCP real.
+
+### `services/agentClient.ts`
+
+Cliente do frontend para o agente IA:
+
+- chama `/ai-api/query`
+- recebe a resposta do agente Groq/Llama
+- cai no parser local quando o agente nao responde
+
+### `server/aiAgentServer.mjs`
+
+Backend local do agente NOC:
+
+- le `.env.local` e `.env`
+- consulta Zabbix diretamente no servidor
+- monta contexto compacto com hosts, alarmes e eventos
+- chama Groq usando API compativel com OpenAI Chat Completions
+- retorna resposta operacional para a tela `/ia`
 
 ### `services/aiQueryService.ts`
 
@@ -471,6 +561,17 @@ npm run test
 ```
 
 Depois valide manualmente em `/ia` com consultas simples antes de testar filtros compostos.
+
+### Agente IA nao responde
+
+Verifique:
+
+- `npm run ai:server` esta rodando em outro terminal
+- `GROQ_API_KEY` existe no `.env.local`
+- a rota `http://localhost:8787/ai-api/health` responde
+- o Vite esta rodando com `npm run dev`
+
+Se o agente falhar, a tela `/ia` usa automaticamente o parser local.
 
 ## Licenca
 

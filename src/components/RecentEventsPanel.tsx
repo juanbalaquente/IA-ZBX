@@ -13,7 +13,7 @@ const badgeStyles = {
 
 function RecentEventsPanel({ events }: Props) {
   return (
-    <section className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-6 shadow-soft">
+    <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
       <div className="mb-6 flex items-center justify-between gap-4">
         <div>
           <p className="text-sm uppercase tracking-[0.3em] text-slate-500">

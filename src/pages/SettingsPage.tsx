@@ -64,7 +64,7 @@ function SettingsPage({ apiStatus }: Props) {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-6 shadow-soft">
+      <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
@@ -113,7 +113,7 @@ function SettingsPage({ apiStatus }: Props) {
       </section>
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <div className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-5 shadow-soft">
+        <div className="rounded-3xl border border-slate-800 bg-noc-surface3 p-5 shadow-soft">
           <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
             Estado da conexao
           </p>
@@ -129,7 +129,7 @@ function SettingsPage({ apiStatus }: Props) {
           <p className="mt-2 text-sm text-slate-400">{apiStatus.message}</p>
         </div>
 
-        <div className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-5 shadow-soft">
+        <div className="rounded-3xl border border-slate-800 bg-noc-surface3 p-5 shadow-soft">
           <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
             Modo de autenticacao
           </p>
@@ -147,7 +147,7 @@ function SettingsPage({ apiStatus }: Props) {
           </p>
         </div>
 
-        <div className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-5 shadow-soft">
+        <div className="rounded-3xl border border-slate-800 bg-noc-surface3 p-5 shadow-soft">
           <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
             Hosts ativos
           </p>
@@ -159,7 +159,7 @@ function SettingsPage({ apiStatus }: Props) {
           </p>
         </div>
 
-        <div className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-5 shadow-soft">
+        <div className="rounded-3xl border border-slate-800 bg-noc-surface3 p-5 shadow-soft">
           <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
             Alarmes High/Disaster
           </p>
@@ -173,7 +173,7 @@ function SettingsPage({ apiStatus }: Props) {
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[1.3fr_1fr]">
-        <div className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-6 shadow-soft">
+        <div className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
           <div className="flex items-center gap-3">
             <Wrench className="text-slate-400" size={18} />
             <div>
@@ -260,7 +260,7 @@ function SettingsPage({ apiStatus }: Props) {
           </div>
         </div>
 
-        <aside className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-6 shadow-soft">
+        <aside className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
           <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
             Diagnostico
           </p>
@@ -303,7 +303,7 @@ function SettingsPage({ apiStatus }: Props) {
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
-        <div className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-6 shadow-soft">
+        <div className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
           <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
             Telemetria
           </p>
@@ -365,7 +365,7 @@ function SettingsPage({ apiStatus }: Props) {
           )}
         </div>
 
-        <aside className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-6 shadow-soft">
+        <aside className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
           <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
             Observacoes
           </p>

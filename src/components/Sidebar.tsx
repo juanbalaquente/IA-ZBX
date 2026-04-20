@@ -23,7 +23,7 @@ function Sidebar() {
   return (
     <aside className="hidden w-72 shrink-0 border-r border-slate-800 bg-noc-surface2 px-4 py-6 md:flex md:flex-col">
       <div className="mb-10 flex items-center gap-3 px-2">
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-noc-accent/10 text-noc-accent shadow-lg shadow-cyan-500/10">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-noc-accent/10 text-noc-accent">
           <Activity size={24} />
         </div>
         <div>
@@ -44,7 +44,7 @@ function Sidebar() {
               key={item.label}
               to={item.to}
               className={({ isActive }) =>
-                `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm transition-all duration-200 ${
+                `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm transition-colors duration-150 ${
                   isActive
                     ? "bg-noc-accent/10 text-slate-100 shadow-[0_0_0_1px_rgba(56,189,248,0.2)]"
                     : "text-slate-400 hover:bg-white/5 hover:text-slate-100"

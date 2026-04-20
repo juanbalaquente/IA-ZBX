@@ -22,9 +22,7 @@ body {
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-  background:
-    radial-gradient(circle at top, rgba(56, 189, 248, 0.12), transparent 25%),
-    linear-gradient(180deg, #06091b 0%, #0b1220 100%);
+  background: linear-gradient(180deg, #06091b 0%, #0b1220 100%);
 }
 
 * {
@@ -34,4 +32,15 @@ body {
 ::selection {
   background: rgba(56, 189, 248, 0.35);
   color: #ffffff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }

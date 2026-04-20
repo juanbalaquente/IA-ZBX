@@ -110,6 +110,15 @@ describe("resolveAIQuery", () => {
     expect(answer).toContain("nome contendo olt");
   });
 
+  it("retorna resumo geral quando pergunta quantos hosts existem", async () => {
+    const answer = await resolveAIQuery("quantos hosts nos temos");
+
+    expect(answer).toContain("Inventario de hosts (3)");
+    expect(answer).toContain("Online: 1");
+    expect(answer).toContain("Offline: 1");
+    expect(answer).toContain("Degradado: 1");
+  });
+
   it("busca host por ip", async () => {
     const answer = await resolveAIQuery("quais hosts tem o IP 10.200.12.114?");
 

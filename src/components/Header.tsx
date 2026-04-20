@@ -28,7 +28,7 @@ function Header({ apiStatus }: Props) {
             : "Erro na conexao";
 
   return (
-    <header className="border-b border-slate-800 bg-noc-surface3/95 px-4 py-4 backdrop-blur-sm sm:px-6 lg:px-8">
+    <header className="border-b border-slate-800 bg-noc-surface3 px-4 py-4 sm:px-6 lg:px-8">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
@@ -62,14 +62,14 @@ function Header({ apiStatus }: Props) {
           </div>
           <button
             type="button"
-            className="inline-flex items-center gap-2 rounded-2xl border border-slate-800 bg-slate-900/80 px-4 py-2 text-sm text-slate-200 transition hover:border-slate-700 hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-2xl border border-slate-800 bg-slate-900 px-4 py-2 text-sm text-slate-200 transition-colors hover:border-slate-700 hover:bg-slate-800"
           >
             <Settings2 size={18} />
             Configuracoes
           </button>
         </div>
       </div>
-      <div className="mt-4 flex flex-col gap-2 rounded-3xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-slate-300 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-4 flex flex-col gap-2 rounded-3xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-300 sm:flex-row sm:items-center sm:justify-between">
         <span
           className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs ring-1 ring-slate-700/50 ${badgeStyles[apiStatus.state]}`}
         >

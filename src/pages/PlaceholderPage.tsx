@@ -5,7 +5,7 @@ interface Props {
 
 function PlaceholderPage({ title, description }: Props) {
   return (
-    <div className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-8 shadow-soft">
+    <div className="rounded-3xl border border-slate-800 bg-noc-surface3 p-8 shadow-soft">
       <div className="flex flex-col gap-4">
         <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
           {title}

@@ -82,6 +82,7 @@ const ignoredHostTerms = new Set([
   "sobre",
   "status",
   "tem",
+  "temos",
   "tenha",
   "tenham",
   "tiver",

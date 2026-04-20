@@ -32,7 +32,7 @@ function StatCard({ item }: Props) {
   };
 
   return (
-    <article className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-6 shadow-soft">
+    <article className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
       <div className="flex items-center justify-between gap-4">
         <div>
           <p className="text-sm uppercase tracking-[0.25em] text-slate-500">

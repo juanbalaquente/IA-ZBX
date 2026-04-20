@@ -77,7 +77,7 @@ function LinksPage() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-6 shadow-soft">
+      <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
@@ -129,7 +129,7 @@ function LinksPage() {
         </div>
       </section>
 
-      <section className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-6 shadow-soft">
+      <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <label className="relative block w-full max-w-xl">
@@ -210,7 +210,7 @@ function LinksPage() {
       ) : null}
 
       <section className="grid gap-6 xl:grid-cols-[1.7fr_1fr]">
-        <div className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-6 shadow-soft">
+        <div className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
           <div className="mb-6 flex items-center justify-between gap-4">
             <div>
               <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
@@ -297,7 +297,7 @@ function LinksPage() {
           )}
         </div>
 
-        <aside className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-6 shadow-soft">
+        <aside className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
           <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
             Detalhe
           </p>

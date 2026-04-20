@@ -1,10 +1,9 @@
 import { useState, type FormEvent } from "react";
 import { Send, Sparkles } from "lucide-react";
 import type { AIConversation } from "../types";
-import {
-  aiQuerySuggestions,
-  resolveAIQuery,
-} from "../services/aiQueryService";
+import { aiQuerySuggestions } from "../services/aiQueryService";
+import { resolveOperationalQuery } from "../services/agentClient";
+import AssistantMessage from "../components/AssistantMessage";
 
 const initialConversation: AIConversation[] = [
   {
@@ -50,12 +49,12 @@ function AIQueriesPage() {
     setLoading(true);
 
     try {
-      const answer = await resolveAIQuery(text);
+      const result = await resolveOperationalQuery(text);
       setHistory((current) => [
         ...current,
         {
           role: "assistant",
-          message: answer,
+          message: result.answer,
           timestamp: getTimestampLabel(),
         },
       ]);
@@ -79,7 +78,7 @@ function AIQueriesPage() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-6 shadow-soft">
+      <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
         <div className="flex flex-col gap-4">
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -90,13 +89,13 @@ function AIQueriesPage() {
                 Operacao assistida por consulta
               </h2>
               <p className="mt-2 max-w-3xl text-sm text-slate-400">
-                Esta tela consulta dados reais do ambiente pela camada MCP local
-                e retorna contexto operacional de hosts, eventos e alarmes com
-                filtros compostos por nome, grupo, IP e status.
+                Esta tela usa um agente NOC com contexto real do Zabbix quando
+                o servidor de IA esta ativo. Se o agente estiver indisponivel, o
+                parser local assume a consulta como fallback.
               </p>
             </div>
             <div className="rounded-3xl bg-slate-900/80 px-4 py-3 text-sm text-slate-300">
-              Zabbix + linguagem natural
+              Zabbix + agente NOC
             </div>
           </div>
 
@@ -115,7 +114,7 @@ function AIQueriesPage() {
         </div>
       </section>
 
-      <section className="rounded-3xl border border-slate-800 bg-noc-surface3/95 p-6 shadow-soft">
+      <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
         <div className="mb-4 flex items-center gap-2 text-sm text-slate-400">
           <Sparkles size={16} />
           <span>Historico da conversa</span>
@@ -137,9 +136,13 @@ function AIQueriesPage() {
                 </span>
                 <span className="text-xs text-slate-500">{entry.timestamp}</span>
               </div>
-              <p className="mt-3 text-sm leading-6 text-slate-200">
-                {entry.message}
-              </p>
+              {entry.role === "assistant" ? (
+                <AssistantMessage message={entry.message} />
+              ) : (
+                <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-slate-200">
+                  {entry.message}
+                </p>
+              )}
             </article>
           ))}
 
