@@ -114,12 +114,14 @@ export async function getEvents(
     ],
     severities: options.severities ?? zabbixAlarmSeverities,
     selectHosts: ["host"],
-    sortfield: "clock",
+    sortfield: "eventid",
     sortorder: options.sortOrder ?? "DESC",
     limit: options.limit ?? 8,
   });
 
-  return rawEvents.map(adaptEventItem);
+  return rawEvents
+    .sort((left, right) => Number(right.clock ?? 0) - Number(left.clock ?? 0))
+    .map(adaptEventItem);
 }
 
 export async function getTriggers(

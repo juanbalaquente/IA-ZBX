@@ -6,13 +6,14 @@ import {
   getHostsDetailed,
   getProblemsDetailed,
 } from "../services/zabbixService";
-import type { EventItem, Issue, StatMetric } from "../types";
+import type { EventItem, HostItem, Issue, StatMetric } from "../types";
 import { withRetry } from "../utils/retry";
 
 interface DashboardState {
   loading: boolean;
   error?: string;
   stats: StatMetric[];
+  hosts: HostItem[];
   issues: Issue[];
   events: EventItem[];
 }
@@ -21,6 +22,7 @@ const initialState: DashboardState = {
   loading: true,
   error: undefined,
   stats: [],
+  hosts: [],
   issues: [],
   events: [],
 };
@@ -39,6 +41,7 @@ export function useDashboardData() {
         loading: false,
         error: unconfiguredMessage,
         stats: [],
+        hosts: [],
         issues: [],
         events: [],
       });
@@ -58,12 +61,13 @@ export function useDashboardData() {
 
       const stats = createDashboardStats(hosts, issues, events);
 
-      setState({ loading: false, error: undefined, stats, issues, events });
+      setState({ loading: false, error: undefined, stats, hosts, issues, events });
     } catch (error) {
       setState({
         loading: false,
         error: (error as Error).message,
         stats: [],
+        hosts: [],
         issues: [],
         events: [],
       });

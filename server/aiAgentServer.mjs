@@ -303,18 +303,20 @@ async function getEventsContext() {
     output: ["eventid", "name", "clock", "severity", "source", "object", "objectid"],
     severities: [4, 5],
     selectHosts: ["host", "name"],
-    sortfield: "clock",
+    sortfield: "eventid",
     sortorder: "DESC",
     limit: 8,
   });
 
-  return events.map((event) => ({
-    eventId: event.eventid,
-    host: truncateText(event.hosts?.[0]?.name || event.hosts?.[0]?.host || "Sem host", 90),
-    event: truncateText(event.name, 180),
-    severity: severityLabel(event.severity),
-    time: formatClock(event.clock),
-  }));
+  return events
+    .sort((left, right) => Number(right.clock || 0) - Number(left.clock || 0))
+    .map((event) => ({
+      eventId: event.eventid,
+      host: truncateText(event.hosts?.[0]?.name || event.hosts?.[0]?.host || "Sem host", 90),
+      event: truncateText(event.name, 180),
+      severity: severityLabel(event.severity),
+      time: formatClock(event.clock),
+    }));
 }
 
 async function buildOperationalContext(query) {

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { Issue } from "../types";
 
 interface Props {
@@ -17,7 +18,7 @@ function ActiveIssuesTable({ issues }: Props) {
           </h3>
         </div>
         <span className="rounded-full bg-slate-900/80 px-3 py-1 text-xs uppercase tracking-[0.2em] text-slate-400">
-          Atualizado há 2 min
+          Dados em tempo real
         </span>
       </div>
 
@@ -28,9 +29,9 @@ function ActiveIssuesTable({ issues }: Props) {
               <th className="px-3 py-3">Severidade</th>
               <th className="px-3 py-3">Host</th>
               <th className="px-3 py-3">Problema</th>
-              <th className="px-3 py-3">Horário</th>
+              <th className="px-3 py-3">Horario</th>
               <th className="px-3 py-3">Status</th>
-              <th className="px-3 py-3">Ação</th>
+              <th className="px-3 py-3">Acao</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800">
@@ -47,7 +48,7 @@ function ActiveIssuesTable({ issues }: Props) {
               issues.map((issue) => (
                 <tr
                   key={issue.id}
-                  className="hover:bg-slate-950/60 transition-colors"
+                  className="transition-colors hover:bg-slate-950/60"
                 >
                   <td className="px-3 py-4 font-semibold text-slate-100">
                     {issue.severity}
@@ -63,9 +64,12 @@ function ActiveIssuesTable({ issues }: Props) {
                     </span>
                   </td>
                   <td className="px-3 py-4">
-                    <button className="rounded-2xl border border-slate-700 bg-slate-900/90 px-3 py-2 text-xs text-slate-200 transition hover:border-slate-600 hover:bg-slate-800">
+                    <Link
+                      to={`/problems?host=${encodeURIComponent(issue.host)}`}
+                      className="inline-flex rounded-2xl border border-slate-700 bg-slate-900/90 px-3 py-2 text-xs text-slate-200 transition hover:border-slate-600 hover:bg-slate-800"
+                    >
                       Ver detalhes
-                    </button>
+                    </Link>
                   </td>
                 </tr>
               ))

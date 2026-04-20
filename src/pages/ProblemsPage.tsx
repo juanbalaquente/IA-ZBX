@@ -1,5 +1,6 @@
 import { Clipboard, Search, ShieldAlert, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useProblems } from "../hooks/useProblems";
 import {
   analyzeProblemWithAgent,
@@ -22,7 +23,9 @@ const severityStyles = {
 };
 
 function ProblemsPage() {
-  const [search, setSearch] = useState("");
+  const [searchParams] = useSearchParams();
+  const initialHostFilter = searchParams.get("host") ?? "";
+  const [search, setSearch] = useState(initialHostFilter);
   const [severity, setSeverity] =
     useState<(typeof severityFilters)[number]>("Todos");
   const [status, setStatus] = useState<(typeof statusFilters)[number]>("Todos");
@@ -74,6 +77,10 @@ function ProblemsPage() {
   const highCount = issues.filter((issue) => issue.severity === "High").length;
 
   useEffect(() => {
+    setSearch(initialHostFilter);
+  }, [initialHostFilter]);
+
+  useEffect(() => {
     setAnalysis(null);
     setAnalysisCopied(false);
   }, [selectedIssueId]);
@@ -98,8 +105,12 @@ function ProblemsPage() {
       return;
     }
 
-    await navigator.clipboard.writeText(analysis.whatsappMessage);
-    setAnalysisCopied(true);
+    try {
+      await navigator.clipboard.writeText(analysis.whatsappMessage);
+      setAnalysisCopied(true);
+    } catch {
+      setAnalysisCopied(false);
+    }
   };
 
   return (

@@ -1,7 +1,6 @@
 import { Search, ShieldAlert } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useTriggers } from "../hooks/useTriggers";
-import type { TriggerItem } from "../types";
 
 const severityFilters = ["Todos", "Disaster", "High"] as const;
 const statusFilters = ["Todos", "Enabled", "Disabled"] as const;

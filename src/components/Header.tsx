@@ -1,4 +1,5 @@
 import { Settings2, Wifi } from "lucide-react";
+import { Link } from "react-router-dom";
 import type { ApiStatus } from "../hooks/useApiStatus";
 
 interface Props {
@@ -60,13 +61,13 @@ function Header({ apiStatus }: Props) {
                       : "Modo mock"}
             </span>
           </div>
-          <button
-            type="button"
+          <Link
+            to="/settings"
             className="inline-flex items-center gap-2 rounded-2xl border border-slate-800 bg-slate-900 px-4 py-2 text-sm text-slate-200 transition-colors hover:border-slate-700 hover:bg-slate-800"
           >
             <Settings2 size={18} />
             Configuracoes
-          </button>
+          </Link>
         </div>
       </div>
       <div className="mt-4 flex flex-col gap-2 rounded-3xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-300 sm:flex-row sm:items-center sm:justify-between">

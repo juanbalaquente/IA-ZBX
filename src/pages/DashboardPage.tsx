@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import ActiveIssuesTable from "../components/ActiveIssuesTable";
+import OperationalInsightsPanel from "../components/OperationalInsightsPanel";
 import QueryConsole from "../components/QueryConsole";
 import RecentEventsPanel from "../components/RecentEventsPanel";
 import StatCard from "../components/StatCard";
@@ -13,7 +14,8 @@ interface Props {
 }
 
 function DashboardPage({ apiStatus }: Props) {
-  const { loading, error, stats, issues, events, reload } = useDashboardData();
+  const { loading, error, stats, hosts, issues, events, reload } =
+    useDashboardData();
   const showConnectionPanel = useMemo(
     () => apiStatus.state !== "mock",
     [apiStatus.state],
@@ -54,6 +56,7 @@ function DashboardPage({ apiStatus }: Props) {
 
       <section className="grid gap-6 xl:grid-cols-[1.8fr_1fr]">
         <div className="space-y-6">
+          <OperationalInsightsPanel hosts={hosts} issues={issues} />
           <QueryConsole />
           <ActiveIssuesTable issues={issues} />
         </div>
