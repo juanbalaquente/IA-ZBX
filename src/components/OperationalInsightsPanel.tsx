@@ -10,6 +10,7 @@ import {
   buildTopOffenders,
 } from "../domain/operationalInsights";
 import type { HostItem, Issue } from "../types";
+import HelpTooltip from "./HelpTooltip";
 
 interface Props {
   hosts: HostItem[];
@@ -27,9 +28,15 @@ function OperationalInsightsPanel({ hosts, issues }: Props) {
     <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
       <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
         <div>
-          <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-            Triagem CGR
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
+              Triagem CGR
+            </p>
+            <HelpTooltip
+              label="Explicar triagem CGR"
+              text="Consolida alarmes High e Disaster para sugerir o primeiro foco operacional: maior severidade, impacto estimado, host ofensor e grupo mais degradado."
+            />
+          </div>
           <h3 className="mt-2 text-xl font-semibold text-slate-100">
             Prioridade operacional
           </h3>
@@ -50,6 +57,10 @@ function OperationalInsightsPanel({ hosts, issues }: Props) {
             <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
               Alarme prioritario
             </p>
+            <HelpTooltip
+              label="Explicar alarme prioritario"
+              text="Selecionado por score operacional. O score considera severidade, impacto provavel e palavras-chave do alarme para apontar o que deve ser tratado primeiro."
+            />
           </div>
 
           {!priorityInsight ? (
@@ -93,6 +104,10 @@ function OperationalInsightsPanel({ hosts, issues }: Props) {
             <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
               Top ofensores
             </p>
+            <HelpTooltip
+              label="Explicar top ofensores"
+              text="Ranking de hosts com mais alarmes ativos. Ajuda a encontrar equipamentos que concentram incidentes e podem estar causando impacto em cascata."
+            />
           </div>
 
           <div className="mt-4 space-y-3">
@@ -128,6 +143,11 @@ function OperationalInsightsPanel({ hosts, issues }: Props) {
             <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
               Grupos em risco
             </p>
+            <HelpTooltip
+              label="Explicar grupos em risco"
+              text="Agrupa hosts por grupo do Zabbix e estima disponibilidade operacional com base em hosts online, offline e degradados."
+              side="left"
+            />
           </div>
 
           <div className="mt-4 space-y-3">

@@ -9,6 +9,7 @@ import {
   Wrench,
 } from "lucide-react";
 import { useMemo } from "react";
+import HelpTooltip from "../components/HelpTooltip";
 import { useSettingsDiagnostics } from "../hooks/useSettingsDiagnostics";
 import type { ApiStatus } from "../hooks/useApiStatus";
 
@@ -67,9 +68,15 @@ function SettingsPage({ apiStatus }: Props) {
       <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-              Settings
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
+                Settings
+              </p>
+              <HelpTooltip
+                label="Explicar diagnostico Zabbix"
+                text="Valida se o frontend consegue autenticar e executar chamadas reais no Zabbix. Nao exibe token nem senha, apenas presenca e estado operacional."
+              />
+            </div>
             <h2 className="mt-2 text-2xl font-semibold text-slate-100">
               Diagnostico da integracao Zabbix
             </h2>
@@ -108,6 +115,11 @@ function SettingsPage({ apiStatus }: Props) {
               <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
               Atualizar diagnostico
             </button>
+            <HelpTooltip
+              label="Explicar atualizar diagnostico"
+              text="Executa novamente consultas leves no Zabbix para atualizar versao, contagens de hosts, problemas e eventos High/Disaster."
+              side="left"
+            />
           </div>
         </div>
       </section>
@@ -130,9 +142,15 @@ function SettingsPage({ apiStatus }: Props) {
         </div>
 
         <div className="rounded-3xl border border-slate-800 bg-noc-surface3 p-5 shadow-soft">
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
-            Modo de autenticacao
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+              Modo de autenticacao
+            </p>
+            <HelpTooltip
+              label="Explicar modo de autenticacao"
+              text="Quando usuario e senha existem, o sistema usa user.login para obter sessao. Quando ha apenas token, tenta autenticar por cabecalhos/token."
+            />
+          </div>
           <p className="mt-4 text-2xl font-semibold text-slate-100">
             {authModeLabels[runtime.authMode]}
           </p>
@@ -229,6 +247,10 @@ function SettingsPage({ apiStatus }: Props) {
                 <KeyRound size={16} />
               )}
               <span>Resumo de autenticacao</span>
+              <HelpTooltip
+                label="Explicar resumo de autenticacao"
+                text="Mostra somente se as variaveis foram preenchidas. O valor real do token, usuario e senha nao e renderizado na tela."
+              />
             </div>
 
             <div className="mt-4 grid gap-3 sm:grid-cols-3">
@@ -261,9 +283,16 @@ function SettingsPage({ apiStatus }: Props) {
         </div>
 
         <aside className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
-          <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-            Diagnostico
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
+              Diagnostico
+            </p>
+            <HelpTooltip
+              label="Explicar sinais operacionais"
+              text="Checklist rapido para saber se endpoint, autenticacao, conexao e coleta em tempo real estao prontos para uso operacional."
+              side="left"
+            />
+          </div>
           <h3 className="mt-2 text-xl font-semibold text-slate-100">
             Sinais operacionais
           </h3>

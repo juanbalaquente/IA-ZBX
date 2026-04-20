@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import type { Issue } from "../types";
+import HelpTooltip from "./HelpTooltip";
 
 interface Props {
   issues: Issue[];
@@ -10,9 +11,15 @@ function ActiveIssuesTable({ issues }: Props) {
     <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
       <div className="mb-6 flex items-center justify-between gap-4">
         <div>
-          <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-            Problemas ativos
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
+              Problemas ativos
+            </p>
+            <HelpTooltip
+              label="Explicar problemas ativos"
+              text="Lista resumida dos alarmes ativos retornados pelo Zabbix para priorizacao rapida no dashboard."
+            />
+          </div>
           <h3 className="mt-2 text-xl font-semibold text-slate-100">
             Fila de incidentes
           </h3>

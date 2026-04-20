@@ -2,6 +2,7 @@ import { Clipboard, Search, ShieldAlert, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useProblems } from "../hooks/useProblems";
+import HelpTooltip from "../components/HelpTooltip";
 import {
   analyzeProblemWithAgent,
   type ProblemAIAnalysis,
@@ -118,9 +119,15 @@ function ProblemsPage() {
       <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-              Problemas
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
+                Problemas
+              </p>
+              <HelpTooltip
+                label="Explicar central de problemas"
+                text="Lista somente alarmes High e Disaster vindos do Zabbix. A tela e focada na fila operacional que exige atencao do NOC/CGR."
+              />
+            </div>
             <h2 className="mt-2 text-2xl font-semibold text-slate-100">
               Central de alarmes operacionais
             </h2>
@@ -182,7 +189,11 @@ function ProblemsPage() {
           </div>
 
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <HelpTooltip
+                label="Explicar filtro de severidade"
+                text="Filtra a fila por criticidade. Disaster representa maior criticidade operacional; High indica alto impacto, mas abaixo de desastre."
+              />
               {severityFilters.map((filter) => (
                 <button
                   key={filter}
@@ -199,7 +210,11 @@ function ProblemsPage() {
               ))}
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <HelpTooltip
+                label="Explicar filtro de status"
+                text="Filtra pelo estado operacional normalizado no frontend, como Aberto, Em andamento ou Verificado, conforme dados retornados pelo Zabbix."
+              />
               {statusFilters.map((filter) => (
                 <button
                   key={filter}
@@ -327,9 +342,16 @@ function ProblemsPage() {
         </div>
 
         <aside className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
-          <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-            Detalhe
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
+              Detalhe
+            </p>
+            <HelpTooltip
+              label="Explicar detalhe do alarme"
+              text="Mostra o contexto do alarme selecionado e permite acionar o agente para gerar resumo, causa provavel, acoes recomendadas e mensagem de escalonamento."
+              side="left"
+            />
+          </div>
           <h3 className="mt-2 text-xl font-semibold text-slate-100">
             Contexto do alarme
           </h3>
@@ -340,15 +362,22 @@ function ProblemsPage() {
             </div>
           ) : (
             <div className="mt-6 space-y-4">
-              <button
-                type="button"
-                onClick={handleAnalyzeIssue}
-                disabled={analysisLoading}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-3xl bg-noc-accent px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                <Sparkles size={16} />
-                {analysisLoading ? "Analisando com IA..." : "Analisar com IA"}
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleAnalyzeIssue}
+                  disabled={analysisLoading}
+                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-3xl bg-noc-accent px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <Sparkles size={16} />
+                  {analysisLoading ? "Analisando com IA..." : "Analisar com IA"}
+                </button>
+                <HelpTooltip
+                  label="Explicar analise com IA"
+                  text="Envia o alarme selecionado ao agente local. O agente usa Groq quando configurado e retorna diagnostico, evidencias, proximas acoes e texto pronto para WhatsApp."
+                  side="left"
+                />
+              </div>
 
               <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-4">
                 <p className="text-xs uppercase tracking-[0.3em] text-slate-500">

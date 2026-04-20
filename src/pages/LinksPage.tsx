@@ -1,5 +1,6 @@
 import { Search, ShieldAlert } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import HelpTooltip from "../components/HelpTooltip";
 import { useTriggers } from "../hooks/useTriggers";
 
 const severityFilters = ["Todos", "Disaster", "High"] as const;
@@ -79,9 +80,15 @@ function LinksPage() {
       <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-              Enlaces
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
+                Enlaces
+              </p>
+              <HelpTooltip
+                label="Explicar visao de enlaces"
+                text="Esta visao usa triggers High e Disaster como aproximacao operacional para enlaces/circuitos. A classificacao real de enlace depende da nomenclatura e grupos do Zabbix."
+              />
+            </div>
             <h2 className="mt-2 text-2xl font-semibold text-slate-100">
               Circuitos e triggers monitorados
             </h2>
@@ -152,7 +159,11 @@ function LinksPage() {
           </div>
 
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <HelpTooltip
+                label="Explicar filtro de severidade de triggers"
+                text="Mantem foco em triggers High e Disaster para reduzir ruido e destacar possiveis impactos relevantes em circuitos, POPs ou equipamentos."
+              />
               {severityFilters.map((filter) => (
                 <button
                   key={filter}
@@ -169,7 +180,11 @@ function LinksPage() {
               ))}
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <HelpTooltip
+                label="Explicar filtro de status de trigger"
+                text="Enabled indica trigger habilitada no Zabbix. Disabled indica regra desativada e pode nao representar monitoramento operacional ativo."
+              />
               {statusFilters.map((filter) => (
                 <button
                   key={filter}
@@ -297,9 +312,16 @@ function LinksPage() {
         </div>
 
         <aside className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
-          <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-            Detalhe
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
+              Detalhe
+            </p>
+            <HelpTooltip
+              label="Explicar contexto do enlace"
+              text="Mostra host, severidade, status e descricao do trigger selecionado para apoiar validacao manual do enlace/circuito."
+              side="left"
+            />
+          </div>
           <h3 className="mt-2 text-xl font-semibold text-slate-100">
             Contexto do enlace
           </h3>

@@ -4,6 +4,7 @@ import type { AIConversation } from "../types";
 import { aiQuerySuggestions } from "../services/aiQueryService";
 import { resolveOperationalQuery } from "../services/agentClient";
 import AssistantMessage from "../components/AssistantMessage";
+import HelpTooltip from "../components/HelpTooltip";
 
 const initialConversation: AIConversation[] = [
   {
@@ -85,9 +86,15 @@ function AIQueriesPage() {
         <div className="flex flex-col gap-4">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-                Consultas IA
-              </p>
+              <div className="flex items-center gap-2">
+                <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
+                  Consultas IA
+                </p>
+                <HelpTooltip
+                  label="Explicar consultas IA"
+                  text="A consulta tenta usar o agente Groq com contexto real do Zabbix. Se o agente nao responder, o parser local interpreta perguntas comuns sobre hosts, alarmes e eventos."
+                />
+              </div>
               <h2 className="mt-2 text-2xl font-semibold text-slate-100">
                 Operacao assistida por consulta
               </h2>
@@ -97,8 +104,13 @@ function AIQueriesPage() {
                 parser local assume a consulta como fallback.
               </p>
             </div>
-            <div className="rounded-3xl bg-slate-900/80 px-4 py-3 text-sm text-slate-300">
+            <div className="inline-flex items-center gap-2 rounded-3xl bg-slate-900/80 px-4 py-3 text-sm text-slate-300">
               Zabbix + agente NOC
+              <HelpTooltip
+                label="Explicar agente NOC"
+                text="O agente recebe uma amostra controlada de hosts, alarmes e eventos. Ele nao treina um modelo novo; usa contexto operacional atual para responder."
+                side="left"
+              />
             </div>
           </div>
 
@@ -121,6 +133,10 @@ function AIQueriesPage() {
         <div className="mb-4 flex items-center gap-2 text-sm text-slate-400">
           <Sparkles size={16} />
           <span>Historico da conversa</span>
+          <HelpTooltip
+            label="Explicar historico da conversa"
+            text="Mostra a pergunta do operador, a resposta do assistente e, quando disponivel, a fonte usada: agente Groq ou parser local."
+          />
         </div>
 
         <div className="space-y-4">
@@ -143,8 +159,12 @@ function AIQueriesPage() {
                 <>
                   {entry.source ? (
                     <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-400">
-                      <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
+                      <span className="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
                         Fonte: {entry.source === "groq-agent" ? "Agente Groq" : "Parser local"}
+                        <HelpTooltip
+                          label="Explicar fonte da resposta"
+                          text="Agente Groq indica resposta gerada pelo LLM com contexto do Zabbix. Parser local indica regra interna usada quando o agente nao respondeu."
+                        />
                       </span>
                       {entry.model ? (
                         <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
@@ -186,13 +206,22 @@ function AIQueriesPage() {
         </div>
 
         <form className="mt-6 space-y-4" onSubmit={handleSend}>
-          <textarea
-            rows={4}
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            placeholder="Ex.: hosts com olt no nome e offline, hosts do grupo speednet, alarmes do host X"
-            className="w-full rounded-3xl border border-slate-800 bg-slate-950/80 px-4 py-4 text-sm text-slate-100 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-400/20"
-          />
+          <label className="block">
+            <span className="mb-2 flex items-center gap-2 text-sm text-slate-400">
+              Pergunta operacional
+              <HelpTooltip
+                label="Explicar pergunta operacional"
+                text="Use linguagem natural. Exemplos: hosts offline, alarmes do host X, eventos recentes, hosts com OLT no nome ou resumo do que olhar primeiro."
+              />
+            </span>
+            <textarea
+              rows={4}
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+              placeholder="Ex.: hosts com olt no nome e offline, hosts do grupo speednet, alarmes do host X"
+              className="w-full rounded-3xl border border-slate-800 bg-slate-950/80 px-4 py-4 text-sm text-slate-100 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-400/20"
+            />
+          </label>
 
           <div className="flex justify-end">
             <button

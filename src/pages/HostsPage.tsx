@@ -1,5 +1,6 @@
 import { Search, ShieldAlert } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import HelpTooltip from "../components/HelpTooltip";
 import HostTable from "../components/HostTable";
 import { useHosts } from "../hooks/useHosts";
 
@@ -49,9 +50,15 @@ function HostsPage() {
       <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-              Hosts
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
+                Hosts
+              </p>
+              <HelpTooltip
+                label="Explicar inventario de hosts"
+                text="Mostra hosts reais retornados pelo Zabbix, com status derivado da disponibilidade da interface principal e dos dados normalizados pelo adapter."
+              />
+            </div>
             <h2 className="mt-2 text-2xl font-semibold text-slate-100">
               Inventario operacional de dispositivos
             </h2>
@@ -121,7 +128,11 @@ function HostsPage() {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <HelpTooltip
+              label="Explicar filtro de status de host"
+              text="Online indica interface principal disponivel. Offline indica indisponibilidade. Degradado indica resposta parcial ou estado inconclusivo retornado pelo Zabbix."
+            />
             {filters.map((filter) => (
               <button
                 key={filter}
@@ -175,9 +186,16 @@ function HostsPage() {
         </div>
 
         <aside className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
-          <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-            Detalhe
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
+              Detalhe
+            </p>
+            <HelpTooltip
+              label="Explicar contexto do host"
+              text="Resume IP, estado, interface principal, modo de monitoramento, ultimo check e grupos do Zabbix para apoiar triagem rapida."
+              side="left"
+            />
+          </div>
           <h3 className="mt-2 text-xl font-semibold text-slate-100">
             Contexto do host
           </h3>
