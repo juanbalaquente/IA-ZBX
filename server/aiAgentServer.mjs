@@ -93,7 +93,29 @@ async function getAuthToken() {
   }
 
   if (config.zabbixUser && config.zabbixPassword) {
-    cachedAuthToken = await callZabbix(
+    cachedAuthToken = await loginWithCredentials();
+    return cachedAuthToken;
+  }
+
+  return null;
+}
+
+async function loginWithCredentials() {
+  try {
+    return await callZabbix(
+      "user.login",
+      {
+        username: config.zabbixUser,
+        password: config.zabbixPassword,
+      },
+      { skipAuth: true },
+    );
+  } catch (error) {
+    if (!/unexpected parameter "username"|invalid parameter/i.test(error.message)) {
+      throw error;
+    }
+
+    return await callZabbix(
       "user.login",
       {
         user: config.zabbixUser,
@@ -101,10 +123,7 @@ async function getAuthToken() {
       },
       { skipAuth: true },
     );
-    return cachedAuthToken;
   }
-
-  return null;
 }
 
 async function callZabbix(method, params = {}, options = {}) {
@@ -364,6 +383,103 @@ async function callGroqAgent(query, context) {
   return json.choices?.[0]?.message?.content?.trim() || "Sem resposta do agente.";
 }
 
+function stripJsonFence(raw) {
+  const text = String(raw || "").trim();
+  if (!text.startsWith("```")) {
+    return text;
+  }
+
+  return text
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/```$/i, "")
+    .trim();
+}
+
+function fallbackProblemAnalysis(issue) {
+  return {
+    summary: `${issue.host}: ${issue.description}`,
+    urgency: issue.severity === "Disaster" ? "immediate" : "soon",
+    likelyCause:
+      "Analise automatica indisponivel. Validar o alarme diretamente no Zabbix e no equipamento afetado.",
+    evidence: [
+      `Host: ${issue.host}`,
+      `Severidade: ${issue.severity}`,
+      `Horario: ${issue.time}`,
+      `Status: ${issue.status}`,
+    ],
+    recommendedActions: [
+      "Validar disponibilidade do host no Zabbix.",
+      "Checar conectividade, energia e interface do equipamento.",
+      "Atualizar a equipe apos a primeira validacao.",
+    ],
+    whatsappMessage: `ALERTA ZABBIX\nSeveridade: ${issue.severity}\nHost: ${issue.host}\nProblema: ${issue.description}\nAcao: validar disponibilidade, conectividade e energia do equipamento.`,
+    source: "local-parser",
+  };
+}
+
+async function analyzeProblem(issue) {
+  if (!config.groqApiKey) {
+    return fallbackProblemAnalysis(issue);
+  }
+
+  const prompt = [
+    "Analise este alarme Zabbix e responda somente JSON valido, sem markdown.",
+    "Estrutura obrigatoria:",
+    '{"summary":"...","urgency":"immediate|soon|monitor","likelyCause":"...","evidence":["..."],"recommendedActions":["..."],"whatsappMessage":"..."}',
+    "Alarme:",
+    JSON.stringify({
+      host: issue.host,
+      description: issue.description,
+      severity: issue.severity,
+      status: issue.status,
+      time: issue.time,
+    }),
+  ].join("\n");
+
+  const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${config.groqApiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: config.groqModel,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: prompt },
+      ],
+      max_tokens: 450,
+      temperature: 0.1,
+    }),
+  });
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    throw new Error(json.error?.message || "Erro ao chamar Groq.");
+  }
+
+  const content = json.choices?.[0]?.message?.content || "";
+  const parsed = JSON.parse(stripJsonFence(content));
+
+  return {
+    summary: String(parsed.summary || `${issue.host}: ${issue.description}`),
+    urgency: ["immediate", "soon", "monitor"].includes(parsed.urgency)
+      ? parsed.urgency
+      : issue.severity === "Disaster"
+        ? "immediate"
+        : "soon",
+    likelyCause: String(parsed.likelyCause || "Causa provavel nao informada."),
+    evidence: Array.isArray(parsed.evidence) ? parsed.evidence.map(String) : [],
+    recommendedActions: Array.isArray(parsed.recommendedActions)
+      ? parsed.recommendedActions.map(String)
+      : [],
+    whatsappMessage: String(parsed.whatsappMessage || ""),
+    source: "groq-agent",
+    model: config.groqModel,
+  };
+}
+
 async function handleQuery(request, response) {
   const body = await readJsonBody(request);
   const query = String(body.query || "").trim();
@@ -385,6 +501,21 @@ async function handleQuery(request, response) {
       events: context.events.length,
     },
   });
+}
+
+async function handleProblemAnalysis(request, response) {
+  const body = await readJsonBody(request);
+  const issue = body.issue || {};
+
+  if (!issue.host || !issue.description || !issue.severity) {
+    return sendJson(response, 400, { error: "Alarme invalido." });
+  }
+
+  try {
+    return sendJson(response, 200, await analyzeProblem(issue));
+  } catch {
+    return sendJson(response, 200, fallbackProblemAnalysis(issue));
+  }
 }
 
 function readJsonBody(request) {
@@ -440,6 +571,10 @@ const server = http.createServer(async (request, response) => {
 
     if (request.method === "POST" && request.url === "/ai-api/query") {
       return await handleQuery(request, response);
+    }
+
+    if (request.method === "POST" && request.url === "/ai-api/analyze-problem") {
+      return await handleProblemAnalysis(request, response);
     }
 
     return sendJson(response, 404, { error: "Rota nao encontrada." });

@@ -56,6 +56,9 @@ function AIQueriesPage() {
           role: "assistant",
           message: result.answer,
           timestamp: getTimestampLabel(),
+          source: result.source,
+          model: result.model,
+          contextCounts: result.contextCounts,
         },
       ]);
     } catch (error) {
@@ -137,7 +140,28 @@ function AIQueriesPage() {
                 <span className="text-xs text-slate-500">{entry.timestamp}</span>
               </div>
               {entry.role === "assistant" ? (
-                <AssistantMessage message={entry.message} />
+                <>
+                  {entry.source ? (
+                    <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-400">
+                      <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
+                        Fonte: {entry.source === "groq-agent" ? "Agente Groq" : "Parser local"}
+                      </span>
+                      {entry.model ? (
+                        <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
+                          Modelo: {entry.model}
+                        </span>
+                      ) : null}
+                      {entry.contextCounts ? (
+                        <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
+                          Contexto: {entry.contextCounts.hosts} hosts,{" "}
+                          {entry.contextCounts.problems} alarmes,{" "}
+                          {entry.contextCounts.events} eventos
+                        </span>
+                      ) : null}
+                    </div>
+                  ) : null}
+                  <AssistantMessage message={entry.message} />
+                </>
               ) : (
                 <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-slate-200">
                   {entry.message}

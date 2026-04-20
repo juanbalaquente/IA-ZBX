@@ -1,6 +1,10 @@
-import { Search, ShieldAlert } from "lucide-react";
+import { Clipboard, Search, ShieldAlert, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useProblems } from "../hooks/useProblems";
+import {
+  analyzeProblemWithAgent,
+  type ProblemAIAnalysis,
+} from "../services/agentClient";
 
 const severityFilters = ["Todos", "Disaster", "High"] as const;
 const statusFilters = [
@@ -23,6 +27,9 @@ function ProblemsPage() {
     useState<(typeof severityFilters)[number]>("Todos");
   const [status, setStatus] = useState<(typeof statusFilters)[number]>("Todos");
   const [selectedIssueId, setSelectedIssueId] = useState<string | null>(null);
+  const [analysis, setAnalysis] = useState<ProblemAIAnalysis | null>(null);
+  const [analysisLoading, setAnalysisLoading] = useState(false);
+  const [analysisCopied, setAnalysisCopied] = useState(false);
   const { issues, loading, error, retry } = useProblems();
 
   const filteredIssues = useMemo(() => {
@@ -65,6 +72,35 @@ function ProblemsPage() {
     (issue) => issue.severity === "Disaster",
   ).length;
   const highCount = issues.filter((issue) => issue.severity === "High").length;
+
+  useEffect(() => {
+    setAnalysis(null);
+    setAnalysisCopied(false);
+  }, [selectedIssueId]);
+
+  const handleAnalyzeIssue = async () => {
+    if (!selectedIssue || analysisLoading) {
+      return;
+    }
+
+    setAnalysisLoading(true);
+    setAnalysisCopied(false);
+
+    try {
+      setAnalysis(await analyzeProblemWithAgent(selectedIssue));
+    } finally {
+      setAnalysisLoading(false);
+    }
+  };
+
+  const handleCopyWhatsapp = async () => {
+    if (!analysis?.whatsappMessage) {
+      return;
+    }
+
+    await navigator.clipboard.writeText(analysis.whatsappMessage);
+    setAnalysisCopied(true);
+  };
 
   return (
     <div className="space-y-6">
@@ -293,6 +329,16 @@ function ProblemsPage() {
             </div>
           ) : (
             <div className="mt-6 space-y-4">
+              <button
+                type="button"
+                onClick={handleAnalyzeIssue}
+                disabled={analysisLoading}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-3xl bg-noc-accent px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <Sparkles size={16} />
+                {analysisLoading ? "Analisando com IA..." : "Analisar com IA"}
+              </button>
+
               <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-4">
                 <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
                   Host
@@ -343,6 +389,93 @@ function ProblemsPage() {
                   {selectedIssue.description}
                 </p>
               </div>
+
+              {analysis ? (
+                <div className="space-y-4 rounded-3xl border border-cyan-500/20 bg-cyan-500/5 p-4">
+                  <div className="flex flex-wrap gap-2 text-xs text-slate-400">
+                    <span className="rounded-full border border-cyan-500/20 bg-slate-950 px-3 py-1 text-cyan-200">
+                      Fonte: {analysis.source === "groq-agent" ? "Agente Groq" : "Fallback local"}
+                    </span>
+                    {analysis.model ? (
+                      <span className="rounded-full border border-slate-800 bg-slate-950 px-3 py-1">
+                        Modelo: {analysis.model}
+                      </span>
+                    ) : null}
+                    <span className="rounded-full border border-slate-800 bg-slate-950 px-3 py-1">
+                      Urgencia: {analysis.urgency}
+                    </span>
+                  </div>
+
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.3em] text-cyan-200">
+                      Resumo IA
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-slate-100">
+                      {analysis.summary}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                      Causa provavel
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-slate-200">
+                      {analysis.likelyCause}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                      Evidencias
+                    </p>
+                    <div className="mt-2 space-y-2">
+                      {analysis.evidence.map((item) => (
+                        <div
+                          key={item}
+                          className="rounded-2xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-300"
+                        >
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                      Acoes recomendadas
+                    </p>
+                    <div className="mt-2 space-y-2">
+                      {analysis.recommendedActions.map((item) => (
+                        <div
+                          key={item}
+                          className="rounded-2xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-300"
+                        >
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950 p-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                        WhatsApp
+                      </p>
+                      <button
+                        type="button"
+                        onClick={handleCopyWhatsapp}
+                        className="inline-flex items-center gap-2 rounded-full border border-slate-700 px-3 py-1 text-xs text-slate-200 transition hover:bg-slate-900"
+                      >
+                        <Clipboard size={14} />
+                        {analysisCopied ? "Copiado" : "Copiar"}
+                      </button>
+                    </div>
+                    <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-slate-300">
+                      {analysis.whatsappMessage}
+                    </p>
+                  </div>
+                </div>
+              ) : null}
             </div>
           )}
         </aside>

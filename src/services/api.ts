@@ -106,7 +106,30 @@ async function getAuthToken(): Promise<string | null> {
   }
 
   if (apiConfig.user && apiConfig.password) {
-    const token = await callZabbix<string>(
+    const token = await loginWithCredentials();
+    cachedAuthToken = token;
+    return token;
+  }
+
+  return null;
+}
+
+async function loginWithCredentials(): Promise<string> {
+  try {
+    return await callZabbix<string>(
+      "user.login",
+      {
+        username: apiConfig.user,
+        password: apiConfig.password,
+      },
+      { skipAuth: true },
+    );
+  } catch (error) {
+    if (!/unexpected parameter "username"|invalid parameter/i.test((error as Error).message)) {
+      throw error;
+    }
+
+    return await callZabbix<string>(
       "user.login",
       {
         user: apiConfig.user,
@@ -114,11 +137,7 @@ async function getAuthToken(): Promise<string | null> {
       },
       { skipAuth: true },
     );
-    cachedAuthToken = token;
-    return token;
   }
-
-  return null;
 }
 
 export async function callZabbix<T>(
@@ -203,7 +222,7 @@ export async function testApiConnection(): Promise<ApiConnectionResult> {
   }
 
   try {
-    const version = await callZabbix<string>("apiinfo.version");
+    const version = await callZabbix<string>("apiinfo.version", {}, { skipAuth: true });
     const hostCount = await callZabbix<number>("host.get", {
       output: ["hostid"],
       countOutput: true,
@@ -250,5 +269,5 @@ export async function getEventCount(): Promise<number> {
 }
 
 export async function getZabbixVersion(): Promise<string> {
-  return await callZabbix<string>("apiinfo.version");
+  return await callZabbix<string>("apiinfo.version", {}, { skipAuth: true });
 }

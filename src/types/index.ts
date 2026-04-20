@@ -50,6 +50,13 @@ export interface AIConversation {
   role: "operator" | "assistant";
   message: string;
   timestamp: string;
+  source?: "groq-agent" | "local-parser";
+  model?: string;
+  contextCounts?: {
+    hosts: number;
+    problems: number;
+    events: number;
+  };
 }
 
 export interface AIExample {

@@ -37,6 +37,7 @@ Implementado:
   - Settings/Diagnostico
 - Camada MCP simulada.
 - Agente NOC opcional via Groq/Llama para consultas em linguagem natural.
+- Analise de alarme individual com IA na tela de Problemas.
 - Parser local de consultas operacionais como fallback.
 - Testes automatizados para a camada de IA.
 
@@ -264,6 +265,12 @@ Frontend /ia
 
 O proxy `/ai-api` do Vite aponta para `http://localhost:8787`.
 
+Endpoints locais do agente:
+
+- `GET /ai-api/health`
+- `POST /ai-api/query`
+- `POST /ai-api/analyze-problem`
+
 ## Dados Zabbix Utilizados
 
 ### Hosts
@@ -394,6 +401,7 @@ Backend local do agente NOC:
 - monta contexto compacto com hosts, alarmes e eventos
 - chama Groq usando API compativel com OpenAI Chat Completions
 - retorna resposta operacional para a tela `/ia`
+- gera analise estruturada para um alarme selecionado na tela `/problems`
 
 ### `services/aiQueryService.ts`
 
