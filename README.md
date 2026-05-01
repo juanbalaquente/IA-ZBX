@@ -41,6 +41,9 @@ Importante: esta versao nao aciona pessoas automaticamente. Ela apenas analisa, 
   - `POST /ai-api/analyze-problem`
 - Novos endpoints NightOps:
   - `GET /ai-api/nightops/status`
+  - `GET /ai-api/nightops/history`
+  - `GET /ai-api/nightops/reports`
+  - `GET /ai-api/nightops/reports/latest`
   - `POST /ai-api/nightops/analyze`
   - `POST /ai-api/nightops/shift-report`
 - Fallback local preservado em `src/services/aiQueryService.ts`
@@ -64,6 +67,7 @@ server/
     prompts/
     providers/
   data/
+    nightops-history.json
     nightOpsStore.mjs
   nightops/
     correlationEngine.mjs
@@ -188,6 +192,24 @@ O modulo NightOps:
 - usa IA apenas para explicacao, causa provavel, mensagens e resumo;
 - gera relatorio de turno.
 
+### Persistencia local do historico
+
+O historico do NightOps agora fica salvo localmente em:
+
+```text
+server/data/nightops-history.json
+```
+
+Comportamento atual:
+
+- o arquivo e criado automaticamente se nao existir;
+- analises e incidentes de `POST /ai-api/nightops/analyze` sao persistidos;
+- relatorios de `POST /ai-api/nightops/shift-report` sao persistidos;
+- se o JSON estiver vazio ou invalido, o backend recria a estrutura padrao;
+- se o JSON estiver corrompido, o backend cria um backup `.bak-<timestamp>` e segue com historico vazio.
+
+Essa persistencia e adequada para MVP local, mas nao substitui armazenamento transacional.
+
 ### Regras deterministicas atuais
 
 - `Disaster` com duracao acima do limite recomenda escalonamento.
@@ -232,6 +254,34 @@ Retorna a ultima analise salva em memoria:
 #### `POST /ai-api/nightops/analyze`
 
 Executa a analise NightOps completa.
+
+#### `GET /ai-api/nightops/history`
+
+Retorna o historico de incidentes persistidos:
+
+```json
+{
+  "status": "ok",
+  "items": [],
+  "count": 0
+}
+```
+
+Filtros opcionais via query string:
+
+- `severity`
+- `status`
+- `start`
+- `end`
+- `escalationRequired`
+
+#### `GET /ai-api/nightops/reports`
+
+Retorna os relatorios de turno persistidos.
+
+#### `GET /ai-api/nightops/reports/latest`
+
+Retorna o ultimo relatorio salvo.
 
 #### `POST /ai-api/nightops/shift-report`
 
@@ -283,9 +333,10 @@ Cobertura minima adicionada:
 ## Limitacoes
 
 - A correlacao usa grupos, nomes e palavras-chave como fallback; nao depende de tags perfeitas do Zabbix.
-- O store do NightOps e em memoria local do processo.
+- O historico do NightOps usa arquivo JSON local, sem concorrencia sofisticada nem locking distribuido.
 - O relatorio de turno usa as analises salvas no backend ativo.
 - A qualidade da explicacao por IA depende do contexto compacto enviado ao modelo.
+- Para evolucao futura, o recomendado e migrar a persistencia para SQLite ou PostgreSQL.
 
 ## Seguranca
 

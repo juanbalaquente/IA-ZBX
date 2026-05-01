@@ -1,6 +1,8 @@
 import {
   AlertTriangle,
   ArrowUpRight,
+  ChevronDown,
+  ChevronUp,
   ClipboardList,
   MoonStar,
   Radar,
@@ -12,12 +14,16 @@ import StatCard from "../components/StatCard";
 import {
   analyzeNightOps,
   generateShiftReport,
+  getLatestShiftReport,
+  getNightOpsHistory,
   getNightOpsStatus,
 } from "../services/nightOpsClient";
 import type {
+  NightOpsHistoryItem,
   NightOpsIncident,
   NightOpsShiftReport,
   NightOpsStatus,
+  NightOpsStoredShiftReport,
   StatMetric,
 } from "../types";
 
@@ -182,17 +188,35 @@ function IncidentCard({ incident }: { incident: NightOpsIncident }) {
 function NightOpsPage() {
   const [status, setStatus] = useState<NightOpsStatus>(emptyStatus);
   const [report, setReport] = useState<NightOpsShiftReport | null>(null);
+  const [latestStoredReport, setLatestStoredReport] =
+    useState<NightOpsStoredShiftReport | null>(null);
+  const [history, setHistory] = useState<NightOpsHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [analyzing, setAnalyzing] = useState(false);
   const [reportLoading, setReportLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [expandedHistoryId, setExpandedHistoryId] = useState<string | null>(null);
+
+  const loadSideData = async () => {
+    const [historyResponse, latestReportResponse] = await Promise.all([
+      getNightOpsHistory(),
+      getLatestShiftReport(),
+    ]);
+
+    setHistory(historyResponse.items);
+    setLatestStoredReport(latestReportResponse);
+  };
 
   useEffect(() => {
     const loadStatus = async () => {
       try {
         setLoading(true);
         setError(null);
-        setStatus(await getNightOpsStatus());
+        const [statusResponse] = await Promise.all([
+          getNightOpsStatus(),
+          loadSideData(),
+        ]);
+        setStatus(statusResponse);
       } catch (loadError) {
         setError((loadError as Error).message);
       } finally {
@@ -207,7 +231,9 @@ function NightOpsPage() {
     try {
       setAnalyzing(true);
       setError(null);
-      setStatus(await analyzeNightOps());
+      const result = await analyzeNightOps();
+      setStatus(result);
+      await loadSideData();
     } catch (analysisError) {
       setError((analysisError as Error).message);
     } finally {
@@ -219,7 +245,9 @@ function NightOpsPage() {
     try {
       setReportLoading(true);
       setError(null);
-      setReport(await generateShiftReport());
+      const generatedReport = await generateShiftReport();
+      setReport(generatedReport);
+      await loadSideData();
     } catch (reportError) {
       setError((reportError as Error).message);
     } finally {
@@ -235,7 +263,7 @@ function NightOpsPage() {
         ? `Analise ${status.analysisSource}`
         : "Modo deterministico disponivel",
       icon: "ShieldCheck",
-      tone: "success" as const,
+      tone: "success",
     },
     {
       title: "Ultima analise",
@@ -245,14 +273,14 @@ function NightOpsPage() {
       }) : "--:--",
       delta: formatDateTime(status.generatedAt),
       icon: "Clock3",
-      tone: "info" as const,
+      tone: "info",
     },
     {
       title: "Alarmes ativos",
       value: String(status.summary.activeProblems),
       delta: `${status.summary.warningIncidents} incidentes monitorados`,
       icon: "Radar",
-      tone: "warning" as const,
+      tone: "warning",
     },
     {
       title: "Incidentes criticos",
@@ -326,30 +354,120 @@ function NightOpsPage() {
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
-        <div className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
-          <div className="flex items-center gap-2">
-            <MoonStar size={18} className="text-sky-300" />
-            <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-                Incidentes correlacionados
-              </p>
-              <h3 className="mt-2 text-xl font-semibold text-slate-100">
-                Fila consolidada do turno
-              </h3>
-            </div>
-          </div>
-
-          <div className="mt-6 space-y-4">
-            {status.incidents.length === 0 ? (
-              <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-8 text-center text-slate-400">
-                Nenhum incidente correlacionado disponivel. Execute a analise para montar a fila NightOps.
+        <div className="space-y-6">
+          <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
+            <div className="flex items-center gap-2">
+              <MoonStar size={18} className="text-sky-300" />
+              <div>
+                <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
+                  Incidentes correlacionados
+                </p>
+                <h3 className="mt-2 text-xl font-semibold text-slate-100">
+                  Fila consolidada do turno
+                </h3>
               </div>
-            ) : (
-              status.incidents.map((incident) => (
-                <IncidentCard key={incident.id} incident={incident} />
-              ))
-            )}
-          </div>
+            </div>
+
+            <div className="mt-6 space-y-4">
+              {status.incidents.length === 0 ? (
+                <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-8 text-center text-slate-400">
+                  Nenhum incidente correlacionado disponivel. Execute a analise para montar a fila NightOps.
+                </div>
+              ) : (
+                status.incidents.map((incident) => (
+                  <IncidentCard key={incident.id} incident={incident} />
+                ))
+              )}
+            </div>
+          </section>
+
+          <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
+            <div className="flex items-center gap-2">
+              <ClipboardList size={18} className="text-sky-300" />
+              <div>
+                <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
+                  Historico recente
+                </p>
+                <h3 className="mt-2 text-xl font-semibold text-slate-100">
+                  Incidentes persistidos
+                </h3>
+              </div>
+            </div>
+
+            <div className="mt-6 space-y-3">
+              {history.length === 0 ? (
+                <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-6 text-sm text-slate-400">
+                  Nenhum incidente salvo em historico ainda.
+                </div>
+              ) : (
+                history.slice(0, 10).map((item) => {
+                  const expanded = expandedHistoryId === item.id;
+                  return (
+                    <article
+                      key={item.id}
+                      className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4"
+                    >
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExpandedHistoryId(expanded ? null : item.id)
+                        }
+                        className="flex w-full items-start justify-between gap-4 text-left"
+                      >
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className={`inline-flex rounded-full px-3 py-1 text-xs ${severityStyles[item.severity]}`}>
+                              {item.severity}
+                            </span>
+                            <span className={`inline-flex rounded-full px-3 py-1 text-xs ${statusStyles[item.status]}`}>
+                              {item.status}
+                            </span>
+                            {item.escalation.required ? (
+                              <span className="rounded-full border border-rose-500/30 bg-rose-500/10 px-3 py-1 text-xs text-rose-200">
+                                Escalonamento
+                              </span>
+                            ) : null}
+                          </div>
+                          <h4 className="mt-3 text-sm font-semibold text-slate-100">
+                            {item.title}
+                          </h4>
+                          <p className="mt-2 text-xs text-slate-500">
+                            {formatDateTime(item.generatedAt)}
+                          </p>
+                        </div>
+                        {expanded ? (
+                          <ChevronUp size={16} className="mt-1 text-slate-400" />
+                        ) : (
+                          <ChevronDown size={16} className="mt-1 text-slate-400" />
+                        )}
+                      </button>
+
+                      {expanded ? (
+                        <div className="mt-4 space-y-3 border-t border-slate-800 pt-4">
+                          <p className="text-sm text-slate-300">{item.impact}</p>
+                          <p className="text-sm text-slate-400">
+                            {item.escalation.required
+                              ? `${item.escalation.target}: ${item.escalation.reason}`
+                              : item.escalation.reason}
+                          </p>
+                          <div className="space-y-2">
+                            {item.recommendedActions.slice(0, 3).map((action) => (
+                              <div
+                                key={action}
+                                className="rounded-2xl border border-slate-800 bg-slate-900/60 px-3 py-2 text-sm text-slate-300"
+                              >
+                                {action}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ) : null}
+                    </article>
+                  );
+                })
+              )}
+            </div>
+          </section>
         </div>
 
         <aside className="space-y-6">
@@ -439,6 +557,64 @@ function NightOpsPage() {
                 </div>
                 <div className="space-y-2">
                   {report.recommendations.map((item) => (
+                    <div
+                      key={item}
+                      className="rounded-2xl border border-slate-800 bg-slate-950/80 px-3 py-2 text-sm text-slate-300"
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+
+          <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
+            <div className="flex items-center gap-2">
+              <ClipboardList size={18} className="text-sky-300" />
+              <div>
+                <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
+                  Ultimo relatorio de turno
+                </p>
+                <h3 className="mt-2 text-xl font-semibold text-slate-100">
+                  Persistido em arquivo
+                </h3>
+              </div>
+            </div>
+
+            {!latestStoredReport ? (
+              <div className="mt-6 rounded-3xl border border-slate-800 bg-slate-950/80 p-6 text-sm text-slate-400">
+                Nenhum relatorio salvo no historico ainda.
+              </div>
+            ) : (
+              <div className="mt-6 space-y-4">
+                <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
+                  <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                    Periodo
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-200">
+                    {formatDateTime(latestStoredReport.period.start)} ate{" "}
+                    {formatDateTime(latestStoredReport.period.end)}
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
+                  <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                    Resumo
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-200">
+                    {latestStoredReport.summary}
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
+                  <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                    Passagem de turno
+                  </p>
+                  <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-200">
+                    {latestStoredReport.handoverText}
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  {latestStoredReport.recommendations.map((item) => (
                     <div
                       key={item}
                       className="rounded-2xl border border-slate-800 bg-slate-950/80 px-3 py-2 text-sm text-slate-300"
