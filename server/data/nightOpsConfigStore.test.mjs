@@ -30,6 +30,8 @@ const defaults = {
     "ZABBIX SERVERS",
   ],
   criticalKeywords: ["OLT", "POP", "BGP", "BACKBONE", "CORE", "TRANSPORTE", "ENLACE"],
+  criticalHostPatterns: ["X9"],
+  alwaysIncludeHostPatterns: ["X9"],
   autoEscalationEnabled: false,
   includeCarryOverInMainReport: false,
   maxCarryOverItemsInReport: 5,
@@ -71,6 +73,7 @@ describe("nightOpsConfigStore", () => {
     expect(store.getConfig().shadowModeEnabled).toBe(true);
     expect(store.getConfig().allowedHostGroups).toContain("10031-SPEEDNET");
     expect(store.getConfig().includeCarryOverInMainReport).toBe(false);
+    expect(store.getConfig().criticalHostPatterns).toEqual(["X9"]);
   });
 
   it("salva configuracao valida", () => {
@@ -83,6 +86,8 @@ describe("nightOpsConfigStore", () => {
       minDurationMinutes: 8,
       allowedHostGroups: ["1000-SERVIDORES", "ZABBIX SERVERS"],
       criticalKeywords: ["OLT", "POP", "CORE"],
+      criticalHostPatterns: ["x9", " x9 "],
+      alwaysIncludeHostPatterns: ["x9", "X9"],
       autoEscalationEnabled: true,
       includeCarryOverInMainReport: true,
       maxCarryOverItemsInReport: 3,
@@ -97,6 +102,8 @@ describe("nightOpsConfigStore", () => {
     expect(store.getConfig().includeCarryOverInMainReport).toBe(true);
     expect(store.getConfig().maxCarryOverItemsInReport).toBe(3);
     expect(store.getConfig().carryOverMinSeverity).toBe("high");
+    expect(store.getConfig().criticalHostPatterns).toEqual(["X9"]);
+    expect(store.getConfig().alwaysIncludeHostPatterns).toEqual(["X9"]);
     expect(store.getConfig().allowedHostGroups).toEqual([
       "1000-SERVIDORES",
       "ZABBIX SERVERS",
@@ -110,6 +117,8 @@ describe("nightOpsConfigStore", () => {
         correlationWindowMinutes: 0,
         allowedHostGroups: new Array(80).fill("grupo"),
         criticalKeywords: new Array(30).fill("A"),
+        criticalHostPatterns: new Array(30).fill("X9"),
+        alwaysIncludeHostPatterns: [],
         maxCarryOverItemsInReport: 50,
         carryOverMinSeverity: "urgent",
         shadowModeRetentionDays: 500,

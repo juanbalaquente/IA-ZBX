@@ -190,6 +190,8 @@ export interface NightOpsConfig {
   sameGroupAffectedHostsThreshold: number;
   allowedHostGroups: string[];
   criticalKeywords: string[];
+  criticalHostPatterns: string[];
+  alwaysIncludeHostPatterns: string[];
   autoEscalationEnabled: boolean;
   includeCarryOverInMainReport: boolean;
   maxCarryOverItemsInReport: number;

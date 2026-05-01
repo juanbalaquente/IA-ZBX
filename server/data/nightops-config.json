@@ -23,6 +23,12 @@
     "TRANSPORTE",
     "ENLACE"
   ],
+  "criticalHostPatterns": [
+    "X9"
+  ],
+  "alwaysIncludeHostPatterns": [
+    "X9"
+  ],
   "autoEscalationEnabled": false,
   "includeCarryOverInMainReport": false,
   "maxCarryOverItemsInReport": 5,

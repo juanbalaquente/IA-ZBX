@@ -60,6 +60,20 @@ const config = {
     .split(",")
     .map((item) => item.trim())
     .filter(Boolean),
+  nightOpsCriticalHostPatterns: (
+    process.env.NIGHTOPS_CRITICAL_HOST_PATTERNS ||
+    "X9"
+  )
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean),
+  nightOpsAlwaysIncludeHostPatterns: (
+    process.env.NIGHTOPS_ALWAYS_INCLUDE_HOST_PATTERNS ||
+    "X9"
+  )
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean),
   nightOpsIncludeCarryOverInMainReport:
     String(process.env.NIGHTOPS_INCLUDE_CARRY_OVER_IN_MAIN_REPORT || "false").toLowerCase() ===
     "true",
@@ -147,6 +161,8 @@ const nightOpsConfigStore = createNightOpsConfigStore({
       config.nightOpsSameGroupAffectedHostsThreshold,
     allowedHostGroups: config.nightOpsAllowedHostGroups,
     criticalKeywords: config.nightOpsCriticalKeywords,
+    criticalHostPatterns: config.nightOpsCriticalHostPatterns,
+    alwaysIncludeHostPatterns: config.nightOpsAlwaysIncludeHostPatterns,
     autoEscalationEnabled: false,
     includeCarryOverInMainReport: config.nightOpsIncludeCarryOverInMainReport,
     maxCarryOverItemsInReport: config.nightOpsMaxCarryOverItemsInReport,

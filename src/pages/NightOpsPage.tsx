@@ -66,6 +66,8 @@ const emptyConfig: NightOpsConfig = {
     "ZABBIX SERVERS",
   ],
   criticalKeywords: ["OLT", "POP", "BGP", "BACKBONE", "CORE", "TRANSPORTE", "ENLACE"],
+  criticalHostPatterns: ["X9"],
+  alwaysIncludeHostPatterns: ["X9"],
   autoEscalationEnabled: false,
   includeCarryOverInMainReport: false,
   maxCarryOverItemsInReport: 5,

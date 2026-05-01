@@ -12,6 +12,8 @@ const maxKeywordLength = 40;
 const maxAllowedHostGroups = 50;
 const maxHostGroupLength = 120;
 const allowedCarryOverSeverities = ["low", "medium", "high", "critical"];
+const maxPatternItems = 20;
+const maxPatternLength = 40;
 
 function cloneConfig(config) {
   return JSON.parse(JSON.stringify(config));
@@ -27,6 +29,13 @@ function normalizeKeyword(value) {
 function normalizeHostGroup(value) {
   return String(value || "")
     .trim()
+    .replace(/\s+/g, " ");
+}
+
+function normalizePattern(value) {
+  return String(value || "")
+    .trim()
+    .toUpperCase()
     .replace(/\s+/g, " ");
 }
 
@@ -47,6 +56,16 @@ export function validateNightOpsConfig(input, defaults) {
     criticalKeywords: Array.isArray(input.criticalKeywords)
       ? input.criticalKeywords.map(normalizeKeyword).filter(Boolean)
       : [],
+    criticalHostPatterns: Array.isArray(input.criticalHostPatterns)
+      ? input.criticalHostPatterns.map(normalizePattern).filter(Boolean)
+      : Array.isArray(defaults.criticalHostPatterns)
+        ? defaults.criticalHostPatterns.map(normalizePattern).filter(Boolean)
+        : [],
+    alwaysIncludeHostPatterns: Array.isArray(input.alwaysIncludeHostPatterns)
+      ? input.alwaysIncludeHostPatterns.map(normalizePattern).filter(Boolean)
+      : Array.isArray(defaults.alwaysIncludeHostPatterns)
+        ? defaults.alwaysIncludeHostPatterns.map(normalizePattern).filter(Boolean)
+        : [],
     autoEscalationEnabled: false,
     includeCarryOverInMainReport:
       typeof input.includeCarryOverInMainReport === "boolean"
@@ -115,6 +134,30 @@ export function validateNightOpsConfig(input, defaults) {
     errors.push("criticalKeywords contem item muito longo.");
   }
 
+  if (nextConfig.criticalHostPatterns.length === 0) {
+    errors.push("criticalHostPatterns nao pode ficar vazio.");
+  }
+
+  if (nextConfig.alwaysIncludeHostPatterns.length === 0) {
+    errors.push("alwaysIncludeHostPatterns nao pode ficar vazio.");
+  }
+
+  if (nextConfig.criticalHostPatterns.length > maxPatternItems) {
+    errors.push("criticalHostPatterns excede o limite permitido.");
+  }
+
+  if (nextConfig.alwaysIncludeHostPatterns.length > maxPatternItems) {
+    errors.push("alwaysIncludeHostPatterns excede o limite permitido.");
+  }
+
+  if (nextConfig.criticalHostPatterns.some((item) => item.length > maxPatternLength)) {
+    errors.push("criticalHostPatterns contem item muito longo.");
+  }
+
+  if (nextConfig.alwaysIncludeHostPatterns.some((item) => item.length > maxPatternLength)) {
+    errors.push("alwaysIncludeHostPatterns contem item muito longo.");
+  }
+
   if (
     !Number.isInteger(nextConfig.maxCarryOverItemsInReport) ||
     nextConfig.maxCarryOverItemsInReport < 0 ||
@@ -143,6 +186,8 @@ export function validateNightOpsConfig(input, defaults) {
       ...nextConfig,
       allowedHostGroups: [...new Set(nextConfig.allowedHostGroups)],
       criticalKeywords: [...new Set(nextConfig.criticalKeywords)],
+      criticalHostPatterns: [...new Set(nextConfig.criticalHostPatterns)],
+      alwaysIncludeHostPatterns: [...new Set(nextConfig.alwaysIncludeHostPatterns)],
       autoEscalationEnabled: false,
       carryOverMinSeverity: nextConfig.carryOverMinSeverity,
     },
