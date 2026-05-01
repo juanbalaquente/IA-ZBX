@@ -32371,6 +32371,113 @@
       ],
       "handoverText": "Bom dia. Durante o plantao foram identificados 1 eventos/alarmes com ocorrencia no periodo. Ha ocorrencias do periodo que permanecem ativas e precisam de acompanhamento pelo turno seguinte. Alem disso, existem 26 pendencias antigas ainda ativas, sem alteracao registrada durante o plantao. Permanecem ativas as ocorrencias do periodo 100GE0/0/1 Lane 2 está com sinal alto: -10.68 dBm limiar: -10.6 dBm e devem seguir em acompanhamento pela equipe diurna. Pendencias herdadas permanecem em monitoramento, sem mudanca relevante no turno.",
       "plainTextReport": "RELATORIO NOC - 30/04/2026\nPERIODO: 30/04/2026, 19:00 ATE 01/05/2026, 01:34\n--------------------------------------------------------------------------------\n\nRESUMO GERAL:\nDurante o plantao foram identificados 1 eventos/alarmes com ocorrencia no periodo. Ha ocorrencias do periodo que permanecem ativas e precisam de acompanhamento pelo turno seguinte. Alem disso, existem 26 pendencias antigas ainda ativas, sem alteracao registrada durante o plantao.\n\nOCORRENCIAS RELEVANTES:\n\n1. 100GE0/0/1 Lane 2 está com sinal alto: -10.68 dBm limiar: -10.6 dBm\nStatus: ATIVO\nInicio do alarme: 01/05/2026, 01:30\nTempo em alarme: 3 minutos\nSituacao: Permanece ativo no fechamento do plantao.\nImpacto provavel: Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\nTOTAL DE INCIDENTES/ALARMES DO PERIODO: 1\n\nPENDENCIAS HERDADAS: 26 alarmes antigos ativos sem alteracao no plantao.\n\nPENDENCIAS HERDADAS:\n1. GPON 0/3/12 se encontra com todos os clientes offline\nInicio: 30/04/2026, 13:53\nTempo ativo: 11 horas e 41 minutos\nSituacao: Pendencia antiga sem alteracao no plantao.\n\n2. Equipamento Offline\nInicio: 27/04/2026, 16:43\nTempo ativo: 3 dias e 8 horas e 51 minutos\nSituacao: Pendencia antiga sem alteracao no plantao.\n\n3. Interface XGigabitEthernet0/0/17 está down: -40 dBm\nInicio: 23/04/2026, 07:43\nTempo ativo: 7 dias e 17 horas e 51 minutos\nSituacao: Pendencia antiga sem alteracao no plantao.\n\n4. Incidente correlacionado - 10031-SPEEDNET\nInicio: 19/04/2026, 13:47\nTempo ativo: 11 dias e 11 horas e 47 minutos\nSituacao: Pendencia antiga sem alteracao no plantao.\n\n5. Interface XGigabitEthernet0/0/3 está com sinal alto: -18.89 dBm limiar: -18.01 dBm\nInicio: 09/04/2026, 17:47\nTempo ativo: 21 dias e 7 horas e 46 minutos\nSituacao: Pendencia antiga sem alteracao no plantao.\n\nOBSERVACAO:\nExistem 26 pendencias antigas ainda ativas, sem alteracao registrada durante o plantao.\n\nPASSAGEM DE TURNO:\nBom dia. Durante o plantao foram identificados 1 eventos/alarmes com ocorrencia no periodo. Ha ocorrencias do periodo que permanecem ativas e precisam de acompanhamento pelo turno seguinte. Alem disso, existem 26 pendencias antigas ainda ativas, sem alteracao registrada durante o plantao. Permanecem ativas as ocorrencias do periodo 100GE0/0/1 Lane 2 está com sinal alto: -10.68 dBm limiar: -10.6 dBm e devem seguir em acompanhamento pela equipe diurna. Pendencias herdadas permanecem em monitoramento, sem mudanca relevante no turno."
+    },
+    {
+      "id": "report-2026-04-30T19:00:00-03:00-2026-05-01T01:44:54-03:00",
+      "generatedAt": "2026-05-01T04:44:55.209Z",
+      "title": "RELATORIO NOC - 30/04/2026",
+      "period": {
+        "start": "2026-04-30T19:00:00-03:00",
+        "end": "2026-05-01T01:44:54-03:00"
+      },
+      "summary": "Durante o plantao foram identificadas 1 ocorrencias com evento registrado no periodo. Ha ocorrencias do periodo que permanecem ativas e precisam de acompanhamento pelo turno seguinte.",
+      "numbers": {
+        "totalProblems": 1,
+        "criticalIncidents": 1,
+        "monitoredEvents": 0,
+        "ignoredNoise": 0,
+        "escalations": 0,
+        "periodEventCount": 1
+      },
+      "incidents": [
+        {
+          "id": "INC-20260501-0144-L40Y",
+          "title": "100GE0/0/1 Lane 2 está com sinal alto: -10.68 dBm limiar: -10.6 dBm",
+          "severity": "critical",
+          "sourceSeverity": "High",
+          "status": "active",
+          "classification": "attention",
+          "startedAt": "2026-05-01T04:36:55.000Z",
+          "endedAt": null,
+          "durationMinutes": 8,
+          "affectedHosts": [
+            "10031-SW_HAUWEI_100G_LIBERDADE"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "14291116"
+          ],
+          "eventIds": [
+            "14291116"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: 100GE0/0/1 Lane 2 está com sinal alto: -10.68 dBm limiar: -10.6 dBm",
+            "Severidade original: High",
+            "Host: 10031-SW_HAUWEI_100G_LIBERDADE",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "10031-SW_HAUWEI_100G_LIBERDADE",
+            "hostId": "11584",
+            "triggerId": "101537",
+            "keywords": [
+              "100ge0",
+              "0",
+              "1",
+              "lane",
+              "2",
+              "esta",
+              "com",
+              "sinal",
+              "alto",
+              "10",
+              "68",
+              "dbm",
+              "limiar",
+              "10",
+              "6",
+              "dbm"
+            ]
+          }
+        }
+      ],
+      "relevantOccurrences": [
+        {
+          "title": "100GE0/0/1 Lane 2 está com sinal alto: -10.68 dBm limiar: -10.6 dBm",
+          "status": "ATIVO",
+          "startedAt": "2026-05-01T04:36:55.000Z",
+          "endedAt": null,
+          "durationText": "8 minutos",
+          "impact": "Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.",
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 1,
+          "occurrenceType": "operational"
+        }
+      ],
+      "recommendations": [
+        "Revisar pela manha as ocorrencias criticas do periodo e validar RCA preliminar."
+      ],
+      "handoverText": "Bom dia. Durante o plantao foram identificadas 1 ocorrencias com evento registrado no periodo. Ha ocorrencias do periodo que permanecem ativas e precisam de acompanhamento pelo turno seguinte. Permanecem ativas as ocorrencias do periodo 100GE0/0/1 Lane 2 está com sinal alto: -10.68 dBm limiar: -10.6 dBm e devem seguir em acompanhamento pela equipe diurna.",
+      "plainTextReport": "RELATORIO NOC - 30/04/2026\nPERIODO: 30/04/2026, 19:00 ATE 01/05/2026, 01:44\n--------------------------------------------------------------------------------\n\nRESUMO GERAL:\nDurante o plantao foram identificadas 1 ocorrencias com evento registrado no periodo. Ha ocorrencias do periodo que permanecem ativas e precisam de acompanhamento pelo turno seguinte.\n\nOCORRENCIAS RELEVANTES:\n\n1. 100GE0/0/1 Lane 2 está com sinal alto: -10.68 dBm limiar: -10.6 dBm\nStatus: ATIVO\nInicio do alarme: 01/05/2026, 01:36\nTempo em alarme: 8 minutos\nSituacao: Permanece ativo no fechamento do plantao.\nImpacto provavel: Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\nTOTAL DE INCIDENTES/ALARMES DO PERIODO: 1\n\nOBSERVACAO:\nHa ocorrencias do periodo que permanecem ativas e precisam de acompanhamento pelo turno seguinte.\n\nPASSAGEM DE TURNO:\nBom dia. Durante o plantao foram identificadas 1 ocorrencias com evento registrado no periodo. Ha ocorrencias do periodo que permanecem ativas e precisam de acompanhamento pelo turno seguinte. Permanecem ativas as ocorrencias do periodo 100GE0/0/1 Lane 2 está com sinal alto: -10.68 dBm limiar: -10.6 dBm e devem seguir em acompanhamento pela equipe diurna."
     }
   ],
   "shadowDecisions": [

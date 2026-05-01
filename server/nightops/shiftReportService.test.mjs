@@ -174,8 +174,8 @@ describe("shiftReportService", () => {
       ],
     });
 
-    expect(report.plainTextReport).toContain("PENDENCIAS HERDADAS:");
-    expect(report.plainTextReport).toContain("sem alteracao no plantao");
+    expect(report.excludedCarryOverCount).toBe(1);
+    expect(report.plainTextReport).not.toContain("PENDENCIAS HERDADAS");
   });
 
   it("passagem de turno nao cita alarmes antigos como ocorrencia do plantao", () => {
@@ -190,8 +190,64 @@ describe("shiftReportService", () => {
       ],
     });
 
-    expect(report.handoverText).toContain("pendencias antigas");
+    expect(report.handoverText.toLowerCase()).not.toContain("pendencias");
     expect(report.handoverText).not.toContain("Permanecem ativas as ocorrencias do periodo Pendencia antiga");
+  });
+
+  it("excludedCarryOverCount nao aparece no texto", () => {
+    const report = generateShiftReport({
+      ...period,
+      incidents: [
+        buildIncident({
+          title: "Pendencia antiga",
+          startedAt: "2025-04-12T16:01:00-03:00",
+        }),
+      ],
+    });
+
+    expect(report.excludedCarryOverCount).toBe(1);
+    expect(report.plainTextReport).not.toContain("excludedCarryOverCount");
+  });
+
+  it("se so existe evento tecnico de sinal alto no periodo, pode aparecer", () => {
+    const report = generateShiftReport({
+      ...period,
+      incidents: [
+        buildIncident({
+          title: "Sinal alto porta 1",
+          severity: "high",
+          impact: "Sinal alto identificado",
+          probableCause: "Limiar optico",
+        }),
+      ],
+    });
+
+    expect(report.relevantOccurrences).toHaveLength(1);
+    expect(report.relevantOccurrences[0].title).toBe("Sinal alto porta 1");
+  });
+
+  it("se existe offline e sinal alto no mesmo periodo, offline tem prioridade", () => {
+    const report = generateShiftReport({
+      ...period,
+      incidents: [
+        buildIncident({
+          title: "Sinal alto porta 1",
+          severity: "high",
+          impact: "Sinal alto identificado",
+          probableCause: "Limiar optico",
+        }),
+        buildIncident({
+          id: "INC-2",
+          title: "CIRCUITO XPTO OFFLINE",
+          severity: "critical",
+          impact: "Circuito indisponivel",
+          probableCause: "Link down",
+          problemIds: ["p9"],
+        }),
+      ],
+    });
+
+    expect(report.relevantOccurrences[0].title).toBe("CIRCUITO XPTO OFFLINE");
   });
 
   it("gera plainTextReport e mantem handoverText", () => {

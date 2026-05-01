@@ -9,10 +9,7 @@ interface Props {
   onCopy: (key: string, text: string) => Promise<void>;
   selectedMode: string;
   selectedPeriodLabel: string;
-  manualStart: string;
-  manualEnd: string;
   onModeChange: (mode: string) => void;
-  onManualChange: (field: "start" | "end", value: string) => void;
 }
 
 function formatDateTime(value?: string | null) {
@@ -53,10 +50,7 @@ function NightOpsShiftReportPanel({
   onCopy,
   selectedMode,
   selectedPeriodLabel,
-  manualStart,
-  manualEnd,
   onModeChange,
-  onManualChange,
 }: Props) {
   const handleDownload = () => {
     if (!report) {
@@ -96,11 +90,10 @@ function NightOpsShiftReportPanel({
         <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Periodo do relatorio</p>
         <div className="mt-4 flex flex-wrap gap-2">
           {[
-            ["last_completed", "Ultimo plantao fechado"],
-            ["current", "Plantao atual"],
-            ["previous_day", "Plantao diurno anterior"],
-            ["previous_night", "Plantao noturno anterior"],
-            ["manual", "Periodo manual"],
+            ["last_closed_shift", "Ultimo plantao fechado"],
+            ["current_shift", "Plantao atual"],
+            ["previous_day_shift", "Diurno anterior"],
+            ["previous_night_shift", "Noturno anterior"],
           ].map(([mode, label]) => (
             <button
               key={mode}
@@ -116,29 +109,6 @@ function NightOpsShiftReportPanel({
             </button>
           ))}
         </div>
-
-        {selectedMode === "manual" ? (
-          <div className="mt-4 grid gap-3 md:grid-cols-2">
-            <label className="block">
-              <span className="mb-2 block text-xs text-slate-500">Inicio</span>
-              <input
-                type="datetime-local"
-                value={manualStart}
-                onChange={(event) => onManualChange("start", event.target.value)}
-                className="w-full rounded-2xl border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100"
-              />
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-xs text-slate-500">Fim</span>
-              <input
-                type="datetime-local"
-                value={manualEnd}
-                onChange={(event) => onManualChange("end", event.target.value)}
-                className="w-full rounded-2xl border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100"
-              />
-            </label>
-          </div>
-        ) : null}
 
         <div className="mt-4 flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
           <p className="text-sm text-slate-300">
@@ -169,7 +139,7 @@ function NightOpsShiftReportPanel({
                 {formatDateTime(report.period.start)} ate {formatDateTime(report.period.end)}
               </p>
               <p className="mt-3 text-xs text-slate-500">
-                O relatorio lista apenas eventos ocorridos no periodo selecionado. Alarmes antigos sem alteracao aparecem apenas como pendencias herdadas.
+                O relatorio lista apenas eventos ocorridos no periodo selecionado. Alarmes antigos sem alteracao nao entram na passagem de turno.
               </p>
             </div>
 
@@ -239,9 +209,6 @@ function NightOpsShiftReportPanel({
               <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Totais</p>
               <p className="mt-2 text-sm text-slate-200">
                 {report.periodEventCount ?? report.numbers.periodEventCount ?? report.numbers.totalProblems} ocorrencia(s) do periodo
-              </p>
-              <p className="mt-1 text-sm text-slate-400">
-                {report.inheritedPendingCount || 0} pendencia(s) herdada(s)
               </p>
             </div>
 

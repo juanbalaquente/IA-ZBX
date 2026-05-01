@@ -19,6 +19,29 @@ const severityRank = {
   high: 3,
   critical: 4,
 };
+const operationalImpactPatterns = [
+  "OFFLINE",
+  "UNAVAILABLE",
+  "LINK DOWN",
+  "INTERFACE DOWN",
+  "GPON",
+  "OLT",
+  "POP",
+  "BGP",
+  "CIRCUITO",
+  "CLIENTE OFFLINE",
+  "SEM COMUNICAC",
+];
+const technicalAttentionPatterns = [
+  "SINAL ALTO",
+  "SINAL BAIXO",
+  "LIMIAR",
+  "OPTICO",
+  "TEMPERATURA",
+  "USO ALTO",
+  "CAPACIDADE",
+  "LIMITE",
+];
 
 function summarizeNumbers(incidents) {
   return {
@@ -134,8 +157,16 @@ function occurrencePriority(incident) {
   let score = 0;
   const normalizedText =
     `${incident.title || ""} ${incident.probableCause || ""} ${incident.impact || ""}`.toUpperCase();
+  const operationalImpact = operationalImpactPatterns.some((item) =>
+    normalizedText.includes(item),
+  );
+  const technicalAttention = technicalAttentionPatterns.some((item) =>
+    normalizedText.includes(item),
+  );
 
   score += (severityRank[incident.severity] || 1) * 100;
+  score += operationalImpact ? 250 : 0;
+  score -= technicalAttention && !operationalImpact ? 120 : 0;
 
   if (incident.escalation?.required) {
     score += 200;
@@ -156,6 +187,31 @@ function occurrencePriority(incident) {
   return score;
 }
 
+function classifyOccurrenceType(incident) {
+  const normalizedText =
+    `${incident.title || ""} ${incident.probableCause || ""} ${incident.impact || ""}`.toUpperCase();
+  const operationalImpact = operationalImpactPatterns.some((item) =>
+    normalizedText.includes(item),
+  );
+  const technicalAttention = technicalAttentionPatterns.some((item) =>
+    normalizedText.includes(item),
+  );
+
+  if (operationalImpact) {
+    return "operational";
+  }
+
+  if (
+    technicalAttention &&
+    !incident.escalation?.required &&
+    !["critical", "high"].includes(incident.severity)
+  ) {
+    return "technical";
+  }
+
+  return "operational";
+}
+
 function buildRelevantOccurrence(incident) {
   const status = mapOccurrenceStatus(incident);
   return {
@@ -172,6 +228,7 @@ function buildRelevantOccurrence(incident) {
       Number(incident.problemIds?.length || 0),
       Number(incident.affectedHosts?.length || 0),
     ),
+    occurrenceType: classifyOccurrenceType(incident),
   };
 }
 
@@ -206,12 +263,20 @@ function splitIncidentsByPeriod(incidents, period) {
   };
 }
 
-function selectRelevantOccurrences(periodIncidents, config) {
+function selectRelevantOccurrences(periodIncidents) {
   const relevant = [...periodIncidents]
     .sort((left, right) => occurrencePriority(right) - occurrencePriority(left))
     .slice(0, maxRelevantOccurrences);
 
-  return relevant.map(buildRelevantOccurrence);
+  const mapped = relevant.map(buildRelevantOccurrence);
+  const operational = mapped.filter((item) => item.occurrenceType === "operational");
+  const technical = mapped.filter((item) => item.occurrenceType === "technical");
+
+  return {
+    operationalOccurrences: operational,
+    technicalAttentionOccurrences: technical,
+    relevantOccurrences: operational.length > 0 ? operational : technical,
+  };
 }
 
 function selectCarryOverOccurrences(carryOverIncidents, config) {
@@ -225,18 +290,12 @@ function selectCarryOverOccurrences(carryOverIncidents, config) {
 
 function buildObservation(numbers, relevantOccurrences, inheritedPendingCount) {
   if (numbers.totalProblems === 0) {
-    return inheritedPendingCount > 0
-      ? `Nao houve ocorrencias relevantes durante o periodo. Existem ${inheritedPendingCount} pendencias antigas ainda ativas, sem alteracao registrada durante o plantao.`
-      : "Nao houve ocorrencias relevantes durante o periodo.";
+    return "Nao houve ocorrencias relevantes durante o periodo.";
   }
 
   const massEvent = relevantOccurrences.find((item) => item.relatedCount >= 5);
   if (numbers.totalProblems >= 50 && massEvent) {
     return `O numero elevado de incidentes do periodo esta relacionado principalmente a ${massEvent.title}, que concentrou multiplos alarmes associados no plantao.`;
-  }
-
-  if (inheritedPendingCount > 0) {
-    return `Existem ${inheritedPendingCount} pendencias antigas ainda ativas, sem alteracao registrada durante o plantao.`;
   }
 
   if (relevantOccurrences.some((item) => item.isStillActive)) {
@@ -252,13 +311,11 @@ function buildSummaryText(numbers, relevantOccurrences, inheritedPendingCount, p
   }
 
   if (numbers.totalProblems === 0) {
-    return inheritedPendingCount > 0
-      ? `Durante o plantao nao foram identificados eventos/alarmes com ocorrencia no periodo. Alem disso, existem ${inheritedPendingCount} pendencias antigas ainda ativas, sem alteracao registrada durante o plantao.`
-      : "Durante o plantao nao foram identificados eventos/alarmes com ocorrencia no periodo.";
+    return "Durante o plantao nao foram identificadas ocorrencias relevantes com evento registrado no periodo.";
   }
 
   const parts = [
-    `Durante o plantao foram identificados ${numbers.totalProblems} eventos/alarmes com ocorrencia no periodo.`,
+    `Durante o plantao foram identificadas ${numbers.totalProblems} ocorrencias com evento registrado no periodo.`,
   ];
   const massEvent = relevantOccurrences.find((item) => item.relatedCount >= 5);
 
@@ -276,12 +333,6 @@ function buildSummaryText(numbers, relevantOccurrences, inheritedPendingCount, p
     parts.push("As principais ocorrencias do periodo foram normalizadas durante o plantao.");
   }
 
-  if (inheritedPendingCount > 0) {
-    parts.push(
-      `Alem disso, existem ${inheritedPendingCount} pendencias antigas ainda ativas, sem alteracao registrada durante o plantao.`,
-    );
-  }
-
   return parts.join(" ");
 }
 
@@ -294,9 +345,6 @@ function defaultRecommendations(periodIncidents, carryOverIncidents) {
   if (periodIncidents.some((incident) => incident.escalation?.required)) {
     recommendations.push("Confirmar com supervisao quais recomendacoes de acionamento do periodo serao efetivamente executadas.");
   }
-  if (carryOverIncidents.length > 0) {
-    recommendations.push("Manter pendencias herdadas sob monitoramento, sem confundir com ocorrencias novas do plantao.");
-  }
   if (recommendations.length === 0) {
     recommendations.push("Sem desvios relevantes. Manter acompanhamento padrao do inicio do expediente.");
   }
@@ -306,9 +354,7 @@ function defaultRecommendations(periodIncidents, carryOverIncidents) {
 
 function buildHandoverText(relevantOccurrences, inheritedPendingCount, summaryText) {
   if (relevantOccurrences.length === 0) {
-    return inheritedPendingCount > 0
-      ? `Bom dia. ${summaryText} Permanecem pendencias antigas em monitoramento, sem mudanca relevante no turno.`
-      : "Bom dia. Durante o plantao nao houve ocorrencias relevantes. Ambiente permaneceu sob monitoramento normal.";
+    return "Bom dia. Durante o plantao nao houve ocorrencias relevantes. Ambiente permaneceu sob monitoramento normal.";
   }
 
   const activeItems = relevantOccurrences.filter((item) => item.isStillActive);
@@ -330,12 +376,6 @@ function buildHandoverText(relevantOccurrences, inheritedPendingCount, summaryTe
         .slice(0, 1)
         .map((item) => item.title)
         .join(", ")} foi normalizado durante o plantao, mantendo apenas registro e observacao de reincidencia.`,
-    );
-  }
-
-  if (inheritedPendingCount > 0) {
-    parts.push(
-      "Pendencias herdadas permanecem em monitoramento, sem mudanca relevante no turno.",
     );
   }
 
@@ -395,24 +435,6 @@ function buildPlainTextReport({
 
   lines.push(`TOTAL DE INCIDENTES/ALARMES DO PERIODO: ${numbers.totalProblems}`);
   lines.push("");
-
-  if (inheritedPendingCount > 0) {
-    lines.push(`PENDENCIAS HERDADAS: ${inheritedPendingCount} alarmes antigos ativos sem alteracao no plantao.`);
-    if (carryOverOccurrences.length > 0) {
-      lines.push("");
-      lines.push("PENDENCIAS HERDADAS:");
-      carryOverOccurrences.forEach((occurrence, index) => {
-        lines.push(`${index + 1}. ${occurrence.title}`);
-        lines.push(`Inicio: ${formatDateTime(occurrence.startedAt)}`);
-        lines.push(`Tempo ativo: ${occurrence.durationText}`);
-        lines.push("Situacao: Pendencia antiga sem alteracao no plantao.");
-        lines.push("");
-      });
-    } else {
-      lines.push("");
-    }
-  }
-
   lines.push("OBSERVACAO:");
   lines.push(observation);
   lines.push("");
@@ -422,7 +444,7 @@ function buildPlainTextReport({
   return lines.join("\n");
 }
 
-export function generateShiftReport({ start, end, incidents, summary, config = {} }) {
+export function generateShiftReport({ start, end, incidents, summary, config = {}, periodPreset, periodLabel }) {
   const period = { start, end };
   const { periodIncidents, carryOverIncidents } = splitIncidentsByPeriod(
     incidents,
@@ -434,7 +456,11 @@ export function generateShiftReport({ start, end, incidents, summary, config = {
         ...carryOverIncidents.slice(0, Number(config.maxCarryOverItemsInReport ?? 5)),
       ]
     : periodIncidents;
-  const relevantOccurrences = selectRelevantOccurrences(selectedPeriodIncidents, config);
+  const {
+    relevantOccurrences,
+    operationalOccurrences,
+    technicalAttentionOccurrences,
+  } = selectRelevantOccurrences(selectedPeriodIncidents);
   const carryOverOccurrences = selectCarryOverOccurrences(carryOverIncidents, config);
   const numbers = {
     ...summarizeNumbers(periodIncidents),
@@ -478,9 +504,14 @@ export function generateShiftReport({ start, end, incidents, summary, config = {
     numbers,
     incidents: periodIncidents,
     relevantOccurrences,
+    operationalOccurrences,
+    technicalAttentionOccurrences,
     carryOverOccurrences,
     inheritedPendingCount,
+    excludedCarryOverCount: inheritedPendingCount,
     periodEventCount: numbers.periodEventCount,
+    periodPreset,
+    periodLabel,
     recommendations: defaultRecommendations(periodIncidents, carryOverIncidents),
     handoverText,
     plainTextReport,

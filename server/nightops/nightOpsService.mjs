@@ -267,6 +267,18 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
     });
   }
 
+  function getPeriodLabel(periodPreset) {
+    const labels = {
+      last_closed_shift: "Ultimo plantao fechado",
+      current_shift: "Plantao atual",
+      previous_day_shift: "Plantao diurno anterior",
+      previous_night_shift: "Plantao noturno anterior",
+      manual: "Periodo manual",
+    };
+
+    return labels[periodPreset] || "Periodo manual";
+  }
+
   async function buildPeriodIncidents(period) {
     const runtimeConfig = getRuntimeConfig();
 
@@ -322,6 +334,8 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
       incidents,
       summary: providerSummary || undefined,
       config: runtimeConfig,
+      periodPreset: period.mode === "manual" ? "manual" : period.mode,
+      periodLabel: getPeriodLabel(period.mode),
     });
 
     return store.saveShiftReport({

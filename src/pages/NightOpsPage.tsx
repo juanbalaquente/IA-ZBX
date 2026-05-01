@@ -29,10 +29,10 @@ import type {
 } from "../types";
 
 type ReportMode =
-  | "last_completed"
-  | "current"
-  | "previous_day"
-  | "previous_night"
+  | "last_closed_shift"
+  | "current_shift"
+  | "previous_day_shift"
+  | "previous_night_shift"
   | "manual";
 
 const emptyStatus: NightOpsStatus = {
@@ -192,7 +192,7 @@ function resolvePreviewPeriod(mode: ReportMode, timezone: string, manualStart: s
   const previousDate = shiftDate(currentDate, -1);
   const twoDaysAgo = shiftDate(currentDate, -2);
 
-  if (mode === "current") {
+  if (mode === "current_shift") {
     if (currentHour >= 19) {
       return { ...window(currentDate, 19, 7), end: currentNow };
     }
@@ -202,11 +202,11 @@ function resolvePreviewPeriod(mode: ReportMode, timezone: string, manualStart: s
     return { ...window(currentDate, 7, 19), end: currentNow };
   }
 
-  if (mode === "previous_day") {
+  if (mode === "previous_day_shift") {
     return currentHour >= 19 ? window(currentDate, 7, 19) : window(previousDate, 7, 19);
   }
 
-  if (mode === "previous_night") {
+  if (mode === "previous_night_shift") {
     return currentHour >= 7 ? window(previousDate, 19, 7) : window(twoDaysAgo, 19, 7);
   }
 
@@ -240,7 +240,7 @@ function NightOpsPage() {
   const [analyzing, setAnalyzing] = useState(false);
   const [reportLoading, setReportLoading] = useState(false);
   const [configSaving, setConfigSaving] = useState(false);
-  const [reportMode, setReportMode] = useState<ReportMode>("last_completed");
+  const [reportMode, setReportMode] = useState<ReportMode>("last_closed_shift");
   const [manualRange, setManualRange] = useState(() => ({
     start: toDateTimeLocalValue(new Date(Date.now() - 12 * 60 * 60 * 1000)),
     end: toDateTimeLocalValue(new Date()),
@@ -320,7 +320,7 @@ function NightOpsPage() {
               start: manualRange.start ? new Date(manualRange.start).toISOString() : undefined,
               end: manualRange.end ? new Date(manualRange.end).toISOString() : undefined,
             }
-          : { mode: reportMode };
+          : { periodPreset: reportMode };
       const generatedReport = await generateShiftReport(params);
       setReport(generatedReport);
       await loadSideData();
@@ -456,15 +456,7 @@ function NightOpsPage() {
             onCopy={handleCopy}
             selectedMode={reportMode}
             selectedPeriodLabel={selectedPeriodLabel}
-            manualStart={manualRange.start}
-            manualEnd={manualRange.end}
             onModeChange={(mode) => setReportMode(mode as ReportMode)}
-            onManualChange={(field, value) =>
-              setManualRange((current) => ({
-                ...current,
-                [field]: value,
-              }))
-            }
           />
 
           <NightOpsCurrentSituationPanel

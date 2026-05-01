@@ -256,7 +256,7 @@ Ele inclui:
 Na tela `/nightops`, o painel principal do topo permite:
 
 - gerar o relatorio do turno;
-- escolher `Ultimo plantao fechado`, `Plantao atual`, `Plantao diurno anterior`, `Plantao noturno anterior` ou periodo manual;
+- escolher `Ultimo plantao fechado`, `Plantao atual`, `Diurno anterior` ou `Noturno anterior`;
 - copiar o relatorio completo;
 - copiar apenas a passagem de turno;
 - copiar apenas o resumo;
@@ -264,16 +264,15 @@ Na tela `/nightops`, o painel principal do topo permite:
 
 Regra temporal aplicada no relatorio:
 
-- o relatorio considera apenas ocorrencias com interseccao no periodo selecionado;
-- entram ocorrencias que comecaram no periodo, normalizaram no periodo, atravessaram o periodo ou seguiram ativas no fechamento;
-- nao entram ocorrencias que comecaram e terminaram antes do inicio do plantao;
-- nao entram ocorrencias futuras ou sem relacao temporal com o periodo.
+- o relatorio principal mostra apenas ocorrencias com evento registrado no periodo;
+- entram ocorrencias que comecaram no periodo, normalizaram no periodo ou tiveram evento historico no periodo;
+- nao entram alarmes antigos ativos sem alteracao no plantao;
+- nao entram pendencias cronicas ou backlog antigo no texto final.
 
 Regra operacional do relatorio principal:
 
-- o relatorio principal mostra apenas eventos que ocorreram no periodo;
-- alarmes antigos ainda ativos, sem alteracao no plantao, sao tratados como `pendencias herdadas`;
-- pendencias herdadas nao entram nas ocorrencias relevantes por padrao;
+- alarmes antigos ainda ativos podem existir no JSON para auditoria;
+- eles nao aparecem na passagem de turno nem nas ocorrencias relevantes por padrao;
 - isso evita que alarmes antigos de semanas ou meses anteriores poluam o fechamento do plantao.
 
 Plantao operacional padrao:

@@ -68,7 +68,7 @@ describe("shiftPeriodUtils", () => {
 
   it("relatorio noturno calcula 19:00 ate 07:00 corretamente", () => {
     const resolved = resolveShiftPeriod(
-      { mode: "previous_night" },
+      { periodPreset: "previous_night_shift" },
       {
         now: "2026-05-01T20:00:00-03:00",
       },
@@ -80,7 +80,7 @@ describe("shiftPeriodUtils", () => {
 
   it("relatorio diurno calcula 07:00 ate 19:00 corretamente", () => {
     const resolved = resolveShiftPeriod(
-      { mode: "previous_day" },
+      { periodPreset: "previous_day_shift" },
       {
         now: "2026-05-01T20:00:00-03:00",
       },
@@ -124,5 +124,45 @@ describe("shiftPeriodUtils", () => {
     );
 
     expect(items.map((item) => item.id)).toEqual(["in"]);
+  });
+
+  it("current_shift as 01:34 gera 19:00 do dia anterior ate agora", () => {
+    const resolved = resolveShiftPeriod(
+      { periodPreset: "current_shift" },
+      { now: "2026-05-01T01:34:00-03:00" },
+    );
+
+    expect(resolved.start).toBe("2026-04-30T19:00:00-03:00");
+    expect(resolved.end).toBe("2026-05-01T01:34:00-03:00");
+  });
+
+  it("last_closed_shift as 01:34 gera 07:00 ate 19:00 do dia anterior", () => {
+    const resolved = resolveShiftPeriod(
+      { periodPreset: "last_closed_shift" },
+      { now: "2026-05-01T01:34:00-03:00" },
+    );
+
+    expect(resolved.start).toBe("2026-04-30T07:00:00-03:00");
+    expect(resolved.end).toBe("2026-04-30T19:00:00-03:00");
+  });
+
+  it("previous_day_shift gera 07:00 ate 19:00 do dia anterior na madrugada", () => {
+    const resolved = resolveShiftPeriod(
+      { periodPreset: "previous_day_shift" },
+      { now: "2026-05-01T01:34:00-03:00" },
+    );
+
+    expect(resolved.start).toBe("2026-04-30T07:00:00-03:00");
+    expect(resolved.end).toBe("2026-04-30T19:00:00-03:00");
+  });
+
+  it("previous_night_shift gera 19:00 ate 07:00 do ciclo anterior", () => {
+    const resolved = resolveShiftPeriod(
+      { periodPreset: "previous_night_shift" },
+      { now: "2026-05-01T01:34:00-03:00" },
+    );
+
+    expect(resolved.start).toBe("2026-04-29T19:00:00-03:00");
+    expect(resolved.end).toBe("2026-04-30T07:00:00-03:00");
   });
 });

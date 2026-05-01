@@ -38,7 +38,7 @@ export async function analyzeNightOps(): Promise<NightOpsStatus> {
 }
 
 export async function generateShiftReport(
-  params?: { start?: string; end?: string; mode?: string },
+  params?: { start?: string; end?: string; periodPreset?: string },
 ): Promise<NightOpsShiftReport> {
   const response = await fetch(`${agentBaseUrl}/nightops/shift-report`, {
     method: "POST",

@@ -151,7 +151,12 @@ export interface NightOpsShiftReport {
     severity: NightOpsSeverity;
   }>;
   inheritedPendingCount?: number;
+  excludedCarryOverCount?: number;
   periodEventCount?: number;
+  periodPreset?: string;
+  periodLabel?: string;
+  operationalOccurrences?: NightOpsShiftReport["relevantOccurrences"];
+  technicalAttentionOccurrences?: NightOpsShiftReport["relevantOccurrences"];
   recommendations: string[];
   handoverText: string;
   plainTextReport?: string;
