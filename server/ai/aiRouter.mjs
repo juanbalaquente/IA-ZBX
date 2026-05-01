@@ -228,6 +228,29 @@ export function createAiRouter({ config, zabbixClient, nightOpsService }) {
     return sendJson(response, 200, nightOpsService.getStatus());
   }
 
+  async function handleNightOpsConfig(_request, response, sendJson) {
+    return sendJson(response, 200, {
+      status: "ok",
+      config: nightOpsService.getConfig(),
+    });
+  }
+
+  async function handleNightOpsConfigUpdate(request, response, sendJson, readJsonBody) {
+    const body = await readJsonBody(request);
+
+    try {
+      const config = nightOpsService.updateConfig(body || {});
+      return sendJson(response, 200, {
+        status: "ok",
+        config,
+      });
+    } catch (error) {
+      return sendJson(response, 400, {
+        error: error instanceof Error ? error.message : "Configuracao invalida.",
+      });
+    }
+  }
+
   async function handleNightOpsHistory(request, response, sendJson) {
     const requestUrl = getRequestUrl(request);
     const filters = {
@@ -296,6 +319,19 @@ export function createAiRouter({ config, zabbixClient, nightOpsService }) {
 
       if (request.method === "GET" && pathname === "/ai-api/nightops/status") {
         return await handleNightOpsStatus(request, response, sendJson);
+      }
+
+      if (request.method === "GET" && pathname === "/ai-api/nightops/config") {
+        return await handleNightOpsConfig(request, response, sendJson);
+      }
+
+      if (request.method === "PUT" && pathname === "/ai-api/nightops/config") {
+        return await handleNightOpsConfigUpdate(
+          request,
+          response,
+          sendJson,
+          readJsonBody,
+        );
       }
 
       if (request.method === "GET" && pathname === "/ai-api/nightops/history") {

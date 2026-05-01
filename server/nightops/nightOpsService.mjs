@@ -71,12 +71,31 @@ async function enrichIncidentsWithAI(config, incidents) {
   }
 }
 
-export function createNightOpsService({ config, zabbixClient, store }) {
-  function getRuleOptions() {
-    return {
+export function createNightOpsService({ config, zabbixClient, store, configStore }) {
+  function getRuntimeConfig() {
+    return configStore?.getConfig?.() || {
+      defaultStartHour: config.nightOpsDefaultStartHour,
+      defaultEndHour: config.nightOpsDefaultEndHour,
+      timezone: config.nightOpsTimezone,
+      minDurationMinutes: config.nightOpsMinDurationMinutes,
       correlationWindowMinutes: config.nightOpsCorrelationWindowMinutes,
+      sameGroupAffectedHostsThreshold: config.nightOpsSameGroupAffectedHostsThreshold,
+      criticalKeywords: config.nightOpsCriticalKeywords,
+      autoEscalationEnabled: false,
+    };
+  }
+
+  function getRuleOptions() {
+    const runtimeConfig = getRuntimeConfig();
+    return {
+      correlationWindowMinutes: runtimeConfig.correlationWindowMinutes,
+      criticalKeywords: runtimeConfig.criticalKeywords,
       rules: {
-        minDurationMinutes: config.nightOpsMinDurationMinutes,
+        minDurationMinutes: runtimeConfig.minDurationMinutes,
+        sameGroupAffectedHostsThreshold:
+          runtimeConfig.sameGroupAffectedHostsThreshold,
+        criticalKeywords: runtimeConfig.criticalKeywords,
+        autoEscalationEnabled: runtimeConfig.autoEscalationEnabled,
       },
     };
   }
@@ -95,7 +114,7 @@ export function createNightOpsService({ config, zabbixClient, store }) {
     const classified = snapshot.problems.map((problem) =>
       classifyProblem(problem, {
         nowTs: Date.now(),
-        rules: { minDurationMinutes: config.nightOpsMinDurationMinutes },
+        rules: getRuleOptions().rules,
       })
     );
     const correlated = correlateIncidents(classified, getRuleOptions());
@@ -149,7 +168,8 @@ export function createNightOpsService({ config, zabbixClient, store }) {
       return { start: input.start, end: input.end };
     }
 
-    const timezone = config.nightOpsTimezone || "America/Sao_Paulo";
+    const runtimeConfig = getRuntimeConfig();
+    const timezone = runtimeConfig.timezone || "America/Sao_Paulo";
     const formatter = new Intl.DateTimeFormat("en-CA", {
       timeZone: timezone,
       year: "numeric",
@@ -161,12 +181,12 @@ export function createNightOpsService({ config, zabbixClient, store }) {
     const month = parts.find((part) => part.type === "month")?.value;
     const day = parts.find((part) => part.type === "day")?.value;
     const baseDate = `${year}-${month}-${day}`;
-    const startHour = String(config.nightOpsDefaultStartHour).padStart(2, "0");
-    const endHour = String(config.nightOpsDefaultEndHour).padStart(2, "0");
+    const startHour = String(runtimeConfig.defaultStartHour).padStart(2, "0");
+    const endHour = String(runtimeConfig.defaultEndHour).padStart(2, "0");
 
     const start = `${baseDate}T${startHour}:00:00-03:00`;
     const endDate = new Date(`${baseDate}T00:00:00-03:00`);
-    if (Number(config.nightOpsDefaultEndHour) < Number(config.nightOpsDefaultStartHour)) {
+    if (Number(runtimeConfig.defaultEndHour) < Number(runtimeConfig.defaultStartHour)) {
       endDate.setDate(endDate.getDate() + 1);
     }
     const nextBase = endDate.toISOString().slice(0, 10);
@@ -198,6 +218,19 @@ export function createNightOpsService({ config, zabbixClient, store }) {
     return store.listIncidents(filters);
   }
 
+  function getConfig() {
+    return getRuntimeConfig();
+  }
+
+  function updateConfig(nextConfig) {
+    const result = configStore.updateConfig(nextConfig);
+    if (!result.ok) {
+      throw new Error(result.errors.join(" "));
+    }
+
+    return result.value;
+  }
+
   function listShiftReports(filters = {}) {
     return store.listShiftReports(filters);
   }
@@ -210,6 +243,8 @@ export function createNightOpsService({ config, zabbixClient, store }) {
     analyzeNightOps,
     getStatus,
     createShiftReport,
+    getConfig,
+    updateConfig,
     getLatestShiftReport,
     listHistory,
     listShiftReports,

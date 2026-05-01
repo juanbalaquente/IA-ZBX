@@ -1,0 +1,18 @@
+{
+  "defaultStartHour": 19,
+  "defaultEndHour": 7,
+  "timezone": "America/Sao_Paulo",
+  "minDurationMinutes": 5,
+  "correlationWindowMinutes": 10,
+  "sameGroupAffectedHostsThreshold": 5,
+  "criticalKeywords": [
+    "OLT",
+    "POP",
+    "BGP",
+    "BACKBONE",
+    "CORE",
+    "TRANSPORTE",
+    "ENLACE"
+  ],
+  "autoEscalationEnabled": false
+}

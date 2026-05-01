@@ -1,14 +1,3 @@
-const criticalKeywords = [
-  "olt",
-  "pop",
-  "backbone",
-  "bgp",
-  "core",
-  "transporte",
-  "link",
-  "enlace",
-];
-
 function normalizeText(value) {
   return String(value || "")
     .normalize("NFD")
@@ -16,9 +5,17 @@ function normalizeText(value) {
     .toLowerCase();
 }
 
-function hasCriticalKeyword(values) {
+function getCriticalKeywords(options = {}) {
+  const configuredKeywords = Array.isArray(options.criticalKeywords)
+    ? options.criticalKeywords
+    : ["OLT", "POP", "BACKBONE", "BGP", "CORE", "TRANSPORTE", "LINK", "ENLACE"];
+
+  return configuredKeywords.map((keyword) => normalizeText(keyword));
+}
+
+function hasCriticalKeyword(values, options = {}) {
   const haystack = normalizeText(values.filter(Boolean).join(" "));
-  return criticalKeywords.some((keyword) => haystack.includes(keyword));
+  return getCriticalKeywords(options).some((keyword) => haystack.includes(keyword));
 }
 
 function increaseSeverity(severity) {
@@ -29,14 +26,16 @@ function increaseSeverity(severity) {
 
 export function applyEscalationRules(incident, options = {}) {
   const minDurationMinutes = Number(options.minDurationMinutes ?? 5);
-  const affectedGroupThreshold = Number(options.affectedGroupThreshold ?? 5);
+  const affectedGroupThreshold = Number(
+    options.sameGroupAffectedHostsThreshold ?? options.affectedGroupThreshold ?? 5,
+  );
   const normalizedDuration = Number(incident.durationMinutes ?? 0);
   const keywordBoost = hasCriticalKeyword([
     incident.title,
     incident.probableCause,
     ...(incident.affectedGroups || []),
     ...(incident.affectedHosts || []),
-  ]);
+  ], options);
 
   const result = {
     ...incident,

@@ -34,18 +34,21 @@ function inferStatus(problem) {
   return problem.acknowledged ? "monitoring" : "active";
 }
 
-function buildCauseHint(problem) {
+function buildCauseHint(problem, options = {}) {
   const text = normalizeText([problem.title, problem.triggerDescription, ...(problem.groups || [])].join(" "));
+  const configuredKeywords = Array.isArray(options.criticalKeywords)
+    ? options.criticalKeywords.map((keyword) => normalizeText(keyword))
+    : [];
 
-  if (/(link|enlace|backbone|transporte|uplink)/.test(text)) {
+  if (/(link|enlace|backbone|transporte|uplink)/.test(text) || configuredKeywords.some((keyword) => ["link", "enlace", "backbone", "transporte"].includes(keyword) && text.includes(keyword))) {
     return "Indicativo de indisponibilidade ou degradacao de transporte/enlace.";
   }
 
-  if (/(olt|pon|cto)/.test(text)) {
+  if (/(olt|pon|cto)/.test(text) || configuredKeywords.some((keyword) => ["olt", "pon", "cto", "pop"].includes(keyword) && text.includes(keyword))) {
     return "Indicativo de falha de acesso FTTH/OLT ou concentracao regional.";
   }
 
-  if (/(bgp|core|routing|roteamento)/.test(text)) {
+  if (/(bgp|core|routing|roteamento)/.test(text) || configuredKeywords.some((keyword) => ["bgp", "core"].includes(keyword) && text.includes(keyword))) {
     return "Possivel impacto de roteamento ou infraestrutura core.";
   }
 
@@ -71,7 +74,7 @@ export function classifyProblem(problem, options = {}) {
     affectedGroups: problem.groups || [],
     problemIds: [problem.id].filter(Boolean),
     eventIds: [problem.eventid].filter(Boolean),
-    probableCause: buildCauseHint(problem),
+    probableCause: buildCauseHint(problem, options.rules),
     impact: `Afeta ${problem.host || "host nao identificado"}${problem.groups?.length ? ` no grupo ${problem.groups.join(", ")}` : ""}.`,
     evidence: [
       `Problema: ${problem.title || problem.name}`,

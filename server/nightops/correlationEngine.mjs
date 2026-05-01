@@ -12,18 +12,21 @@ function hostPrefix(host) {
   return normalized.split(/[-_ ]/)[0] || normalized;
 }
 
-function extractKeywords(title) {
+function extractKeywords(title, options = {}) {
   const normalized = normalizeText(title);
-  const interesting = ["olt", "pop", "cto", "link", "enlace", "bgp", "core", "backbone", "transporte"];
+  const configuredKeywords = Array.isArray(options.criticalKeywords)
+    ? options.criticalKeywords
+    : ["olt", "pop", "cto", "link", "enlace", "bgp", "core", "backbone", "transporte"];
+  const interesting = configuredKeywords.map((keyword) => normalizeText(keyword));
   return interesting.filter((keyword) => normalized.includes(keyword));
 }
 
-function findCorrelationKey(incident, windowMinutes) {
+function findCorrelationKey(incident, windowMinutes, options = {}) {
   const startedAt = new Date(incident.startedAt).getTime();
   const bucket = Math.floor(startedAt / (windowMinutes * 60000));
   const group = incident.affectedGroups?.[0] || "sem-grupo";
   const prefix = hostPrefix(incident.affectedHosts?.[0] || "");
-  const keyword = extractKeywords(incident.title)[0] || "geral";
+  const keyword = extractKeywords(incident.title, options)[0] || "geral";
   return [
     group.toLowerCase(),
     prefix,
@@ -42,7 +45,7 @@ export function correlateIncidents(incidents, options = {}) {
   const grouped = new Map();
 
   for (const incident of incidents) {
-    const key = findCorrelationKey(incident, windowMinutes);
+    const key = findCorrelationKey(incident, windowMinutes, options);
     const current = grouped.get(key);
 
     if (!current) {

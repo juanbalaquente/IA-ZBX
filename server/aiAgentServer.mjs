@@ -2,6 +2,7 @@ import http from "node:http";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { createAiRouter } from "./ai/aiRouter.mjs";
+import { createNightOpsConfigStore } from "./data/nightOpsConfigStore.mjs";
 import { createNightOpsStore } from "./data/nightOpsStore.mjs";
 import { createNightOpsService } from "./nightops/nightOpsService.mjs";
 import { createZabbixServerClient } from "./zabbix/zabbixServerClient.mjs";
@@ -42,6 +43,16 @@ const config = {
   nightOpsCorrelationWindowMinutes: Number(
     process.env.NIGHTOPS_CORRELATION_WINDOW_MINUTES || 10,
   ),
+  nightOpsSameGroupAffectedHostsThreshold: Number(
+    process.env.NIGHTOPS_SAME_GROUP_AFFECTED_HOSTS_THRESHOLD || 5,
+  ),
+  nightOpsCriticalKeywords: (
+    process.env.NIGHTOPS_CRITICAL_KEYWORDS ||
+    "OLT,POP,BGP,BACKBONE,CORE,TRANSPORTE,ENLACE"
+  )
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean),
 };
 
 function loadEnvFile(filename) {
@@ -104,10 +115,24 @@ function sendJson(response, status, payload) {
 
 const zabbixClient = createZabbixServerClient(config);
 const nightOpsStore = createNightOpsStore();
+const nightOpsConfigStore = createNightOpsConfigStore({
+  defaults: {
+    defaultStartHour: config.nightOpsDefaultStartHour,
+    defaultEndHour: config.nightOpsDefaultEndHour,
+    timezone: config.nightOpsTimezone,
+    minDurationMinutes: config.nightOpsMinDurationMinutes,
+    correlationWindowMinutes: config.nightOpsCorrelationWindowMinutes,
+    sameGroupAffectedHostsThreshold:
+      config.nightOpsSameGroupAffectedHostsThreshold,
+    criticalKeywords: config.nightOpsCriticalKeywords,
+    autoEscalationEnabled: false,
+  },
+});
 const nightOpsService = createNightOpsService({
   config,
   zabbixClient,
   store: nightOpsStore,
+  configStore: nightOpsConfigStore,
 });
 const aiRouter = createAiRouter({
   config,
