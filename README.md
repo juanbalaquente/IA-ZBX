@@ -121,6 +121,11 @@ NIGHTOPS_DEFAULT_END_HOUR=7
 NIGHTOPS_TIMEZONE=America/Sao_Paulo
 NIGHTOPS_MIN_DURATION_MINUTES=5
 NIGHTOPS_CORRELATION_WINDOW_MINUTES=10
+NIGHTOPS_SAME_GROUP_AFFECTED_HOSTS_THRESHOLD=5
+NIGHTOPS_ALLOWED_HOST_GROUPS=1000-SERVIDORES,10031-SPEEDNET,10031-SPEEDNET/BACKBONE,31002-PREFEITURA_SABARA,31003-FIRETELECOM,31007-AFS,ZABBIX SERVERS
+NIGHTOPS_CRITICAL_KEYWORDS=OLT,POP,BGP,BACKBONE,CORE,TRANSPORTE,ENLACE
+NIGHTOPS_SHADOW_MODE_ENABLED=true
+NIGHTOPS_SHADOW_MODE_RETENTION_DAYS=30
 ```
 
 Tambem sao aceitas variaveis sem prefixo `VITE_` no backend:
@@ -237,10 +242,24 @@ Parametros atuais:
 - duracao minima para considerar incidente;
 - janela de correlacao;
 - limite de hosts afetados no mesmo grupo;
+- grupos de hosts permitidos para a analise;
 - palavras-chave criticas;
 - `autoEscalationEnabled`, visivel mas mantido desativado nesta fase.
 - `shadowModeEnabled`, ativo por padrao;
 - `shadowModeRetentionDays`, para limpeza do historico de observacao.
+
+Filtro operacional default aplicado hoje:
+
+- severidades `High` e `Disaster`;
+- apenas hosts destes grupos:
+  - `1000-SERVIDORES`
+  - `10031-SPEEDNET`
+  - `10031-SPEEDNET/BACKBONE`
+  - `31002-PREFEITURA_SABARA`
+  - `31003-FIRETELECOM`
+  - `31007-AFS`
+  - `ZABBIX SERVERS`
+- hosts inativos no Zabbix sao ignorados mesmo que tenham trigger relacionada.
 
 ### Regras deterministicas atuais
 
