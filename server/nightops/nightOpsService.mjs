@@ -12,7 +12,41 @@ function normalizeGroupName(value) {
     .replace(/\s+/g, " ");
 }
 
-function isProblemInAllowedGroups(problem, allowedHostGroups) {
+function normalizePattern(value) {
+  return String(value || "")
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, " ");
+}
+
+function matchesHostPatterns(problem, patterns) {
+  if (!Array.isArray(patterns) || patterns.length === 0) {
+    return false;
+  }
+
+  const haystack = [
+    problem.host,
+    problem.hostTechnicalName,
+    problem.title,
+    problem.name,
+    problem.triggerDescription,
+    ...(problem.groups || []),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toUpperCase();
+
+  return patterns
+    .map(normalizePattern)
+    .filter(Boolean)
+    .some((pattern) => haystack.includes(pattern));
+}
+
+function isProblemInAllowedGroups(problem, allowedHostGroups, alwaysIncludeHostPatterns) {
+  if (matchesHostPatterns(problem, alwaysIncludeHostPatterns)) {
+    return true;
+  }
+
   if (!Array.isArray(allowedHostGroups) || allowedHostGroups.length === 0) {
     return true;
   }
@@ -141,6 +175,8 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
       sameGroupAffectedHostsThreshold: config.nightOpsSameGroupAffectedHostsThreshold,
       allowedHostGroups: config.nightOpsAllowedHostGroups,
       criticalKeywords: config.nightOpsCriticalKeywords,
+      criticalHostPatterns: config.nightOpsCriticalHostPatterns || ["X9"],
+      alwaysIncludeHostPatterns: config.nightOpsAlwaysIncludeHostPatterns || ["X9"],
       autoEscalationEnabled: false,
       shadowModeEnabled: true,
       shadowModeRetentionDays: 30,
@@ -158,6 +194,8 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
           runtimeConfig.sameGroupAffectedHostsThreshold,
         allowedHostGroups: runtimeConfig.allowedHostGroups,
         criticalKeywords: runtimeConfig.criticalKeywords,
+        criticalHostPatterns: runtimeConfig.criticalHostPatterns,
+        alwaysIncludeHostPatterns: runtimeConfig.alwaysIncludeHostPatterns,
         autoEscalationEnabled: runtimeConfig.autoEscalationEnabled,
       },
     };
@@ -181,7 +219,11 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
     const eligibleProblems = snapshot.problems.filter(
       (problem) =>
         problem.hostEnabled !== false &&
-        isProblemInAllowedGroups(problem, runtimeConfig.allowedHostGroups),
+        isProblemInAllowedGroups(
+          problem,
+          runtimeConfig.allowedHostGroups,
+          runtimeConfig.alwaysIncludeHostPatterns,
+        ),
     );
 
     const classified = eligibleProblems.map((problem) =>
@@ -290,14 +332,18 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
           hostLimit: 500,
           problemLimit: 1000,
           eventLimit: 1000,
-          problemSeverities: [4, 5],
-          eventSeverities: [4, 5],
+          problemSeverities: [0, 1, 2, 3, 4, 5],
+          eventSeverities: [0, 1, 2, 3, 4, 5],
         });
 
         const eligibleProblems = snapshot.problems.filter(
           (problem) =>
             problem.hostEnabled !== false &&
-            isProblemInAllowedGroups(problem, runtimeConfig.allowedHostGroups),
+            isProblemInAllowedGroups(
+              problem,
+              runtimeConfig.allowedHostGroups,
+              runtimeConfig.alwaysIncludeHostPatterns,
+            ),
         );
         const classified = eligibleProblems.map((problem) =>
           classifyProblem(problem, {

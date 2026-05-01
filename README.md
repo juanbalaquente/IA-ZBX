@@ -131,6 +131,8 @@ NIGHTOPS_CORRELATION_WINDOW_MINUTES=10
 NIGHTOPS_SAME_GROUP_AFFECTED_HOSTS_THRESHOLD=5
 NIGHTOPS_ALLOWED_HOST_GROUPS=1000-SERVIDORES,10031-SPEEDNET,10031-SPEEDNET/BACKBONE,31002-PREFEITURA_SABARA,31003-FIRETELECOM,31007-AFS,ZABBIX SERVERS
 NIGHTOPS_CRITICAL_KEYWORDS=OLT,POP,BGP,BACKBONE,CORE,TRANSPORTE,ENLACE
+NIGHTOPS_CRITICAL_HOST_PATTERNS=X9
+NIGHTOPS_ALWAYS_INCLUDE_HOST_PATTERNS=X9
 NIGHTOPS_SHADOW_MODE_ENABLED=true
 NIGHTOPS_SHADOW_MODE_RETENTION_DAYS=30
 ```
@@ -274,6 +276,8 @@ Regra operacional do relatorio principal:
 - alarmes antigos ainda ativos podem existir no JSON para auditoria;
 - eles nao aparecem na passagem de turno nem nas ocorrencias relevantes por padrao;
 - isso evita que alarmes antigos de semanas ou meses anteriores poluam o fechamento do plantao.
+- hosts com padroes criticos, como `X9`, recebem prioridade maxima operacional quando tiverem evento no periodo;
+- hosts que batem em `alwaysIncludeHostPatterns` entram no relatorio mesmo se estiverem fora de `allowedHostGroups`.
 
 Plantao operacional padrao:
 
@@ -323,6 +327,8 @@ Parametros atuais:
 - limite de hosts afetados no mesmo grupo;
 - grupos de hosts permitidos para a analise;
 - palavras-chave criticas;
+- padroes de hosts criticos, como `X9`;
+- padroes de hosts sempre incluidos no relatorio, como `X9`;
 - `autoEscalationEnabled`, visivel mas mantido desativado nesta fase.
 - `includeCarryOverInMainReport`, desligado por padrao;
 - `maxCarryOverItemsInReport`, para limitar pendencias herdadas listadas no texto;
@@ -342,6 +348,7 @@ Filtro operacional default aplicado hoje:
   - `31007-AFS`
   - `ZABBIX SERVERS`
 - hosts inativos no Zabbix sao ignorados mesmo que tenham trigger relacionada.
+- hosts que contenham `X9` sao tratados como prioridade maxima operacional e nao sao descartados por grupo ou severidade original quando houver evento no periodo.
 
 ### Regras deterministicas atuais
 
@@ -445,11 +452,18 @@ Body opcional:
 {
   "start": "2026-04-30T19:00:00-03:00",
   "end": "2026-05-01T07:00:00-03:00",
-  "mode": "last_completed"
+  "periodPreset": "last_closed_shift"
 }
 ```
 
 Sem body, usa o ultimo plantao completo.
+
+Presets aceitos:
+
+- `last_closed_shift`
+- `current_shift`
+- `previous_day_shift`
+- `previous_night_shift`
 
 ## Testes e build
 

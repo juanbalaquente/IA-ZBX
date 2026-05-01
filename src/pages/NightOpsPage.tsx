@@ -235,6 +235,12 @@ function NightOpsPage() {
   const [keywordsInput, setKeywordsInput] = useState(
     emptyConfig.criticalKeywords.join(", "),
   );
+  const [criticalHostPatternsInput, setCriticalHostPatternsInput] = useState(
+    emptyConfig.criticalHostPatterns.join(", "),
+  );
+  const [alwaysIncludeHostPatternsInput, setAlwaysIncludeHostPatternsInput] = useState(
+    emptyConfig.alwaysIncludeHostPatterns.join(", "),
+  );
   const [shadowDecisions, setShadowDecisions] = useState<NightOpsShadowDecision[]>([]);
   const [shadowMetrics, setShadowMetrics] =
     useState<NightOpsShadowMetrics>(emptyShadowMetrics);
@@ -274,6 +280,10 @@ function NightOpsPage() {
     setConfig(configResponse.config);
     setHostGroupsInput(configResponse.config.allowedHostGroups.join("\n"));
     setKeywordsInput(configResponse.config.criticalKeywords.join(", "));
+    setCriticalHostPatternsInput(configResponse.config.criticalHostPatterns.join(", "));
+    setAlwaysIncludeHostPatternsInput(
+      configResponse.config.alwaysIncludeHostPatterns.join(", "),
+    );
     setShadowDecisions(shadowResponse.items);
     setShadowMetrics(shadowMetricsResponse.metrics);
   };
@@ -374,12 +384,24 @@ function NightOpsPage() {
           .split(",")
           .map((item) => item.trim())
           .filter(Boolean),
+        criticalHostPatterns: criticalHostPatternsInput
+          .split(",")
+          .map((item) => item.trim())
+          .filter(Boolean),
+        alwaysIncludeHostPatterns: alwaysIncludeHostPatternsInput
+          .split(",")
+          .map((item) => item.trim())
+          .filter(Boolean),
         autoEscalationEnabled: false,
       };
       const response = await updateNightOpsConfig(payload);
       setConfig(response.config);
       setHostGroupsInput(response.config.allowedHostGroups.join("\n"));
       setKeywordsInput(response.config.criticalKeywords.join(", "));
+      setCriticalHostPatternsInput(response.config.criticalHostPatterns.join(", "));
+      setAlwaysIncludeHostPatternsInput(
+        response.config.alwaysIncludeHostPatterns.join(", "),
+      );
       setConfigMessage("Configuracoes do Sentinel salvas.");
     } catch (saveError) {
       setError((saveError as Error).message);
@@ -491,6 +513,10 @@ function NightOpsPage() {
             onConfigCheckboxChange={handleConfigCheckboxChange}
             onKeywordsChange={setKeywordsInput}
             onHostGroupsChange={setHostGroupsInput}
+            criticalHostPatternsInput={criticalHostPatternsInput}
+            alwaysIncludeHostPatternsInput={alwaysIncludeHostPatternsInput}
+            onCriticalHostPatternsChange={setCriticalHostPatternsInput}
+            onAlwaysIncludeHostPatternsChange={setAlwaysIncludeHostPatternsInput}
             onSaveConfig={handleSaveConfig}
             onValidateShadowDecision={handleValidateShadowDecision}
           />

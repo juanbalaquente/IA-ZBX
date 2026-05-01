@@ -12,6 +12,8 @@ interface Props {
   config: NightOpsConfig;
   keywordsInput: string;
   hostGroupsInput: string;
+  criticalHostPatternsInput: string;
+  alwaysIncludeHostPatternsInput: string;
   shadowDecisions: NightOpsShadowDecision[];
   shadowMetrics: NightOpsShadowMetrics;
   configSaving: boolean;
@@ -21,6 +23,8 @@ interface Props {
   onConfigCheckboxChange: (field: keyof NightOpsConfig) => (event: ChangeEvent<HTMLInputElement>) => void;
   onKeywordsChange: (value: string) => void;
   onHostGroupsChange: (value: string) => void;
+  onCriticalHostPatternsChange: (value: string) => void;
+  onAlwaysIncludeHostPatternsChange: (value: string) => void;
   onSaveConfig: (event: FormEvent<HTMLFormElement>) => Promise<void>;
   onValidateShadowDecision: (
     id: string,
@@ -36,6 +40,8 @@ function NightOpsAdvancedPanel({
   config,
   keywordsInput,
   hostGroupsInput,
+  criticalHostPatternsInput,
+  alwaysIncludeHostPatternsInput,
   shadowDecisions,
   shadowMetrics,
   configSaving,
@@ -45,6 +51,8 @@ function NightOpsAdvancedPanel({
   onConfigCheckboxChange,
   onKeywordsChange,
   onHostGroupsChange,
+  onCriticalHostPatternsChange,
+  onAlwaysIncludeHostPatternsChange,
   onSaveConfig,
   onValidateShadowDecision,
 }: Props) {
@@ -174,6 +182,28 @@ function NightOpsAdvancedPanel({
           <label className="block">
             <span className="mb-2 block text-sm text-slate-400">Palavras-chave criticas</span>
             <input type="text" value={keywordsInput} onChange={(event) => onKeywordsChange(event.target.value)} placeholder="OLT, POP, BGP, BACKBONE, CORE" className="w-full rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none focus:border-sky-400" />
+          </label>
+
+          <label className="block">
+            <span className="mb-2 block text-sm text-slate-400">Padroes de hosts criticos</span>
+            <input
+              type="text"
+              value={criticalHostPatternsInput}
+              onChange={(event) => onCriticalHostPatternsChange(event.target.value)}
+              placeholder="X9"
+              className="w-full rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none focus:border-sky-400"
+            />
+          </label>
+
+          <label className="block">
+            <span className="mb-2 block text-sm text-slate-400">Sempre incluir hosts que contenham</span>
+            <input
+              type="text"
+              value={alwaysIncludeHostPatternsInput}
+              onChange={(event) => onAlwaysIncludeHostPatternsChange(event.target.value)}
+              placeholder="X9"
+              className="w-full rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none focus:border-sky-400"
+            />
           </label>
 
           <label className="block">

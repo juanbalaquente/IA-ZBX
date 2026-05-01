@@ -32481,28 +32481,542 @@
     },
     {
       "id": "report-2026-04-29T19:00:00-03:00-2026-04-30T07:00:00-03:00",
-      "generatedAt": "2026-05-01T04:45:42.132Z",
+      "generatedAt": "2026-05-01T04:58:58.607Z",
       "title": "RELATORIO NOC - 29/04/2026",
       "period": {
         "start": "2026-04-29T19:00:00-03:00",
         "end": "2026-04-30T07:00:00-03:00"
       },
-      "summary": "Durante o plantao nao foram identificadas ocorrencias relevantes com evento registrado no periodo.",
+      "summary": "Durante o plantao foram identificadas 8 ocorrencias com evento registrado no periodo. Nao foram identificadas ocorrencias criticas no periodo. Ha ocorrencias do periodo que permanecem ativas e precisam de acompanhamento pelo turno seguinte.",
       "numbers": {
-        "totalProblems": 0,
+        "totalProblems": 8,
         "criticalIncidents": 0,
         "monitoredEvents": 0,
         "ignoredNoise": 0,
         "escalations": 0,
-        "periodEventCount": 0
+        "periodEventCount": 8
       },
-      "incidents": [],
-      "relevantOccurrences": [],
+      "incidents": [
+        {
+          "id": "INC-20260430-0700-SU3B",
+          "title": "Cliente 13255-GUSTAVO com sinal alto -31.54",
+          "severity": "high",
+          "sourceSeverity": "Not classified",
+          "status": "active",
+          "classification": "attention",
+          "startedAt": "2026-04-30T08:58:55.000Z",
+          "endedAt": null,
+          "durationMinutes": 61,
+          "affectedHosts": [
+            "10031-OLT_PAULO_VI"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "14280001"
+          ],
+          "eventIds": [
+            "14280001"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta 10031-OLT_PAULO_VI no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Cliente 13255-GUSTAVO com sinal alto -31.54",
+            "Severidade original: Not classified",
+            "Host: 10031-OLT_PAULO_VI",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "10031-OLT_PAULO_VI",
+            "hostId": "10587",
+            "triggerId": "100415",
+            "keywords": [
+              "cliente",
+              "13255",
+              "gustavo",
+              "com",
+              "sinal",
+              "alto",
+              "31",
+              "54"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260430-0700-DKUB",
+          "title": "Cliente 55732-MARIAJOS com sinal alto -27.21",
+          "severity": "high",
+          "sourceSeverity": "Not classified",
+          "status": "active",
+          "classification": "attention",
+          "startedAt": "2026-04-30T08:01:57.000Z",
+          "endedAt": null,
+          "durationMinutes": 118,
+          "affectedHosts": [
+            "10031-OLT_ESMERALDAS"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "14279538"
+          ],
+          "eventIds": [
+            "14279538"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta 10031-OLT_ESMERALDAS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Cliente 55732-MARIAJOS com sinal alto -27.21",
+            "Severidade original: Not classified",
+            "Host: 10031-OLT_ESMERALDAS",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "10031-OLT_ESMERALDAS",
+            "hostId": "10583",
+            "triggerId": "68036",
+            "keywords": [
+              "cliente",
+              "55732",
+              "mariajos",
+              "com",
+              "sinal",
+              "alto",
+              "27",
+              "21"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260430-0700-QECU",
+          "title": "High swap space usage (less than 50% free)",
+          "severity": "low",
+          "sourceSeverity": "Warning",
+          "status": "active",
+          "classification": "attention",
+          "startedAt": "2026-04-30T07:13:56.000Z",
+          "endedAt": null,
+          "durationMinutes": 166,
+          "affectedHosts": [
+            "Zabbix server"
+          ],
+          "affectedGroups": [
+            "ZABBIX SERVERS"
+          ],
+          "problemIds": [
+            "14279136"
+          ],
+          "eventIds": [
+            "14279136"
+          ],
+          "probableCause": "Necessaria validacao operacional no host e na trigger associada.",
+          "impact": "Afeta Zabbix server no grupo ZABBIX SERVERS.",
+          "evidence": [
+            "Problema: High swap space usage (less than 50% free)",
+            "Severidade original: Warning",
+            "Host: Zabbix server"
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "Zabbix server",
+            "hostId": "10084",
+            "triggerId": "22393",
+            "keywords": [
+              "high",
+              "swap",
+              "space",
+              "usage",
+              "less",
+              "than",
+              "50",
+              "free"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260430-0700-4M15",
+          "title": "Cliente 26683-MAURA com sinal alto -27.21",
+          "severity": "high",
+          "sourceSeverity": "Not classified",
+          "status": "active",
+          "classification": "attention",
+          "startedAt": "2026-04-30T04:01:45.000Z",
+          "endedAt": null,
+          "durationMinutes": 358,
+          "affectedHosts": [
+            "10031-OLT_ESMERALDAS"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "14277564"
+          ],
+          "eventIds": [
+            "14277564"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta 10031-OLT_ESMERALDAS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Cliente 26683-MAURA com sinal alto -27.21",
+            "Severidade original: Not classified",
+            "Host: 10031-OLT_ESMERALDAS",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "10031-OLT_ESMERALDAS",
+            "hostId": "10583",
+            "triggerId": "89119",
+            "keywords": [
+              "cliente",
+              "26683",
+              "maura",
+              "com",
+              "sinal",
+              "alto",
+              "27",
+              "21"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260430-0700-0MLW",
+          "title": "Cliente 31386-PATRICIA com sinal alto -30.45",
+          "severity": "high",
+          "sourceSeverity": "Not classified",
+          "status": "active",
+          "classification": "attention",
+          "startedAt": "2026-04-30T02:13:30.000Z",
+          "endedAt": null,
+          "durationMinutes": 467,
+          "affectedHosts": [
+            "10031-OLT_ITACOLOMI"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "14276681"
+          ],
+          "eventIds": [
+            "14276681"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta 10031-OLT_ITACOLOMI no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Cliente 31386-PATRICIA com sinal alto -30.45",
+            "Severidade original: Not classified",
+            "Host: 10031-OLT_ITACOLOMI",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "10031-OLT_ITACOLOMI",
+            "hostId": "10586",
+            "triggerId": "100942",
+            "keywords": [
+              "cliente",
+              "31386",
+              "patricia",
+              "com",
+              "sinal",
+              "alto",
+              "30",
+              "45"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260430-0700-GAIQ",
+          "title": "Cliente 14837-GIDEONE com sinal alto -33.00",
+          "severity": "high",
+          "sourceSeverity": "Not classified",
+          "status": "active",
+          "classification": "attention",
+          "startedAt": "2026-04-30T00:08:57.000Z",
+          "endedAt": null,
+          "durationMinutes": 591,
+          "affectedHosts": [
+            "10031-OLT_BACKBONE_CENTRA"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "14275610"
+          ],
+          "eventIds": [
+            "14275610"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta 10031-OLT_BACKBONE_CENTRA no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Cliente 14837-GIDEONE com sinal alto -33.00",
+            "Severidade original: Not classified",
+            "Host: 10031-OLT_BACKBONE_CENTRA",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "10031-OLT_BACKBONE_CENTRA",
+            "hostId": "10574",
+            "triggerId": "93295",
+            "keywords": [
+              "cliente",
+              "14837",
+              "gideone",
+              "com",
+              "sinal",
+              "alto",
+              "33",
+              "00"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260430-0700-4PNF",
+          "title": "Incidente correlacionado - 10031-SPEEDNET",
+          "severity": "high",
+          "sourceSeverity": "Not classified",
+          "status": "active",
+          "classification": "correlated-outage",
+          "startedAt": "2026-04-29T23:01:10.000Z",
+          "endedAt": null,
+          "durationMinutes": 659,
+          "affectedHosts": [
+            "10031-OLT_ESMERALDAS"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "14275067",
+            "14275062"
+          ],
+          "eventIds": [
+            "14275067",
+            "14275062"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta 10031-OLT_ESMERALDAS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Cliente 31743-JOAO com sinal alto -27.96",
+            "Severidade original: Not classified",
+            "Host: 10031-OLT_ESMERALDAS",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Problema: Cliente 18302-ANDRE com sinal alto -33.97",
+            "Incidentes agrupados por grupo/host/severidade/janela de tempo.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.6799999999999999,
+          "metadata": {
+            "host": "10031-OLT_ESMERALDAS",
+            "hostId": "10583",
+            "triggerId": "66827",
+            "keywords": [
+              "cliente",
+              "31743",
+              "joao",
+              "com",
+              "sinal",
+              "alto",
+              "27",
+              "96"
+            ]
+          }
+        }
+      ],
+      "relevantOccurrences": [
+        {
+          "title": "Incidente correlacionado - 10031-SPEEDNET",
+          "status": "ATIVO",
+          "startedAt": "2026-04-29T23:01:10.000Z",
+          "endedAt": null,
+          "durationText": "10 horas e 59 minutos",
+          "impact": "Afeta 10031-OLT_ESMERALDAS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 2,
+          "occurrenceType": "operational"
+        },
+        {
+          "title": "Cliente 26683-MAURA com sinal alto -27.21",
+          "status": "ATIVO",
+          "startedAt": "2026-04-30T04:01:45.000Z",
+          "endedAt": null,
+          "durationText": "5 horas e 58 minutos",
+          "impact": "Afeta 10031-OLT_ESMERALDAS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 1,
+          "occurrenceType": "operational"
+        },
+        {
+          "title": "Cliente 31386-PATRICIA com sinal alto -30.45",
+          "status": "ATIVO",
+          "startedAt": "2026-04-30T02:13:30.000Z",
+          "endedAt": null,
+          "durationText": "7 horas e 47 minutos",
+          "impact": "Afeta 10031-OLT_ITACOLOMI no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 1,
+          "occurrenceType": "operational"
+        },
+        {
+          "title": "Cliente 14837-GIDEONE com sinal alto -33.00",
+          "status": "ATIVO",
+          "startedAt": "2026-04-30T00:08:57.000Z",
+          "endedAt": null,
+          "durationText": "9 horas e 51 minutos",
+          "impact": "Afeta 10031-OLT_BACKBONE_CENTRA no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 1,
+          "occurrenceType": "operational"
+        },
+        {
+          "title": "Cliente 55732-MARIAJOS com sinal alto -27.21",
+          "status": "ATIVO",
+          "startedAt": "2026-04-30T08:01:57.000Z",
+          "endedAt": null,
+          "durationText": "1 hora e 58 minutos",
+          "impact": "Afeta 10031-OLT_ESMERALDAS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 1,
+          "occurrenceType": "operational"
+        },
+        {
+          "title": "Cliente 13255-GUSTAVO com sinal alto -31.54",
+          "status": "ATIVO",
+          "startedAt": "2026-04-30T08:58:55.000Z",
+          "endedAt": null,
+          "durationText": "1 hora e 1 minuto",
+          "impact": "Afeta 10031-OLT_PAULO_VI no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 1,
+          "occurrenceType": "operational"
+        },
+        {
+          "title": "High swap space usage (less than 50% free)",
+          "status": "ATIVO",
+          "startedAt": "2026-04-30T07:13:56.000Z",
+          "endedAt": null,
+          "durationText": "2 horas e 46 minutos",
+          "impact": "Afeta Zabbix server no grupo ZABBIX SERVERS.",
+          "probableCause": "Necessaria validacao operacional no host e na trigger associada.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 1,
+          "occurrenceType": "operational"
+        }
+      ],
       "recommendations": [
         "Sem desvios relevantes. Manter acompanhamento padrao do inicio do expediente."
       ],
-      "handoverText": "Bom dia. Durante o plantao nao houve ocorrencias relevantes. Ambiente permaneceu sob monitoramento normal.",
-      "plainTextReport": "RELATORIO NOC - 29/04/2026\nPERIODO: 29/04/2026, 19:00 ATE 30/04/2026, 07:00\n--------------------------------------------------------------------------------\n\nRESUMO GERAL:\nDurante o plantao nao foram identificadas ocorrencias relevantes com evento registrado no periodo.\n\nOCORRENCIAS RELEVANTES:\n\nNenhuma ocorrencia relevante registrada no periodo.\nTOTAL DE INCIDENTES/ALARMES DO PERIODO: 0\n\nOBSERVACAO:\nNao houve ocorrencias relevantes durante o periodo.\n\nPASSAGEM DE TURNO:\nBom dia. Durante o plantao nao houve ocorrencias relevantes. Ambiente permaneceu sob monitoramento normal."
+      "handoverText": "Bom dia. Durante o plantao foram identificadas 8 ocorrencias com evento registrado no periodo. Nao foram identificadas ocorrencias criticas no periodo. Ha ocorrencias do periodo que permanecem ativas e precisam de acompanhamento pelo turno seguinte. Permanecem ativas as ocorrencias do periodo Incidente correlacionado - 10031-SPEEDNET e Cliente 26683-MAURA com sinal alto -27.21 e devem seguir em acompanhamento pela equipe diurna.",
+      "plainTextReport": "RELATORIO NOC - 29/04/2026\nPERIODO: 29/04/2026, 19:00 ATE 30/04/2026, 07:00\n--------------------------------------------------------------------------------\n\nRESUMO GERAL:\nDurante o plantao foram identificadas 8 ocorrencias com evento registrado no periodo. Nao foram identificadas ocorrencias criticas no periodo. Ha ocorrencias do periodo que permanecem ativas e precisam de acompanhamento pelo turno seguinte.\n\nOCORRENCIAS RELEVANTES:\n\n1. Incidente correlacionado - 10031-SPEEDNET\nStatus: ATIVO\nInicio do alarme: 29/04/2026, 20:01\nTempo em alarme: 10 horas e 59 minutos\nSituacao: Permanece ativo no fechamento do plantao.\nImpacto provavel: Afeta 10031-OLT_ESMERALDAS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\n2. Cliente 26683-MAURA com sinal alto -27.21\nStatus: ATIVO\nInicio do alarme: 30/04/2026, 01:01\nTempo em alarme: 5 horas e 58 minutos\nSituacao: Permanece ativo no fechamento do plantao.\nImpacto provavel: Afeta 10031-OLT_ESMERALDAS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\n3. Cliente 31386-PATRICIA com sinal alto -30.45\nStatus: ATIVO\nInicio do alarme: 29/04/2026, 23:13\nTempo em alarme: 7 horas e 47 minutos\nSituacao: Permanece ativo no fechamento do plantao.\nImpacto provavel: Afeta 10031-OLT_ITACOLOMI no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\n4. Cliente 14837-GIDEONE com sinal alto -33.00\nStatus: ATIVO\nInicio do alarme: 29/04/2026, 21:08\nTempo em alarme: 9 horas e 51 minutos\nSituacao: Permanece ativo no fechamento do plantao.\nImpacto provavel: Afeta 10031-OLT_BACKBONE_CENTRA no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\n5. Cliente 55732-MARIAJOS com sinal alto -27.21\nStatus: ATIVO\nInicio do alarme: 30/04/2026, 05:01\nTempo em alarme: 1 hora e 58 minutos\nSituacao: Permanece ativo no fechamento do plantao.\nImpacto provavel: Afeta 10031-OLT_ESMERALDAS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\n6. Cliente 13255-GUSTAVO com sinal alto -31.54\nStatus: ATIVO\nInicio do alarme: 30/04/2026, 05:58\nTempo em alarme: 1 hora e 1 minuto\nSituacao: Permanece ativo no fechamento do plantao.\nImpacto provavel: Afeta 10031-OLT_PAULO_VI no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\n7. High swap space usage (less than 50% free)\nStatus: ATIVO\nInicio do alarme: 30/04/2026, 04:13\nTempo em alarme: 2 horas e 46 minutos\nSituacao: Permanece ativo no fechamento do plantao.\nImpacto provavel: Afeta Zabbix server no grupo ZABBIX SERVERS.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\nTOTAL DE INCIDENTES/ALARMES DO PERIODO: 8\n\nOBSERVACAO:\nHa ocorrencias do periodo que permanecem ativas e precisam de acompanhamento pelo turno seguinte.\n\nPASSAGEM DE TURNO:\nBom dia. Durante o plantao foram identificadas 8 ocorrencias com evento registrado no periodo. Nao foram identificadas ocorrencias criticas no periodo. Ha ocorrencias do periodo que permanecem ativas e precisam de acompanhamento pelo turno seguinte. Permanecem ativas as ocorrencias do periodo Incidente correlacionado - 10031-SPEEDNET e Cliente 26683-MAURA com sinal alto -27.21 e devem seguir em acompanhamento pela equipe diurna."
     }
   ],
   "shadowDecisions": [

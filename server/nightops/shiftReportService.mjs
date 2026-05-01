@@ -43,6 +43,47 @@ const technicalAttentionPatterns = [
   "LIMITE",
 ];
 
+function normalizePattern(value) {
+  return String(value || "")
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, " ");
+}
+
+function buildIncidentSearchText(incident) {
+  return [
+    incident.title,
+    incident.probableCause,
+    incident.impact,
+    incident.internalMessage,
+    incident.customerMessage,
+    ...(incident.affectedHosts || []),
+    ...(incident.affectedGroups || []),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toUpperCase();
+}
+
+function matchesConfiguredPatterns(incident, patterns) {
+  if (!Array.isArray(patterns) || patterns.length === 0) {
+    return false;
+  }
+
+  const haystack = buildIncidentSearchText(incident);
+  return patterns
+    .map(normalizePattern)
+    .filter(Boolean)
+    .some((pattern) => haystack.includes(pattern));
+}
+
+function isCriticalPatternOccurrence(incident, config = {}) {
+  return (
+    matchesConfiguredPatterns(incident, config.alwaysIncludeHostPatterns) ||
+    matchesConfiguredPatterns(incident, config.criticalHostPatterns)
+  );
+}
+
 function summarizeNumbers(incidents) {
   return {
     totalProblems: incidents.reduce(
@@ -153,18 +194,19 @@ function summarizeRecommendedAction(incident) {
   return "Manter acompanhamento operacional no proximo turno.";
 }
 
-function occurrencePriority(incident) {
+function occurrencePriority(incident, config = {}) {
   let score = 0;
-  const normalizedText =
-    `${incident.title || ""} ${incident.probableCause || ""} ${incident.impact || ""}`.toUpperCase();
+  const normalizedText = buildIncidentSearchText(incident);
   const operationalImpact = operationalImpactPatterns.some((item) =>
     normalizedText.includes(item),
   );
   const technicalAttention = technicalAttentionPatterns.some((item) =>
     normalizedText.includes(item),
   );
+  const criticalPattern = isCriticalPatternOccurrence(incident, config);
 
   score += (severityRank[incident.severity] || 1) * 100;
+  score += criticalPattern ? 1000 : 0;
   score += operationalImpact ? 250 : 0;
   score -= technicalAttention && !operationalImpact ? 120 : 0;
 
@@ -187,15 +229,18 @@ function occurrencePriority(incident) {
   return score;
 }
 
-function classifyOccurrenceType(incident) {
-  const normalizedText =
-    `${incident.title || ""} ${incident.probableCause || ""} ${incident.impact || ""}`.toUpperCase();
+function classifyOccurrenceType(incident, config = {}) {
+  const normalizedText = buildIncidentSearchText(incident);
   const operationalImpact = operationalImpactPatterns.some((item) =>
     normalizedText.includes(item),
   );
   const technicalAttention = technicalAttentionPatterns.some((item) =>
     normalizedText.includes(item),
   );
+
+  if (isCriticalPatternOccurrence(incident, config)) {
+    return "operational";
+  }
 
   if (operationalImpact) {
     return "operational";
@@ -212,23 +257,33 @@ function classifyOccurrenceType(incident) {
   return "operational";
 }
 
-function buildRelevantOccurrence(incident) {
+function buildRelevantOccurrence(incident, config = {}) {
   const status = mapOccurrenceStatus(incident);
+  const criticalPattern = isCriticalPatternOccurrence(incident, config);
+  const recommendedAction = criticalPattern
+    ? /(OFFLINE|DOWN|UNAVAILABLE|SEM COMUNICAC|QUEDA)/.test(buildIncidentSearchText(incident))
+      ? "Acionar validacao tecnica conforme procedimento interno, pois X9 e host critico da rede."
+      : "Validar imediatamente disponibilidade, rota/enlace e impacto operacional. Manter acompanhamento pelo NOC."
+    : summarizeRecommendedAction(incident);
+  const impact = criticalPattern
+    ? "Host X9 de importancia maxima na rede."
+    : incident.impact || "Impacto nao detalhado.";
+
   return {
     title: incident.title || "Ocorrencia NightOps",
     status,
     startedAt: incident.startedAt || null,
     endedAt: incident.endedAt || null,
     durationText: formatHumanDuration(incident.durationMinutes || 0),
-    impact: incident.impact || "Impacto nao detalhado.",
+    impact,
     probableCause: incident.probableCause || "Causa provavel nao informada.",
-    recommendedAction: summarizeRecommendedAction(incident),
+    recommendedAction,
     isStillActive: status === "ATIVO" || status === "OFFLINE" || status === "MONITORAMENTO",
     relatedCount: Math.max(
       Number(incident.problemIds?.length || 0),
       Number(incident.affectedHosts?.length || 0),
     ),
-    occurrenceType: classifyOccurrenceType(incident),
+    occurrenceType: classifyOccurrenceType(incident, config),
   };
 }
 
@@ -263,12 +318,12 @@ function splitIncidentsByPeriod(incidents, period) {
   };
 }
 
-function selectRelevantOccurrences(periodIncidents) {
+function selectRelevantOccurrences(periodIncidents, config = {}) {
   const relevant = [...periodIncidents]
-    .sort((left, right) => occurrencePriority(right) - occurrencePriority(left))
+    .sort((left, right) => occurrencePriority(right, config) - occurrencePriority(left, config))
     .slice(0, maxRelevantOccurrences);
 
-  const mapped = relevant.map(buildRelevantOccurrence);
+  const mapped = relevant.map((incident) => buildRelevantOccurrence(incident, config));
   const operational = mapped.filter((item) => item.occurrenceType === "operational");
   const technical = mapped.filter((item) => item.occurrenceType === "technical");
 
@@ -460,7 +515,7 @@ export function generateShiftReport({ start, end, incidents, summary, config = {
     relevantOccurrences,
     operationalOccurrences,
     technicalAttentionOccurrences,
-  } = selectRelevantOccurrences(selectedPeriodIncidents);
+  } = selectRelevantOccurrences(selectedPeriodIncidents, config);
   const carryOverOccurrences = selectCarryOverOccurrences(carryOverIncidents, config);
   const numbers = {
     ...summarizeNumbers(periodIncidents),

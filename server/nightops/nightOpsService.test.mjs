@@ -43,6 +43,8 @@ function createBaseConfigStore(overrides = {}) {
         "POP-CENTRO",
       ],
       criticalKeywords: ["OLT", "POP", "BGP", "BACKBONE", "CORE", "TRANSPORTE", "ENLACE"],
+      criticalHostPatterns: ["X9"],
+      alwaysIncludeHostPatterns: ["X9"],
       autoEscalationEnabled: false,
       shadowModeEnabled: true,
       shadowModeRetentionDays: 30,
@@ -52,7 +54,7 @@ function createBaseConfigStore(overrides = {}) {
   };
 }
 
-function createZabbixStub(problems) {
+function createZabbixStub(problems, periodProblems = problems) {
   return {
     hasConfiguration: () => true,
     getOperationalSnapshot: vi.fn(async () => ({
@@ -60,6 +62,11 @@ function createZabbixStub(problems) {
       problems,
       events: [],
       triggers: [],
+    })),
+    getProblemsForPeriod: vi.fn(async () => ({
+      hosts: [],
+      problems: periodProblems,
+      events: [],
     })),
   };
 }
@@ -196,6 +203,36 @@ describe("createNightOpsService", () => {
     expect(result.summary.activeProblems).toBe(1);
     expect(result.incidents).toHaveLength(1);
     expect(result.incidents[0].affectedGroups).toContain("10031-SPEEDNET");
+  });
+
+  it("inclui host X9 mesmo fora dos grupos permitidos", async () => {
+    const store = createStoreStub();
+    const x9Problem = {
+      ...baseProblem,
+      id: "p-x9",
+      eventid: "e-x9",
+      severity: "Average",
+      startedAtTs: Date.parse("2026-04-30T15:00:00.000Z"),
+      host: "X9-ITACOLOMI",
+      title: "Host unavailable",
+      groups: ["GRUPO-NAO-PERMITIDO"],
+    };
+    const service = createNightOpsService({
+      config: {},
+      zabbixClient: createZabbixStub([x9Problem], [x9Problem]),
+      store,
+      configStore: createBaseConfigStore(),
+    });
+
+    const result = await service.analyzeNightOps();
+    const report = await service.createShiftReport({
+      start: "2026-04-30T07:00:00-03:00",
+      end: "2026-04-30T19:00:00-03:00",
+    });
+
+    expect(result.summary.activeProblems).toBe(1);
+    expect(result.incidents[0].severity).toBe("critical");
+    expect(report.relevantOccurrences?.some((item) => item.title.includes("X9"))).toBe(true);
   });
 
   it("createShiftReport usa apenas ocorrencias com interseccao no periodo", async () => {

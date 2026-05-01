@@ -7,6 +7,13 @@ function normalizeText(value) {
     .toLowerCase();
 }
 
+function normalizePattern(value) {
+  return String(value || "")
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, " ");
+}
+
 function mapSourceSeverity(sourceSeverity) {
   switch (sourceSeverity) {
     case "Disaster":
@@ -53,6 +60,29 @@ function buildCauseHint(problem, options = {}) {
   }
 
   return "Necessaria validacao operacional no host e na trigger associada.";
+}
+
+function matchesConfiguredPatterns(problem, patterns) {
+  if (!Array.isArray(patterns) || patterns.length === 0) {
+    return false;
+  }
+
+  const haystack = [
+    problem.host,
+    problem.hostTechnicalName,
+    problem.title,
+    problem.name,
+    problem.triggerDescription,
+    ...(problem.groups || []),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toUpperCase();
+
+  return patterns
+    .map(normalizePattern)
+    .filter(Boolean)
+    .some((pattern) => haystack.includes(pattern));
 }
 
 export function classifyProblem(problem, options = {}) {
@@ -103,6 +133,44 @@ export function classifyProblem(problem, options = {}) {
       keywords: normalizeText(problem.title).split(/[^a-z0-9]+/).filter(Boolean),
     },
   };
+
+  const criticalPatternMatch =
+    matchesConfiguredPatterns(problem, options.rules?.criticalHostPatterns) ||
+    matchesConfiguredPatterns(problem, options.rules?.alwaysIncludeHostPatterns);
+
+  if (criticalPatternMatch) {
+    if (problem.host && !normalizeText(baseIncident.title).includes(normalizeText(problem.host))) {
+      baseIncident.title = `${problem.host} - ${baseIncident.title}`;
+    }
+    baseIncident.severity = "critical";
+    baseIncident.classification = "critical";
+    baseIncident.probableCause =
+      "Host X9 de importancia maxima na rede. Necessaria validacao imediata da disponibilidade e do caminho operacional.";
+    baseIncident.impact =
+      "Host X9 de importancia maxima na rede, com potencial impacto operacional relevante.";
+    baseIncident.recommendedActions = [
+      "Validar imediatamente disponibilidade, rota/enlace e impacto operacional do host X9.",
+      "Manter acompanhamento continuo pelo NOC e seguir o procedimento interno para ativos criticos.",
+    ];
+    baseIncident.escalation = {
+      required: true,
+      reason: "Host X9 tratado como ativo critico de importancia maxima na rede.",
+      target: "NOC",
+    };
+    baseIncident.customerMessage =
+      "Estamos validando um evento em ativo critico da rede. A equipe acompanha o comportamento com prioridade maxima.";
+    baseIncident.internalMessage =
+      "Host X9 identificado no evento. Validar imediatamente disponibilidade, rota/enlace e impacto operacional.";
+    baseIncident.confidence = Math.max(Number(baseIncident.confidence || 0), 0.9);
+    baseIncident.evidence = [
+      ...baseIncident.evidence,
+      "Regra operacional aplicada: host com padrao critico X9.",
+    ];
+    baseIncident.metadata = {
+      ...baseIncident.metadata,
+      criticalPatternMatch: true,
+    };
+  }
 
   return applyEscalationRules(baseIncident, options.rules);
 }

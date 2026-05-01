@@ -31,6 +31,11 @@ function buildIncident(overrides = {}) {
   };
 }
 
+const x9Config = {
+  criticalHostPatterns: ["X9"],
+  alwaysIncludeHostPatterns: ["X9"],
+};
+
 describe("shiftReportService", () => {
   it("alarme antigo ativo sem mudanca nao entra em relevantOccurrences", () => {
     const report = generateShiftReport({
@@ -248,6 +253,121 @@ describe("shiftReportService", () => {
     });
 
     expect(report.relevantOccurrences[0].title).toBe("CIRCUITO XPTO OFFLINE");
+  });
+
+  it("evento de X9 dentro do periodo entra em relevantOccurrences", () => {
+    const report = generateShiftReport({
+      ...period,
+      incidents: [
+        buildIncident({
+          title: "X9-ITACOLOMI host unavailable",
+          severity: "medium",
+          impact: "Host sem comunicacao.",
+          probableCause: "Host X9 indisponivel.",
+          affectedHosts: ["X9-ITACOLOMI"],
+        }),
+      ],
+      config: x9Config,
+    });
+
+    expect(report.relevantOccurrences).toHaveLength(1);
+    expect(report.relevantOccurrences?.[0].title).toContain("X9-ITACOLOMI");
+  });
+
+  it("evento de X9 entra mesmo se severidade original for media", () => {
+    const report = generateShiftReport({
+      ...period,
+      incidents: [
+        buildIncident({
+          title: "X9-ITACOLOMI sinal",
+          severity: "medium",
+          impact: "Evento em host critico.",
+          probableCause: "X9 detectado.",
+          affectedHosts: ["X9-ITACOLOMI"],
+        }),
+      ],
+      config: x9Config,
+    });
+
+    expect(report.relevantOccurrences?.[0].impact).toContain("Host X9");
+  });
+
+  it("evento de X9 fora do periodo nao entra", () => {
+    const report = generateShiftReport({
+      ...period,
+      incidents: [
+        buildIncident({
+          title: "X9-ITACOLOMI host unavailable",
+          startedAt: "2026-04-29T02:00:00-03:00",
+          endedAt: null,
+          severity: "critical",
+          affectedHosts: ["X9-ITACOLOMI"],
+        }),
+      ],
+      config: x9Config,
+    });
+
+    expect(report.relevantOccurrences).toEqual([]);
+  });
+
+  it("evento X9 aparece antes de sinal alto no ranking", () => {
+    const report = generateShiftReport({
+      ...period,
+      incidents: [
+        buildIncident({
+          title: "Sinal alto porta 1",
+          severity: "high",
+          impact: "Sinal alto identificado",
+          probableCause: "Limiar optico",
+        }),
+        buildIncident({
+          id: "INC-X9",
+          title: "X9-ITACOLOMI host unavailable",
+          severity: "medium",
+          impact: "Host sem comunicacao.",
+          probableCause: "X9 indisponivel",
+          affectedHosts: ["X9-ITACOLOMI"],
+          problemIds: ["x9-1"],
+        }),
+      ],
+      config: x9Config,
+    });
+
+    expect(report.relevantOccurrences?.[0].title).toContain("X9-ITACOLOMI");
+  });
+
+  it("plainTextReport inclui X9 quando ocorreu no periodo", () => {
+    const report = generateShiftReport({
+      ...period,
+      incidents: [
+        buildIncident({
+          title: "X9-ITACOLOMI host unavailable",
+          severity: "critical",
+          probableCause: "X9 indisponivel",
+          affectedHosts: ["X9-ITACOLOMI"],
+        }),
+      ],
+      config: x9Config,
+    });
+
+    expect(report.plainTextReport).toContain("X9-ITACOLOMI");
+  });
+
+  it("passagem de turno menciona X9 se estiver entre ocorrencias relevantes", () => {
+    const report = generateShiftReport({
+      ...period,
+      incidents: [
+        buildIncident({
+          title: "X9-ITACOLOMI host unavailable",
+          severity: "critical",
+          probableCause: "X9 indisponivel",
+          affectedHosts: ["X9-ITACOLOMI"],
+        }),
+      ],
+      config: x9Config,
+    });
+
+    expect(report.handoverText).toContain("X9-ITACOLOMI");
   });
 
   it("gera plainTextReport e mantem handoverText", () => {
