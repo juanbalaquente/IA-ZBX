@@ -239,6 +239,28 @@ Para supervisao e calibracao do modulo:
 
 Shadow Mode continua ativo como auditoria, mas nao e a funcao principal do operador no uso diario.
 
+### Relatorio de turno
+
+O NightOps gera um relatorio textual pronto para copiar e colar no fechamento do plantao.
+
+Ele inclui:
+
+- relatorio completo em texto puro;
+- periodo analisado;
+- resumo geral;
+- ocorrencias relevantes priorizadas;
+- total de incidentes/alarmes;
+- passagem de turno;
+- recomendacoes finais.
+
+Na tela `/nightops`, o painel principal do topo permite:
+
+- gerar o relatorio do turno;
+- copiar o relatorio completo;
+- copiar apenas a passagem de turno;
+- copiar apenas o resumo;
+- baixar o conteudo em `.txt`.
+
 ### Persistencia local do historico
 
 O historico do NightOps agora fica salvo localmente em:

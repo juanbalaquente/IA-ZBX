@@ -24918,13 +24918,13 @@
   "shiftReports": [
     {
       "id": "report-2026-05-01T19:00:00-03:00-2026-05-02T07:00:00-03:00",
-      "generatedAt": "2026-05-01T03:44:12.570Z",
-      "title": "Relatorio NOC Noturno",
+      "generatedAt": "2026-05-01T04:07:29.036Z",
+      "title": "RELATORIO NOC NOTURNO - 01/05/2026",
       "period": {
         "start": "2026-05-01T19:00:00-03:00",
         "end": "2026-05-02T07:00:00-03:00"
       },
-      "summary": "27 incidentes consolidados no turno, com 24 criticidade alta/critica e 8 recomendacoes de escalonamento.",
+      "summary": "Durante o plantao foram identificados 34 incidentes/alarmes no Zabbix. Ha ocorrencias que permanecem ativas e precisam de acompanhamento pelo turno seguinte.",
       "numbers": {
         "totalProblems": 34,
         "criticalIncidents": 24,
@@ -26619,11 +26619,134 @@
           }
         }
       ],
+      "relevantOccurrences": [
+        {
+          "title": "Interface XGigabitEthernet0/0/3 está com sinal alto: -18.89 dBm limiar: -18.01 dBm",
+          "status": "ATIVO",
+          "startedAt": "2026-04-09T20:47:48.000Z",
+          "endedAt": null,
+          "durationText": "21 dias e 6 horas e 53 minutos",
+          "impact": "Afeta SW_HUAWEI_100G_SANTA_INES no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 1
+        },
+        {
+          "title": "100GE0/0/1 Lane 1 está com sinal alto: -11.07 dBm limiar: -10.6 dBm",
+          "status": "ATIVO",
+          "startedAt": "2026-04-04T16:34:55.000Z",
+          "endedAt": null,
+          "durationText": "26 dias e 11 horas e 6 minutos",
+          "impact": "Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.",
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 1
+        },
+        {
+          "title": "Incidente correlacionado - 10031-SPEEDNET",
+          "status": "ATIVO",
+          "startedAt": "2026-03-24T17:00:37.000Z",
+          "endedAt": null,
+          "durationText": "37 dias e 10 horas e 41 minutos",
+          "impact": "Afeta SW_HUAWEI_100G_BETIM no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 2
+        },
+        {
+          "title": "Interface XGigabitEthernet0/0/1 está com sinal alto: -6.82 dBm limiar: -0.01 dBm",
+          "status": "ATIVO",
+          "startedAt": "2026-03-24T16:59:46.000Z",
+          "endedAt": null,
+          "durationText": "37 dias e 10 horas e 41 minutos",
+          "impact": "Afeta SW_HUAWEI_100G_VIANOPOLIS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 1
+        },
+        {
+          "title": "Interface XGigabitEthernet0/0/5 está com sinal alto: -21.25 dBm limiar: -0.01 dBm",
+          "status": "ATIVO",
+          "startedAt": "2026-03-24T16:59:32.000Z",
+          "endedAt": null,
+          "durationText": "37 dias e 10 horas e 42 minutos",
+          "impact": "Afeta 10031-SW_HUAWEI_40GB_JAQUELINE no grupo 10031-SPEEDNET/BACKBONE.",
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 1
+        },
+        {
+          "title": "Interface XGigabitEthernet0/0/6 está com sinal alto: -12.82 dBm limiar: -0.01 dBm",
+          "status": "ATIVO",
+          "startedAt": "2026-03-23T15:17:32.000Z",
+          "endedAt": null,
+          "durationText": "38 dias e 12 horas e 24 minutos",
+          "impact": "Afeta 10031-SW_HUAWEI_40GB_JAQUELINE no grupo 10031-SPEEDNET/BACKBONE.",
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 1
+        },
+        {
+          "title": "Interface XGigabitEthernet0/0/4 está com sinal alto: -40 dBm limiar: -27.2 dBm",
+          "status": "ATIVO",
+          "startedAt": "2026-01-21T12:27:55.000Z",
+          "endedAt": null,
+          "durationText": "99 dias e 15 horas e 13 minutos",
+          "impact": "Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.",
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 1
+        },
+        {
+          "title": "GPON 0/2/13 está no limite de ONU por porta 121",
+          "status": "ATIVO",
+          "startedAt": "2025-08-30T14:01:31.000Z",
+          "endedAt": null,
+          "durationText": "243 dias e 13 horas e 40 minutos",
+          "impact": "Afeta 10031-OLT_ESMERALDAS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 1
+        },
+        {
+          "title": "GPON 0/2/1 está no limite de ONU por porta 121",
+          "status": "ATIVO",
+          "startedAt": "2025-04-12T19:01:17.000Z",
+          "endedAt": null,
+          "durationText": "383 dias e 8 horas e 40 minutos",
+          "impact": "Afeta 10031-OLT_ESMERALDAS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 1
+        },
+        {
+          "title": "100GE0/0/1 Lane 2 está com sinal alto: -10.68 dBm limiar: -10.6 dBm",
+          "status": "ATIVO",
+          "startedAt": "2026-05-01T03:37:55.000Z",
+          "endedAt": null,
+          "durationText": "3 minutos",
+          "impact": "Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.",
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "recommendedAction": "Validar o host e a trigger no Zabbix.",
+          "isStillActive": true,
+          "relatedCount": 1
+        }
+      ],
       "recommendations": [
         "Revisar pela manha os incidentes criticos correlacionados e validar RCA preliminar.",
         "Confirmar com supervisao quais recomendacoes de escalonamento serao efetivamente acionadas."
       ],
-      "handoverText": "Passagem de turno: 27 incidentes consolidados no turno, com 24 criticidade alta/critica e 8 recomendacoes de escalonamento. Priorizar a revisao dos incidentes com escalonamento recomendado e validar eventual necessidade de acao manual."
+      "handoverText": "Bom dia. Durante o plantao foram identificados 34 incidentes/alarmes no Zabbix. Ha ocorrencias que permanecem ativas e precisam de acompanhamento pelo turno seguinte. Permanecem ativas as ocorrencias Interface XGigabitEthernet0/0/3 está com sinal alto: -18.89 dBm limiar: -18.01 dBm e 100GE0/0/1 Lane 1 está com sinal alto: -11.07 dBm limiar: -10.6 dBm e devem seguir em acompanhamento pela equipe diurna.",
+      "plainTextReport": "RELATORIO NOC NOTURNO - 01/05/2026\nPERIODO: 19:00 AS 07:00\n--------------------------------------------------------------------------------\n\nRESUMO GERAL:\nDurante o plantao foram identificados 34 incidentes/alarmes no Zabbix. Ha ocorrencias que permanecem ativas e precisam de acompanhamento pelo turno seguinte.\n\nOCORRENCIAS RELEVANTES:\n\n1. Interface XGigabitEthernet0/0/3 está com sinal alto: -18.89 dBm limiar: -18.01 dBm\nStatus: ATIVO\nInicio do alarme: 09/04/2026, 17:47\nTempo em alarme: 21 dias e 6 horas e 53 minutos\nSituacao: Permanece ativo ate o fechamento do relatorio.\nImpacto provavel: Afeta SW_HUAWEI_100G_SANTA_INES no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\n2. 100GE0/0/1 Lane 1 está com sinal alto: -11.07 dBm limiar: -10.6 dBm\nStatus: ATIVO\nInicio do alarme: 04/04/2026, 13:34\nTempo em alarme: 26 dias e 11 horas e 6 minutos\nSituacao: Permanece ativo ate o fechamento do relatorio.\nImpacto provavel: Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\n3. Incidente correlacionado - 10031-SPEEDNET\nStatus: ATIVO\nInicio do alarme: 24/03/2026, 14:00\nTempo em alarme: 37 dias e 10 horas e 41 minutos\nSituacao: Permanece ativo ate o fechamento do relatorio.\nImpacto provavel: Afeta SW_HUAWEI_100G_BETIM no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\n4. Interface XGigabitEthernet0/0/1 está com sinal alto: -6.82 dBm limiar: -0.01 dBm\nStatus: ATIVO\nInicio do alarme: 24/03/2026, 13:59\nTempo em alarme: 37 dias e 10 horas e 41 minutos\nSituacao: Permanece ativo ate o fechamento do relatorio.\nImpacto provavel: Afeta SW_HUAWEI_100G_VIANOPOLIS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\n5. Interface XGigabitEthernet0/0/5 está com sinal alto: -21.25 dBm limiar: -0.01 dBm\nStatus: ATIVO\nInicio do alarme: 24/03/2026, 13:59\nTempo em alarme: 37 dias e 10 horas e 42 minutos\nSituacao: Permanece ativo ate o fechamento do relatorio.\nImpacto provavel: Afeta 10031-SW_HUAWEI_40GB_JAQUELINE no grupo 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\n6. Interface XGigabitEthernet0/0/6 está com sinal alto: -12.82 dBm limiar: -0.01 dBm\nStatus: ATIVO\nInicio do alarme: 23/03/2026, 12:17\nTempo em alarme: 38 dias e 12 horas e 24 minutos\nSituacao: Permanece ativo ate o fechamento do relatorio.\nImpacto provavel: Afeta 10031-SW_HUAWEI_40GB_JAQUELINE no grupo 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\n7. Interface XGigabitEthernet0/0/4 está com sinal alto: -40 dBm limiar: -27.2 dBm\nStatus: ATIVO\nInicio do alarme: 21/01/2026, 09:27\nTempo em alarme: 99 dias e 15 horas e 13 minutos\nSituacao: Permanece ativo ate o fechamento do relatorio.\nImpacto provavel: Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\n8. GPON 0/2/13 está no limite de ONU por porta 121\nStatus: ATIVO\nInicio do alarme: 30/08/2025, 11:01\nTempo em alarme: 243 dias e 13 horas e 40 minutos\nSituacao: Permanece ativo ate o fechamento do relatorio.\nImpacto provavel: Afeta 10031-OLT_ESMERALDAS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\n9. GPON 0/2/1 está no limite de ONU por porta 121\nStatus: ATIVO\nInicio do alarme: 12/04/2025, 16:01\nTempo em alarme: 383 dias e 8 horas e 40 minutos\nSituacao: Permanece ativo ate o fechamento do relatorio.\nImpacto provavel: Afeta 10031-OLT_ESMERALDAS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\n10. 100GE0/0/1 Lane 2 está com sinal alto: -10.68 dBm limiar: -10.6 dBm\nStatus: ATIVO\nInicio do alarme: 01/05/2026, 00:37\nTempo em alarme: 3 minutos\nSituacao: Permanece ativo ate o fechamento do relatorio.\nImpacto provavel: Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.\nAcao recomendada: Validar o host e a trigger no Zabbix.\n\nOutras 24 ocorrencias menores foram registradas no periodo.\n\nTOTAL DE INCIDENTES/ALARMES: 34\n\nOBSERVACAO:\nHa ocorrencias que permanecem ativas e precisam de acompanhamento pelo turno seguinte.\n\nPASSAGEM DE TURNO:\nBom dia. Durante o plantao foram identificados 34 incidentes/alarmes no Zabbix. Ha ocorrencias que permanecem ativas e precisam de acompanhamento pelo turno seguinte. Permanecem ativas as ocorrencias Interface XGigabitEthernet0/0/3 está com sinal alto: -18.89 dBm limiar: -18.01 dBm e 100GE0/0/1 Lane 1 está com sinal alto: -11.07 dBm limiar: -10.6 dBm e devem seguir em acompanhamento pela equipe diurna."
     }
   ],
   "shadowDecisions": [

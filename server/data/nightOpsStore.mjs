@@ -94,7 +94,7 @@ function buildStoredShiftReport(report) {
   return {
     id: report.id || `report-${report.period?.start || new Date().toISOString()}`,
     generatedAt: report.generatedAt || new Date().toISOString(),
-    title: report.title || "Relatorio NOC Noturno",
+    title: report.title || "RELATORIO NOC NOTURNO",
     period: report.period || {
       start: null,
       end: null,
@@ -108,8 +108,10 @@ function buildStoredShiftReport(report) {
       escalations: 0,
     },
     incidents: ensureArray(report.incidents),
+    relevantOccurrences: ensureArray(report.relevantOccurrences),
     recommendations: ensureArray(report.recommendations),
     handoverText: report.handoverText || "",
+    plainTextReport: report.plainTextReport || "",
   };
 }
 

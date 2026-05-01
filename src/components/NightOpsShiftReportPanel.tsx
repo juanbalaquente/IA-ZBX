@@ -18,17 +18,21 @@ function formatDateTime(value?: string | null) {
 }
 
 function buildReportText(report: NightOpsShiftReport | NightOpsStoredShiftReport) {
+  if (report.plainTextReport) {
+    return report.plainTextReport;
+  }
+
   return [
     report.title,
-    `Periodo: ${report.period.start} ate ${report.period.end}`,
+    `PERIODO: ${report.period.start} ate ${report.period.end}`,
     "",
-    "Resumo:",
+    "RESUMO:",
     report.summary,
     "",
-    "Passagem de turno:",
+    "PASSAGEM DE TURNO:",
     report.handoverText,
     "",
-    "Recomendacoes:",
+    "RECOMENDACOES:",
     ...(report.recommendations.length > 0
       ? report.recommendations.map((item) => `- ${item}`)
       : ["- Nenhuma recomendacao adicional."]),
@@ -98,6 +102,23 @@ function NightOpsShiftReportPanel({
               <p className="mt-2 text-sm text-slate-200">
                 {formatDateTime(report.period.start)} ate {formatDateTime(report.period.end)}
               </p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Relatorio completo</p>
+                <button
+                  type="button"
+                  onClick={() => onCopy("report-full", buildReportText(report))}
+                  className="inline-flex items-center gap-2 rounded-2xl border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-200"
+                >
+                  <Copy size={14} />
+                  {copiedKey === "report-full" ? "Copiado!" : "Copiar relatorio completo"}
+                </button>
+              </div>
+              <pre className="mt-3 whitespace-pre-wrap break-words text-sm leading-6 text-slate-200">
+                {buildReportText(report)}
+              </pre>
             </div>
 
             <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
