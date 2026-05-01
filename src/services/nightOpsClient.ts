@@ -1,6 +1,9 @@
 import type {
   NightOpsConfig,
   NightOpsHistoryItem,
+  NightOpsShadowDecision,
+  NightOpsShadowMetrics,
+  NightOpsShadowValidationStatus,
   NightOpsShiftReport,
   NightOpsStatus,
   NightOpsStoredShiftReport,
@@ -142,5 +145,81 @@ export async function updateNightOpsConfig(
   return (await response.json()) as {
     status: "ok";
     config: NightOpsConfig;
+  };
+}
+
+export async function getShadowDecisions(
+  filters?: Record<string, string | boolean | undefined>,
+): Promise<{ status: "ok"; items: NightOpsShadowDecision[]; count: number }> {
+  const searchParams = new URLSearchParams();
+
+  Object.entries(filters || {}).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      searchParams.set(key, String(value));
+    }
+  });
+
+  const response = await fetch(
+    `${agentBaseUrl}/nightops/shadow${searchParams.toString() ? `?${searchParams.toString()}` : ""}`,
+  );
+  if (!response.ok) {
+    throw new Error(`Shadow Mode indisponivel (${response.status}).`);
+  }
+
+  return (await response.json()) as {
+    status: "ok";
+    items: NightOpsShadowDecision[];
+    count: number;
+  };
+}
+
+export async function getShadowMetrics(
+  filters?: Record<string, string | boolean | undefined>,
+): Promise<{ status: "ok"; metrics: NightOpsShadowMetrics }> {
+  const searchParams = new URLSearchParams();
+
+  Object.entries(filters || {}).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      searchParams.set(key, String(value));
+    }
+  });
+
+  const response = await fetch(
+    `${agentBaseUrl}/nightops/shadow/metrics${searchParams.toString() ? `?${searchParams.toString()}` : ""}`,
+  );
+  if (!response.ok) {
+    throw new Error(`Metricas Shadow Mode indisponiveis (${response.status}).`);
+  }
+
+  return (await response.json()) as {
+    status: "ok";
+    metrics: NightOpsShadowMetrics;
+  };
+}
+
+export async function updateShadowDecisionValidation(
+  id: string,
+  payload: {
+    status: Exclude<NightOpsShadowValidationStatus, "pending">;
+    validatedBy?: string;
+    notes?: string;
+  },
+): Promise<{ status: "ok"; item: NightOpsShadowDecision }> {
+  const response = await fetch(`${agentBaseUrl}/nightops/shadow/${id}/validation`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.error || `Falha ao validar decisao shadow (${response.status}).`);
+  }
+
+  return (await response.json()) as {
+    status: "ok";
+    item: NightOpsShadowDecision;
   };
 }

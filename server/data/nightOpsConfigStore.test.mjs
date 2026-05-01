@@ -22,6 +22,8 @@ const defaults = {
   sameGroupAffectedHostsThreshold: 5,
   criticalKeywords: ["OLT", "POP", "BGP", "BACKBONE", "CORE", "TRANSPORTE", "ENLACE"],
   autoEscalationEnabled: false,
+  shadowModeEnabled: true,
+  shadowModeRetentionDays: 30,
 };
 
 function createTempFilePath(name) {
@@ -54,6 +56,7 @@ describe("nightOpsConfigStore", () => {
     expect(existsSync(filePath)).toBe(true);
     expect(store.getConfig().defaultStartHour).toBe(19);
     expect(store.getConfig().autoEscalationEnabled).toBe(false);
+    expect(store.getConfig().shadowModeEnabled).toBe(true);
   });
 
   it("salva configuracao valida", () => {
@@ -66,11 +69,13 @@ describe("nightOpsConfigStore", () => {
       minDurationMinutes: 8,
       criticalKeywords: ["OLT", "POP", "CORE"],
       autoEscalationEnabled: true,
+      shadowModeRetentionDays: 45,
     });
 
     expect(result.ok).toBe(true);
     expect(store.getConfig().minDurationMinutes).toBe(8);
     expect(store.getConfig().autoEscalationEnabled).toBe(false);
+    expect(store.getConfig().shadowModeRetentionDays).toBe(45);
   });
 
   it("rejeita valores invalidos", () => {
@@ -79,6 +84,7 @@ describe("nightOpsConfigStore", () => {
         ...defaults,
         correlationWindowMinutes: 0,
         criticalKeywords: new Array(30).fill("A"),
+        shadowModeRetentionDays: 500,
       },
       defaults,
     );

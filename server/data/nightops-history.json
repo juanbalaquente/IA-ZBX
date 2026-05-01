@@ -26757,5 +26757,6 @@
       ],
       "handoverText": "Passagem de turno: 93 incidentes consolidados no turno, com 91 criticidade alta/critica e 48 recomendacoes de escalonamento. Priorizar a revisao dos incidentes com escalonamento recomendado e validar eventual necessidade de acao manual."
     }
-  ]
+  ],
+  "shadowDecisions": []
 }

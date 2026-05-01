@@ -12,6 +12,7 @@ const defaultHistory = {
   incidents: [],
   analyses: [],
   shiftReports: [],
+  shadowDecisions: [],
 };
 
 function cloneDefaultHistory() {
@@ -20,6 +21,7 @@ function cloneDefaultHistory() {
     incidents: [],
     analyses: [],
     shiftReports: [],
+    shadowDecisions: [],
   };
 }
 
@@ -111,6 +113,27 @@ function buildStoredShiftReport(report) {
   };
 }
 
+function buildStoredShadowDecision(decision) {
+  return {
+    id: decision.id || `shadow-${Date.now()}`,
+    createdAt: decision.createdAt || new Date().toISOString(),
+    analysisId: decision.analysisId || null,
+    incidentId: decision.incidentId || null,
+    decision: decision.decision || "monitor",
+    wouldNotify: Boolean(decision.wouldNotify),
+    severity: decision.severity || "medium",
+    reason: String(decision.reason || "Sem justificativa informada."),
+    evidence: ensureArray(decision.evidence),
+    confidence: Number(decision.confidence || 0),
+    humanValidation: {
+      status: decision.humanValidation?.status || "pending",
+      validatedBy: decision.humanValidation?.validatedBy || null,
+      validatedAt: decision.humanValidation?.validatedAt || null,
+      notes: decision.humanValidation?.notes || "",
+    },
+  };
+}
+
 export function createNightOpsStore(options = {}) {
   const historyFilePath = resolve(
     options.filePath || "server/data/nightops-history.json",
@@ -156,6 +179,7 @@ export function createNightOpsStore(options = {}) {
         incidents: ensureArray(parsed?.incidents),
         analyses: ensureArray(parsed?.analyses),
         shiftReports: ensureArray(parsed?.shiftReports),
+        shadowDecisions: ensureArray(parsed?.shadowDecisions),
       };
       persistHistory();
     } catch {
@@ -223,6 +247,19 @@ export function createNightOpsStore(options = {}) {
     }
   }
 
+  function saveShadowDecision(decision) {
+    try {
+      const normalized = buildStoredShadowDecision(decision);
+      upsertById("shadowDecisions", normalized);
+      persistHistory();
+      return normalized;
+    } catch (error) {
+      throw new Error(
+        `Falha ao salvar decisao Shadow Mode: ${error instanceof Error ? error.message : "erro desconhecido"}`,
+      );
+    }
+  }
+
   function filterByDateRange(items, filters = {}, dateField = "generatedAt") {
     const startTs = filters.start ? readTimestamp(filters.start) : null;
     const endTs = filters.end ? readTimestamp(filters.end) : null;
@@ -282,6 +319,75 @@ export function createNightOpsStore(options = {}) {
     );
   }
 
+  function listShadowDecisions(filters = {}) {
+    let items = [...history.shadowDecisions];
+
+    if (filters.decision) {
+      items = items.filter((item) => item.decision === filters.decision);
+    }
+
+    if (filters.severity) {
+      items = items.filter((item) => item.severity === filters.severity);
+    }
+
+    if (filters.validationStatus) {
+      items = items.filter(
+        (item) => item.humanValidation?.status === filters.validationStatus,
+      );
+    }
+
+    const wouldNotify = normalizeBoolean(filters.wouldNotify);
+    if (wouldNotify !== null) {
+      items = items.filter((item) => item.wouldNotify === wouldNotify);
+    }
+
+    items = filterByDateRange(items, filters, "createdAt");
+    return items.sort(
+      (left, right) => readTimestamp(right.createdAt) - readTimestamp(left.createdAt),
+    );
+  }
+
+  function getShadowDecisionById(id) {
+    return history.shadowDecisions.find((item) => item.id === id) || null;
+  }
+
+  function updateShadowDecisionValidation(id, validation) {
+    const existing = getShadowDecisionById(id);
+    if (!existing) {
+      return null;
+    }
+
+    const updated = {
+      ...existing,
+      humanValidation: {
+        ...existing.humanValidation,
+        status: validation.status,
+        validatedBy: validation.validatedBy || null,
+        validatedAt: validation.validatedAt || new Date().toISOString(),
+        notes: validation.notes || "",
+      },
+    };
+    upsertById("shadowDecisions", updated);
+    persistHistory();
+    return updated;
+  }
+
+  function getShadowMetrics(filters = {}) {
+    const items = listShadowDecisions(filters);
+    return {
+      total: items.length,
+      pending: items.filter((item) => item.humanValidation?.status === "pending").length,
+      correct: items.filter((item) => item.humanValidation?.status === "correct").length,
+      falsePositive: items.filter((item) => item.humanValidation?.status === "false_positive").length,
+      falseNegative: items.filter((item) => item.humanValidation?.status === "false_negative").length,
+      partiallyCorrect: items.filter((item) => item.humanValidation?.status === "partially_correct").length,
+      wouldNotify: items.filter((item) => item.wouldNotify).length,
+      recommendEscalation: items.filter((item) => item.decision === "recommend_escalation").length,
+      monitor: items.filter((item) => item.decision === "monitor").length,
+      ignore: items.filter((item) => item.decision === "ignore").length,
+    };
+  }
+
   function getLastShiftReport() {
     return listShiftReports()[0] || null;
   }
@@ -295,6 +401,7 @@ export function createNightOpsStore(options = {}) {
       incidents: history.incidents.filter(isRecent),
       analyses: history.analyses.filter(isRecent),
       shiftReports: history.shiftReports.filter(isRecent),
+      shadowDecisions: history.shadowDecisions.filter(isRecent),
     };
 
     persistHistory();
@@ -303,7 +410,20 @@ export function createNightOpsStore(options = {}) {
       incidents: history.incidents.length,
       analyses: history.analyses.length,
       shiftReports: history.shiftReports.length,
+      shadowDecisions: history.shadowDecisions.length,
     };
+  }
+
+  function clearOldShadowDecisions(days = 30) {
+    const cutoffTs = Date.now() - Number(days) * 24 * 60 * 60 * 1000;
+    history = {
+      ...history,
+      shadowDecisions: history.shadowDecisions.filter(
+        (item) => readTimestamp(item.createdAt) >= cutoffTs,
+      ),
+    };
+    persistHistory();
+    return history.shadowDecisions.length;
   }
 
   function getLatestAnalysis() {
@@ -331,13 +451,19 @@ export function createNightOpsStore(options = {}) {
     getLastShiftReport,
     getLatestAnalysis,
     getLatestShiftReport: getLastShiftReport,
+    getShadowDecisionById,
+    getShadowMetrics,
     listAnalyses,
     listIncidents,
+    listShadowDecisions,
     listShiftReports,
     saveAnalysis,
     saveIncident,
+    saveShadowDecision,
     saveShiftReport,
     setLatestAnalysis,
     setLatestShiftReport,
+    updateShadowDecisionValidation,
+    clearOldShadowDecisions,
   };
 }

@@ -270,6 +270,70 @@ export function createAiRouter({ config, zabbixClient, nightOpsService }) {
     });
   }
 
+  async function handleNightOpsShadow(request, response, sendJson) {
+    const requestUrl = getRequestUrl(request);
+    const filters = {
+      start: requestUrl.searchParams.get("start") || undefined,
+      end: requestUrl.searchParams.get("end") || undefined,
+      decision: requestUrl.searchParams.get("decision") || undefined,
+      severity: requestUrl.searchParams.get("severity") || undefined,
+      validationStatus:
+        requestUrl.searchParams.get("validationStatus") || undefined,
+      wouldNotify: requestUrl.searchParams.get("wouldNotify") || undefined,
+    };
+    const items = nightOpsService.listShadowDecisions(filters);
+
+    return sendJson(response, 200, {
+      status: "ok",
+      items,
+      count: items.length,
+    });
+  }
+
+  async function handleNightOpsShadowMetrics(request, response, sendJson) {
+    const requestUrl = getRequestUrl(request);
+    const filters = {
+      start: requestUrl.searchParams.get("start") || undefined,
+      end: requestUrl.searchParams.get("end") || undefined,
+      decision: requestUrl.searchParams.get("decision") || undefined,
+      severity: requestUrl.searchParams.get("severity") || undefined,
+      validationStatus:
+        requestUrl.searchParams.get("validationStatus") || undefined,
+      wouldNotify: requestUrl.searchParams.get("wouldNotify") || undefined,
+    };
+
+    return sendJson(response, 200, {
+      status: "ok",
+      metrics: nightOpsService.getShadowMetrics(filters),
+    });
+  }
+
+  async function handleNightOpsShadowValidation(
+    request,
+    response,
+    sendJson,
+    readJsonBody,
+    shadowId,
+  ) {
+    const body = await readJsonBody(request);
+
+    try {
+      const item = nightOpsService.updateShadowDecisionValidation(shadowId, {
+        status: body.status,
+        validatedBy: body.validatedBy,
+        notes: body.notes,
+      });
+      return sendJson(response, 200, {
+        status: "ok",
+        item,
+      });
+    } catch (error) {
+      return sendJson(response, 400, {
+        error: error instanceof Error ? error.message : "Erro na validacao shadow.",
+      });
+    }
+  }
+
   async function handleNightOpsAnalyze(_request, response, sendJson) {
     const result = await nightOpsService.analyzeNightOps();
     return sendJson(response, 200, result);
@@ -336,6 +400,27 @@ export function createAiRouter({ config, zabbixClient, nightOpsService }) {
 
       if (request.method === "GET" && pathname === "/ai-api/nightops/history") {
         return await handleNightOpsHistory(request, response, sendJson);
+      }
+
+      if (request.method === "GET" && pathname === "/ai-api/nightops/shadow") {
+        return await handleNightOpsShadow(request, response, sendJson);
+      }
+
+      if (request.method === "GET" && pathname === "/ai-api/nightops/shadow/metrics") {
+        return await handleNightOpsShadowMetrics(request, response, sendJson);
+      }
+
+      const shadowValidationMatch = pathname.match(
+        /^\/ai-api\/nightops\/shadow\/([^/]+)\/validation$/,
+      );
+      if (request.method === "PUT" && shadowValidationMatch) {
+        return await handleNightOpsShadowValidation(
+          request,
+          response,
+          sendJson,
+          readJsonBody,
+          decodeURIComponent(shadowValidationMatch[1]),
+        );
       }
 
       if (request.method === "GET" && pathname === "/ai-api/nightops/reports") {

@@ -174,4 +174,152 @@ describe("createNightOpsStore", () => {
     );
     expect(Boolean(backupName)).toBe(true);
   });
+
+  it("salva shadow decision", () => {
+    const { dir, filePath } = createTempFilePath("nightops-history.json");
+    tempDir = dir;
+    const store = createNightOpsStore({ filePath });
+
+    store.saveShadowDecision({
+      id: "SHADOW-1",
+      createdAt: "2026-05-01T01:00:00.000Z",
+      analysisId: "analysis-1",
+      incidentId: "INC-1",
+      decision: "monitor",
+      wouldNotify: false,
+      severity: "high",
+      reason: "Validar recorrencia.",
+      evidence: ["Host unico"],
+      confidence: 0.7,
+      humanValidation: {
+        status: "pending",
+        validatedBy: null,
+        validatedAt: null,
+        notes: "",
+      },
+    });
+
+    expect(store.getShadowDecisionById("SHADOW-1")?.decision).toBe("monitor");
+  });
+
+  it("lista shadow decisions com filtros", () => {
+    const { dir, filePath } = createTempFilePath("nightops-history.json");
+    tempDir = dir;
+    const store = createNightOpsStore({ filePath });
+
+    store.saveShadowDecision({
+      id: "SHADOW-2",
+      createdAt: "2026-05-01T01:00:00.000Z",
+      analysisId: "analysis-1",
+      incidentId: "INC-2",
+      decision: "recommend_escalation",
+      wouldNotify: true,
+      severity: "critical",
+      reason: "Falha critica.",
+      evidence: [],
+      confidence: 0.9,
+      humanValidation: {
+        status: "pending",
+        validatedBy: null,
+        validatedAt: null,
+        notes: "",
+      },
+    });
+
+    expect(store.listShadowDecisions({ wouldNotify: true })).toHaveLength(1);
+    expect(store.listShadowDecisions({ decision: "recommend_escalation" })).toHaveLength(1);
+  });
+
+  it("atualiza validacao da shadow decision", () => {
+    const { dir, filePath } = createTempFilePath("nightops-history.json");
+    tempDir = dir;
+    const store = createNightOpsStore({ filePath });
+
+    store.saveShadowDecision({
+      id: "SHADOW-3",
+      createdAt: "2026-05-01T01:00:00.000Z",
+      analysisId: "analysis-1",
+      incidentId: "INC-3",
+      decision: "ignore",
+      wouldNotify: false,
+      severity: "low",
+      reason: "Ruido.",
+      evidence: [],
+      confidence: 0.4,
+      humanValidation: {
+        status: "pending",
+        validatedBy: null,
+        validatedAt: null,
+        notes: "",
+      },
+    });
+
+    const updated = store.updateShadowDecisionValidation("SHADOW-3", {
+      status: "false_negative",
+      validatedBy: "Juan",
+      notes: "Nao deveria ignorar.",
+    });
+
+    expect(updated?.humanValidation.status).toBe("false_negative");
+    expect(updated?.humanValidation.validatedBy).toBe("Juan");
+  });
+
+  it("calcula metricas shadow", () => {
+    const { dir, filePath } = createTempFilePath("nightops-history.json");
+    tempDir = dir;
+    const store = createNightOpsStore({ filePath });
+
+    store.saveShadowDecision({
+      id: "SHADOW-4",
+      createdAt: "2026-05-01T01:00:00.000Z",
+      analysisId: "analysis-1",
+      incidentId: "INC-4",
+      decision: "recommend_escalation",
+      wouldNotify: true,
+      severity: "critical",
+      reason: "Critico",
+      evidence: [],
+      confidence: 0.95,
+      humanValidation: {
+        status: "correct",
+        validatedBy: "Juan",
+        validatedAt: "2026-05-01T02:00:00.000Z",
+        notes: "",
+      },
+    });
+
+    const metrics = store.getShadowMetrics();
+    expect(metrics.total).toBe(1);
+    expect(metrics.correct).toBe(1);
+    expect(metrics.wouldNotify).toBe(1);
+    expect(metrics.recommendEscalation).toBe(1);
+  });
+
+  it("limpa shadow decisions antigas", () => {
+    const { dir, filePath } = createTempFilePath("nightops-history.json");
+    tempDir = dir;
+    const store = createNightOpsStore({ filePath });
+
+    store.saveShadowDecision({
+      id: "SHADOW-5",
+      createdAt: "2020-01-01T00:00:00.000Z",
+      analysisId: "analysis-1",
+      incidentId: "INC-5",
+      decision: "monitor",
+      wouldNotify: false,
+      severity: "medium",
+      reason: "Antigo",
+      evidence: [],
+      confidence: 0.5,
+      humanValidation: {
+        status: "pending",
+        validatedBy: null,
+        validatedAt: null,
+        notes: "",
+      },
+    });
+
+    store.clearOldShadowDecisions(30);
+    expect(store.listShadowDecisions()).toHaveLength(0);
+  });
 });

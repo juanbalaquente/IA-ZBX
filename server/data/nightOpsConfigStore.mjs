@@ -34,6 +34,11 @@ export function validateNightOpsConfig(input, defaults) {
       ? input.criticalKeywords.map(normalizeKeyword).filter(Boolean)
       : [],
     autoEscalationEnabled: false,
+    shadowModeEnabled:
+      typeof input.shadowModeEnabled === "boolean"
+        ? input.shadowModeEnabled
+        : Boolean(defaults.shadowModeEnabled),
+    shadowModeRetentionDays: Number(input.shadowModeRetentionDays),
   };
 
   if (!Number.isInteger(nextConfig.defaultStartHour) || nextConfig.defaultStartHour < 0 || nextConfig.defaultStartHour > 23) {
@@ -74,6 +79,14 @@ export function validateNightOpsConfig(input, defaults) {
 
   if (nextConfig.criticalKeywords.some((keyword) => keyword.length > maxKeywordLength)) {
     errors.push("criticalKeywords contem item muito longo.");
+  }
+
+  if (
+    !Number.isInteger(nextConfig.shadowModeRetentionDays) ||
+    nextConfig.shadowModeRetentionDays < 1 ||
+    nextConfig.shadowModeRetentionDays > 365
+  ) {
+    errors.push("shadowModeRetentionDays invalido.");
   }
 
   return {

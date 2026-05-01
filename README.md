@@ -41,11 +41,16 @@ Importante: esta versao nao aciona pessoas automaticamente. Ela apenas analisa, 
   - `POST /ai-api/analyze-problem`
 - Novos endpoints NightOps:
   - `GET /ai-api/nightops/status`
+  - `GET /ai-api/nightops/config`
   - `GET /ai-api/nightops/history`
+  - `GET /ai-api/nightops/shadow`
+  - `GET /ai-api/nightops/shadow/metrics`
   - `GET /ai-api/nightops/reports`
   - `GET /ai-api/nightops/reports/latest`
   - `POST /ai-api/nightops/analyze`
   - `POST /ai-api/nightops/shift-report`
+  - `PUT /ai-api/nightops/config`
+  - `PUT /ai-api/nightops/shadow/:id/validation`
 - Fallback local preservado em `src/services/aiQueryService.ts`
 
 ## Estrutura principal
@@ -234,6 +239,8 @@ Parametros atuais:
 - limite de hosts afetados no mesmo grupo;
 - palavras-chave criticas;
 - `autoEscalationEnabled`, visivel mas mantido desativado nesta fase.
+- `shadowModeEnabled`, ativo por padrao;
+- `shadowModeRetentionDays`, para limpeza do historico de observacao.
 
 ### Regras deterministicas atuais
 
@@ -308,6 +315,27 @@ Retorna os relatorios de turno persistidos.
 
 Retorna o ultimo relatorio salvo.
 
+#### `GET /ai-api/nightops/shadow`
+
+Retorna as decisoes registradas pelo Shadow Mode.
+
+Filtros opcionais:
+
+- `start`
+- `end`
+- `decision`
+- `severity`
+- `validationStatus`
+- `wouldNotify`
+
+#### `GET /ai-api/nightops/shadow/metrics`
+
+Retorna metricas agregadas do Shadow Mode.
+
+#### `PUT /ai-api/nightops/shadow/:id/validation`
+
+Atualiza a validacao humana de uma decisao shadow.
+
 #### `POST /ai-api/nightops/shift-report`
 
 Body opcional:
@@ -363,6 +391,32 @@ Cobertura minima adicionada:
 - O relatorio de turno usa as analises salvas no backend ativo.
 - A qualidade da explicacao por IA depende do contexto compacto enviado ao modelo.
 - Para evolucao futura, o recomendado e migrar a persistencia para SQLite ou PostgreSQL.
+
+## Shadow Mode
+
+O Shadow Mode e uma fase de observacao operacional:
+
+- nao aciona ninguem;
+- nao envia Telegram, WhatsApp, Discord ou e-mail;
+- registra o que o sistema teria feito;
+- permite validacao humana posterior;
+- ajuda a medir falso positivo e falso negativo;
+- e recomendado rodar por 7 a 15 dias antes de considerar qualquer notificacao externa.
+
+Decisoes registradas:
+
+- `ignore`
+- `monitor`
+- `recommend_escalation`
+
+Cada decisao guarda tambem:
+
+- severidade;
+- justificativa;
+- evidencias;
+- confianca;
+- se `wouldNotify` seria verdadeiro em uma fase futura;
+- validacao humana com `pending`, `correct`, `false_positive`, `false_negative` ou `partially_correct`.
 
 ## Seguranca
 

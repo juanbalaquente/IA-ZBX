@@ -108,6 +108,7 @@ export interface NightOpsStatus {
   generatedAt: string | null;
   summary: NightOpsSummary;
   incidents: NightOpsIncident[];
+  shadowDecisions?: NightOpsShadowDecision[];
   analysisSource?: string;
   analysisModel?: string;
   providerSummary?: string;
@@ -160,4 +161,50 @@ export interface NightOpsConfig {
   sameGroupAffectedHostsThreshold: number;
   criticalKeywords: string[];
   autoEscalationEnabled: boolean;
+  shadowModeEnabled: boolean;
+  shadowModeRetentionDays: number;
+}
+
+export type NightOpsShadowDecisionType =
+  | "ignore"
+  | "monitor"
+  | "recommend_escalation";
+
+export type NightOpsShadowValidationStatus =
+  | "pending"
+  | "correct"
+  | "false_positive"
+  | "false_negative"
+  | "partially_correct";
+
+export interface NightOpsShadowDecision {
+  id: string;
+  createdAt: string;
+  analysisId: string;
+  incidentId: string;
+  decision: NightOpsShadowDecisionType;
+  wouldNotify: boolean;
+  severity: NightOpsSeverity;
+  reason: string;
+  evidence: string[];
+  confidence: number;
+  humanValidation: {
+    status: NightOpsShadowValidationStatus;
+    validatedBy: string | null;
+    validatedAt: string | null;
+    notes: string;
+  };
+}
+
+export interface NightOpsShadowMetrics {
+  total: number;
+  pending: number;
+  correct: number;
+  falsePositive: number;
+  falseNegative: number;
+  partiallyCorrect: number;
+  wouldNotify: number;
+  recommendEscalation: number;
+  monitor: number;
+  ignore: number;
 }

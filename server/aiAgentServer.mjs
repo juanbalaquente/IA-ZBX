@@ -53,6 +53,12 @@ const config = {
     .split(",")
     .map((item) => item.trim())
     .filter(Boolean),
+  nightOpsShadowModeEnabled:
+    String(process.env.NIGHTOPS_SHADOW_MODE_ENABLED || "true").toLowerCase() !==
+    "false",
+  nightOpsShadowModeRetentionDays: Number(
+    process.env.NIGHTOPS_SHADOW_MODE_RETENTION_DAYS || 30,
+  ),
 };
 
 function loadEnvFile(filename) {
@@ -126,6 +132,8 @@ const nightOpsConfigStore = createNightOpsConfigStore({
       config.nightOpsSameGroupAffectedHostsThreshold,
     criticalKeywords: config.nightOpsCriticalKeywords,
     autoEscalationEnabled: false,
+    shadowModeEnabled: config.nightOpsShadowModeEnabled,
+    shadowModeRetentionDays: config.nightOpsShadowModeRetentionDays,
   },
 });
 const nightOpsService = createNightOpsService({

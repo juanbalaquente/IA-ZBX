@@ -14,5 +14,7 @@
     "TRANSPORTE",
     "ENLACE"
   ],
-  "autoEscalationEnabled": false
+  "autoEscalationEnabled": false,
+  "shadowModeEnabled": true,
+  "shadowModeRetentionDays": 30
 }

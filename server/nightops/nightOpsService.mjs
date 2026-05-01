@@ -4,6 +4,46 @@ import { classifyProblem } from "./incidentClassifier.mjs";
 import { correlateIncidents } from "./correlationEngine.mjs";
 import { generateShiftReport } from "./shiftReportService.mjs";
 
+function buildShadowDecisionId(now = new Date()) {
+  const pad = (value) => String(value).padStart(2, "0");
+  const random = Math.random().toString(36).slice(2, 6).toUpperCase();
+  return `SHADOW-${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}-${random}`;
+}
+
+function deriveShadowDecision(incident, analysisId, generatedAt) {
+  let decision = "monitor";
+  let wouldNotify = false;
+
+  if (incident.escalation?.required) {
+    decision = "recommend_escalation";
+    wouldNotify = true;
+  } else if (
+    incident.status === "ignored" ||
+    (incident.severity === "low" && !incident.escalation?.required)
+  ) {
+    decision = "ignore";
+  }
+
+  return {
+    id: buildShadowDecisionId(),
+    createdAt: generatedAt,
+    analysisId,
+    incidentId: incident.id,
+    decision,
+    wouldNotify,
+    severity: incident.severity,
+    reason: incident.escalation?.reason || incident.probableCause || "Sem motivo informado.",
+    evidence: incident.evidence || [],
+    confidence: Number(incident.confidence || 0),
+    humanValidation: {
+      status: "pending",
+      validatedBy: null,
+      validatedAt: null,
+      notes: "",
+    },
+  };
+}
+
 function compactIncidentForAI(incident) {
   return {
     id: incident.id,
@@ -82,6 +122,8 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
       sameGroupAffectedHostsThreshold: config.nightOpsSameGroupAffectedHostsThreshold,
       criticalKeywords: config.nightOpsCriticalKeywords,
       autoEscalationEnabled: false,
+      shadowModeEnabled: true,
+      shadowModeRetentionDays: 30,
     };
   }
 
@@ -129,10 +171,11 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
       escalationRecommended: incidents.filter((incident) => incident.escalation?.required).length,
     };
 
+    const generatedAt = new Date().toISOString();
     const result = {
       id: `analysis-${new Date().toISOString()}`,
       status: "ok",
-      generatedAt: new Date().toISOString(),
+      generatedAt,
       summary,
       incidents,
       analysisSource: enriched.provider,
@@ -140,7 +183,27 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
       providerSummary: enriched.providerSummary,
     };
 
-    return store.saveAnalysis(result);
+    const savedAnalysis = store.saveAnalysis(result);
+    const runtimeConfig = getRuntimeConfig();
+
+    if (runtimeConfig.shadowModeEnabled) {
+      store.clearOldShadowDecisions(runtimeConfig.shadowModeRetentionDays);
+      const shadowDecisions = incidents.map((incident) =>
+        store.saveShadowDecision(
+          deriveShadowDecision(incident, savedAnalysis.id, generatedAt),
+        )
+      );
+
+      return {
+        ...savedAnalysis,
+        shadowDecisions,
+      };
+    }
+
+    return {
+      ...savedAnalysis,
+      shadowDecisions: [],
+    };
   }
 
   function getStatus() {
@@ -231,6 +294,54 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
     return result.value;
   }
 
+  function listShadowDecisions(filters = {}) {
+    return store.listShadowDecisions(filters);
+  }
+
+  function getShadowMetrics(filters = {}) {
+    return store.getShadowMetrics(filters);
+  }
+
+  function updateShadowDecisionValidation(id, validation) {
+    const allowedStatuses = [
+      "correct",
+      "false_positive",
+      "false_negative",
+      "partially_correct",
+    ];
+
+    if (!allowedStatuses.includes(validation.status)) {
+      throw new Error("Status de validacao shadow invalido.");
+    }
+
+    if (
+      validation.validatedBy &&
+      (typeof validation.validatedBy !== "string" || validation.validatedBy.length > 60)
+    ) {
+      throw new Error("validatedBy invalido.");
+    }
+
+    if (
+      validation.notes &&
+      (typeof validation.notes !== "string" || validation.notes.length > 500)
+    ) {
+      throw new Error("notes invalido.");
+    }
+
+    const updated = store.updateShadowDecisionValidation(id, {
+      status: validation.status,
+      validatedBy: validation.validatedBy || null,
+      validatedAt: new Date().toISOString(),
+      notes: validation.notes || "",
+    });
+
+    if (!updated) {
+      throw new Error("Decisao shadow nao encontrada.");
+    }
+
+    return updated;
+  }
+
   function listShiftReports(filters = {}) {
     return store.listShiftReports(filters);
   }
@@ -247,6 +358,9 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
     updateConfig,
     getLatestShiftReport,
     listHistory,
+    listShadowDecisions,
     listShiftReports,
+    getShadowMetrics,
+    updateShadowDecisionValidation,
   };
 }
