@@ -1,45 +1,8 @@
 # IA-ZBX - NOC AI Platform
 
-Dashboard NOC com consultas assistidas por IA para operacao de ambiente Zabbix. O projeto usa React, TypeScript e Vite no frontend, consumindo a API JSON-RPC do Zabbix diretamente pelo navegador durante o desenvolvimento, com proxy local do Vite.
+IA-ZBX e um painel NOC para Zabbix com frontend React/Vite e um backend local de IA. Nesta versao, o projeto ganhou o modulo `NOC Sentinel / NightOps`, que funciona como um analista NOC noturno automatizado: correlaciona alarmes ativos, aplica regras deterministicas, recomenda escalonamento e gera passagem de turno.
 
-O foco do sistema e substituir telas baseadas em mock por dados reais do Zabbix e preparar uma camada intermediaria compatível com uma futura integracao MCP/IA.
-
-## Participantes
-
-- Juan Grochowski - D30224
-- Awo Carvalho - D29997
-- Wallacy Matheus - D27030
-- Walen Kidely - D30213
-- Zhou Chen - D29031
-- Fernando Marques - D28363
-
-## Status Atual
-
-Implementado:
-
-- Dashboard com dados reais de hosts, problemas e eventos.
-- Integracao com Zabbix API:
-  - `apiinfo.version`
-  - `host.get`
-  - `problem.get`
-  - `event.get`
-  - `trigger.get`
-- Autenticacao por token ou login `user.login`.
-- Fallback de token via `auth` no corpo quando necessario.
-- Filtro operacional para alarmes `High` e `Disaster`.
-- Paginas reais:
-  - Dashboard
-  - Hosts
-  - Problemas
-  - Enlaces/Triggers
-  - Logs/Eventos
-  - Consultas IA
-  - Settings/Diagnostico
-- Camada MCP simulada.
-- Agente NOC opcional via Groq/Llama para consultas em linguagem natural.
-- Analise de alarme individual com IA na tela de Problemas.
-- Parser local de consultas operacionais como fallback.
-- Testes automatizados para a camada de IA.
+Importante: esta versao nao aciona pessoas automaticamente. Ela apenas analisa, classifica, recomenda e gera mensagens/relatorios para validacao humana.
 
 ## Stack
 
@@ -51,62 +14,74 @@ Implementado:
 - Lucide React
 - Vitest
 - Zabbix JSON-RPC API
-- Groq API opcional para agente IA
+- Groq opcional
+- OpenRouter opcional
 
-## Estrutura do Projeto
+## O que existe hoje
+
+- Integracao real com Zabbix:
+  - `apiinfo.version`
+  - `host.get`
+  - `problem.get`
+  - `event.get`
+  - `trigger.get`
+- Paginas existentes preservadas:
+  - `/dashboard`
+  - `/hosts`
+  - `/problems`
+  - `/links`
+  - `/logs`
+  - `/ia`
+  - `/settings`
+- Nova pagina:
+  - `/nightops`
+- Backend local de IA com endpoints antigos preservados:
+  - `GET /ai-api/health`
+  - `POST /ai-api/query`
+  - `POST /ai-api/analyze-problem`
+- Novos endpoints NightOps:
+  - `GET /ai-api/nightops/status`
+  - `POST /ai-api/nightops/analyze`
+  - `POST /ai-api/nightops/shift-report`
+- Fallback local preservado em `src/services/aiQueryService.ts`
+
+## Estrutura principal
 
 ```text
 src/
-  adapters/
-    zabbixAdapter.ts        # Normalizacao de respostas cruas do Zabbix para UI
-  components/
-    ActiveIssuesTable.tsx
-    Header.tsx
-    HostTable.tsx
-    QueryConsole.tsx
-    RecentEventsPanel.tsx
-    Sidebar.tsx
-    StatCard.tsx
-    ZabbixMetricsPanel.tsx
-    ZabbixStatusPanel.tsx
-  hooks/
-    useApiStatus.ts
-    useDashboardData.ts
-    useEvents.ts
-    useHosts.ts
-    useProblems.ts
-    useSettingsDiagnostics.ts
-    useTriggers.ts
-    useZabbixMetrics.ts
   pages/
-    AIQueriesPage.tsx
-    DashboardPage.tsx
-    HostsPage.tsx
-    LinksPage.tsx
-    LogsPage.tsx
-    ProblemsPage.tsx
-    SettingsPage.tsx
+    NightOpsPage.tsx
   services/
-    api.ts                  # Cliente base Zabbix JSON-RPC
-    agentClient.ts          # Cliente frontend do agente IA com fallback local
-    aiQueryService.ts       # Parser e resolucao de consultas IA
-    aiQueryService.test.ts  # Testes automatizados do parser
-    mcpClient.ts            # Camada MCP simulada
-    zabbixService.ts        # Servicos de alto nivel do Zabbix
+    agentClient.ts
+    aiQueryService.ts
+    nightOpsClient.ts
+    zabbixService.ts
   types/
     index.ts
-  utils/
-    retry.ts
 server/
-  aiAgentServer.mjs         # Backend local do agente NOC via Groq/Llama
+  ai/
+    aiRouter.mjs
+    prompts/
+    providers/
+  data/
+    nightOpsStore.mjs
+  nightops/
+    correlationEngine.mjs
+    escalationRules.mjs
+    incidentClassifier.mjs
+    nightOpsService.mjs
+    shiftReportService.mjs
+  zabbix/
+    zabbixServerClient.mjs
+  aiAgentServer.mjs
 ```
 
 ## Requisitos
 
-- Node.js 18 ou superior.
-- npm.
-- Uma instancia Zabbix acessivel pela maquina local.
-- Token de API do Zabbix ou usuario/senha validos.
+- Node.js 18+
+- npm
+- Acesso a uma instancia Zabbix
+- Token de API ou usuario/senha do Zabbix
 
 ## Instalacao
 
@@ -114,89 +89,83 @@ server/
 npm install
 ```
 
-## Configuracao de Ambiente
+## Configuracao
 
-Crie um arquivo `.env.local` na raiz do projeto.
-
-Exemplo com token:
+Crie `.env.local` na raiz. Exemplo minimo:
 
 ```env
 VITE_API_BASE_URL=https://seu-zabbix.com.br/zabbix/zabbix.php
 VITE_API_TOKEN=seu_token_aqui
-```
 
-Exemplo com usuario e senha:
-
-```env
-VITE_API_BASE_URL=https://seu-zabbix.com.br/zabbix/zabbix.php
-VITE_ZABBIX_USER=seu_usuario
-VITE_ZABBIX_PASSWORD=sua_senha
-```
-
-Tambem e aceito:
-
-```env
-VITE_API_KEY=seu_token_aqui
-```
-
-### Agente IA via Groq
-
-Para usar agente real na tela `/ia`, adicione tambem:
-
-```env
-GROQ_API_KEY=sua_chave_groq
+AI_PROVIDER=groq
+GROQ_API_KEY=
 GROQ_MODEL=llama-3.1-8b-instant
+
+OPENROUTER_API_KEY=
+OPENROUTER_MODEL=anthropic/claude-3.5-sonnet
+OPENROUTER_SITE_URL=http://localhost:5173
+OPENROUTER_APP_NAME=IA-ZBX
+
+NIGHTOPS_DEFAULT_START_HOUR=19
+NIGHTOPS_DEFAULT_END_HOUR=7
+NIGHTOPS_TIMEZONE=America/Sao_Paulo
+NIGHTOPS_MIN_DURATION_MINUTES=5
+NIGHTOPS_CORRELATION_WINDOW_MINUTES=10
 ```
 
-Opcionalmente, o backend do agente tambem aceita variaveis sem prefixo `VITE_`:
+Tambem sao aceitas variaveis sem prefixo `VITE_` no backend:
 
 ```env
 ZABBIX_API_BASE_URL=https://seu-zabbix.com.br/zabbix/zabbix.php
-ZABBIX_API_TOKEN=seu_token_zabbix
-ZABBIX_USER=seu_usuario
-ZABBIX_PASSWORD=sua_senha
+ZABBIX_API_TOKEN=
+ZABBIX_USER=
+ZABBIX_PASSWORD=
 AI_AGENT_PORT=8787
 ```
 
-Se essas variaveis sem `VITE_` nao existirem, o servidor do agente usa as variaveis `VITE_API_BASE_URL`, `VITE_API_TOKEN`, `VITE_API_KEY`, `VITE_ZABBIX_USER` e `VITE_ZABBIX_PASSWORD` do `.env.local`.
+## Provedores de IA
 
-### Observacoes importantes
+### Groq
 
-- `.env.local` esta no `.gitignore` e nao deve ser commitado.
-- A URL pode apontar para `/zabbix.php`; o sistema normaliza para `/api_jsonrpc.php`.
-- Em desenvolvimento, o Vite usa proxy `/api` para evitar problemas de CORS.
+Padrao de compatibilidade.
 
-## Autenticacao Zabbix
+```env
+AI_PROVIDER=groq
+GROQ_API_KEY=sua_chave
+GROQ_MODEL=llama-3.1-8b-instant
+```
 
-O cliente suporta dois modos:
+### OpenRouter / Claude
 
-1. Token
-   - Usa `VITE_API_TOKEN` ou `VITE_API_KEY`.
-   - Envia headers `X-API-KEY` e `X-Auth-Token`.
-   - Se o Zabbix rejeitar header puro, tenta fallback usando `auth` no corpo.
+```env
+AI_PROVIDER=openrouter
+OPENROUTER_API_KEY=sua_chave
+OPENROUTER_MODEL=anthropic/claude-3.5-sonnet
+OPENROUTER_SITE_URL=http://localhost:5173
+OPENROUTER_APP_NAME=IA-ZBX
+```
 
-2. Usuario e senha
-   - Usa `VITE_ZABBIX_USER` e `VITE_ZABBIX_PASSWORD`.
-   - Executa `user.login`.
-   - Usa o token de sessao retornado nas chamadas seguintes.
+Comportamento:
 
-Se token e usuario/senha existirem ao mesmo tempo, o fluxo efetivo prioriza `user.login`.
+- Se `AI_PROVIDER` nao for definido, o backend tenta `groq`.
+- Se o provedor configurado falhar, o frontend continua com fallback local em `/ia`.
+- Chaves de IA ficam apenas no backend.
 
-## Comandos
+## Como rodar
 
-Rodar desenvolvimento:
+Desenvolvimento:
 
 ```bash
 npm run dev
 ```
 
-Rodar o agente IA local:
+Servidor local do agente:
 
 ```bash
 npm run ai:server
 ```
 
-Para desenvolvimento com agente, use dois terminais:
+Use dois terminais durante o desenvolvimento:
 
 ```bash
 npm run ai:server
@@ -204,383 +173,129 @@ npm run ai:server
 
 ```bash
 npm run dev
-```
-
-Build de producao:
-
-```bash
-npm run build
-```
-
-Preview do build:
-
-```bash
-npm run preview
-```
-
-Testes automatizados:
-
-```bash
-npm run test
-```
-
-## Rotas
-
-| Rota | Descricao |
-| --- | --- |
-| `/dashboard` | Visao geral operacional |
-| `/hosts` | Inventario operacional de hosts |
-| `/problems` | Alarmes ativos High/Disaster |
-| `/links` | Triggers ativos tratados como visao de enlaces |
-| `/logs` | Eventos recentes High/Disaster |
-| `/ia` | Console de consultas operacionais |
-| `/settings` | Diagnostico da integracao Zabbix |
-
-## Agente IA
-
-O projeto possui duas camadas para a tela `/ia`:
-
-1. Agente NOC via Groq/Llama
-   - Roda no backend local `server/aiAgentServer.mjs`.
-   - Usa `GROQ_API_KEY`, que nunca deve ir para o frontend.
-   - Consulta dados reais do Zabbix no servidor.
-   - Envia ao modelo apenas um contexto operacional compacto.
-   - Responde com analise em linguagem natural.
-
-2. Parser local
-   - Continua existindo em `src/services/aiQueryService.ts`.
-   - Entra automaticamente como fallback se o agente estiver indisponivel.
-
-Fluxo:
-
-```text
-Frontend /ia
-  -> src/services/agentClient.ts
-    -> /ai-api/query
-      -> server/aiAgentServer.mjs
-        -> Zabbix API
-        -> Groq/Llama
-    -> fallback: aiQueryService.ts
 ```
 
 O proxy `/ai-api` do Vite aponta para `http://localhost:8787`.
 
-Endpoints locais do agente:
+## NightOps / NOC Sentinel
+
+O modulo NightOps:
+
+- busca problemas ativos no Zabbix;
+- consulta hosts e eventos relacionados;
+- classifica incidentes com regras fixas;
+- correlaciona alarmes por grupo, host, severidade, horario e palavras-chave;
+- usa IA apenas para explicacao, causa provavel, mensagens e resumo;
+- gera relatorio de turno.
+
+### Regras deterministicas atuais
+
+- `Disaster` com duracao acima do limite recomenda escalonamento.
+- `High/Disaster` com muitos hosts do mesmo grupo vira incidente correlacionado e pode recomendar escalonamento.
+- palavras-chave como `OLT`, `POP`, `Backbone`, `BGP`, `Core`, `Transporte`, `Link` e `Enlace` elevam prioridade.
+- normalizacao em menos de 3 minutos tende a virar ruido/monitoramento.
+- host isolado de baixo alcance nao vira acionamento critico automaticamente.
+
+### Limite operacional desta versao
+
+O sistema recomenda escalonamento, mas nao deve acionar pessoas automaticamente sem validacao humana.
+
+## Endpoints
+
+### Saude e IA
 
 - `GET /ai-api/health`
 - `POST /ai-api/query`
 - `POST /ai-api/analyze-problem`
 
-## Dados Zabbix Utilizados
+### NightOps
 
-### Hosts
+#### `GET /ai-api/nightops/status`
 
-Fonte:
+Retorna a ultima analise salva em memoria:
 
-- `host.get`
-
-Campos principais:
-
-- `hostid`
-- `host`
-- `name`
-- `status`
-- `lastaccess`
-- `maintenance_status`
-- `interfaces.ip`
-- `interfaces.main`
-- `interfaces.type`
-- `interfaces.available`
-- `groups.name`
-
-Status operacional:
-
-- `interfaces.available = 1` -> `Online`
-- `interfaces.available = 2` -> `Offline`
-- `interfaces.available = 0` ou sem telemetria -> `Degradado`
-- `host.status = 1` -> `Offline` / desabilitado
-- `maintenance_status = 1` -> `Degradado`
-
-### Problemas
-
-Fonte:
-
-- `problem.get`
-
-Filtro:
-
-- Severidades `4` e `5`
-- Mapeamento:
-  - `4` -> `High`
-  - `5` -> `Disaster`
-
-### Eventos
-
-Fonte:
-
-- `event.get`
-
-Filtro:
-
-- Severidades `4` e `5`
-
-### Triggers
-
-Fonte:
-
-- `trigger.get`
-
-Uso atual:
-
-- Base para a tela `/links`.
-- Atualmente representa triggers ativos, nao necessariamente enlaces modelados formalmente.
-
-## Observacao Sobre a Tela de Enlaces
-
-A tela `/links` usa `trigger.get` com triggers ativos e severidade alta para montar uma visao operacional.
-
-Importante: ela ainda nao identifica enlace de forma semantica perfeita. Para isso, o ideal e padronizar no Zabbix algum criterio como:
-
-- tag de trigger ou host, por exemplo `type=link` ou `service=enlace`
-- host group dedicado
-- template especifico de circuito/WAN
-- item keys de interface, latencia, perda ou disponibilidade
-
-## Camadas
-
-### `services/api.ts`
-
-Cliente baixo nivel da API Zabbix:
-
-- normaliza URL
-- configura proxy em desenvolvimento
-- gerencia token/login
-- executa chamadas JSON-RPC
-- testa conexao
-- expõe resumo de runtime para a tela de settings
-
-### `services/zabbixService.ts`
-
-Camada de servicos de alto nivel:
-
-- `getHostsDetailed()`
-- `getProblemsDetailed()`
-- `getEvents()`
-- `getTriggers()`
-
-### `adapters/zabbixAdapter.ts`
-
-Normaliza dados crus do Zabbix para os tipos usados pela UI:
-
-- severidade numerica para texto
-- timestamps para formato amigavel
-- interface principal do host
-- status operacional
-- host/grupo/IP
-
-### `services/mcpClient.ts`
-
-Camada intermediaria simulando MCP.
-
-Hoje apenas chama `zabbixService`, mas foi separada para no futuro ser substituida por uma API MCP real.
-
-### `services/agentClient.ts`
-
-Cliente do frontend para o agente IA:
-
-- chama `/ai-api/query`
-- recebe a resposta do agente Groq/Llama
-- cai no parser local quando o agente nao responde
-
-### `server/aiAgentServer.mjs`
-
-Backend local do agente NOC:
-
-- le `.env.local` e `.env`
-- consulta Zabbix diretamente no servidor
-- monta contexto compacto com hosts, alarmes e eventos
-- chama Groq usando API compativel com OpenAI Chat Completions
-- retorna resposta operacional para a tela `/ia`
-- gera analise estruturada para um alarme selecionado na tela `/problems`
-
-### `services/aiQueryService.ts`
-
-Parser simples de consultas operacionais.
-
-Ele interpreta consultas como:
-
-- hosts por nome
-- hosts por IP
-- hosts por grupo
-- hosts por status
-- filtros compostos
-- contagem
-- limite de resultados
-- alarmes por host
-- eventos por host
-- negacao simples
-- ausencia de alarmes
-
-## Exemplos de Consultas IA
-
-Hosts:
-
-```text
-quais hosts estao offline?
-quantos hosts com olt no nome estao ativos?
-top 10 hosts com olt no nome
-hosts com olt no nome e offline
-hosts com olt no nome que nao estao offline
-quais hosts tem o IP 10.200.12.114?
-hosts do grupo speednet offline
-hosts do grupo speednet sem alarmes disaster
+```json
+{
+  "status": "ok",
+  "generatedAt": "2026-04-30T22:00:00.000Z",
+  "summary": {
+    "activeProblems": 3,
+    "criticalIncidents": 1,
+    "warningIncidents": 1,
+    "ignoredNoise": 1,
+    "escalationRecommended": 1
+  },
+  "incidents": []
+}
 ```
 
-Alarmes:
+#### `POST /ai-api/nightops/analyze`
 
-```text
-resuma os alarmes ativos
-mostre alarmes disaster
-liste 10 alarmes high
-quais alarmes do host 10031-260GS_ARENA_MRV?
+Executa a analise NightOps completa.
+
+#### `POST /ai-api/nightops/shift-report`
+
+Body opcional:
+
+```json
+{
+  "start": "2026-04-30T19:00:00-03:00",
+  "end": "2026-05-01T07:00:00-03:00"
+}
 ```
 
-Eventos:
+Sem body, usa o periodo noturno padrao configurado.
 
-```text
-liste os eventos recentes
-liste 10 eventos recentes
-quais eventos do host arena?
-```
+## Testes e build
 
-## Testes
-
-A camada de IA tem testes automatizados com Vitest:
+Testes:
 
 ```bash
 npm run test
 ```
 
-Cenarios cobertos:
-
-- busca por termo no nome
-- combinacao nome + status
-- busca por IP
-- grupo + status
-- limite com `top N`
-- negacao de status
-- hosts sem alarmes disaster
-- alarmes por host
-- eventos por host
-
-## Build
+Build:
 
 ```bash
 npm run build
 ```
 
-O build executa:
+Cobertura minima adicionada:
 
-1. TypeScript
-2. Vite build
+- parser local de IA
+- `incidentClassifier`
+- `correlationEngine`
+- `escalationRules`
+- `shiftReportService`
+
+## Validacao recomendada
+
+1. Suba o agente com `npm run ai:server`.
+2. Suba o frontend com `npm run dev`.
+3. Valide:
+   - `/ia`
+   - `/problems`
+   - `/nightops`
+4. Em `/nightops`, rode:
+   - `Analisar agora`
+   - `Gerar relatorio do turno`
+
+## Limitacoes
+
+- A correlacao usa grupos, nomes e palavras-chave como fallback; nao depende de tags perfeitas do Zabbix.
+- O store do NightOps e em memoria local do processo.
+- O relatorio de turno usa as analises salvas no backend ativo.
+- A qualidade da explicacao por IA depende do contexto compacto enviado ao modelo.
 
 ## Seguranca
 
-Nao comite:
+- Nao exponha `GROQ_API_KEY` nem `OPENROUTER_API_KEY` no frontend.
+- Nao comite `.env.local`.
+- Nao use esta versao para acionamento automatico de campo, engenharia ou supervisao.
 
-- `.env.local`
-- tokens
-- senhas
-- dumps de API
-- logs com informacoes sensiveis
+## Proximos passos
 
-Arquivos ja ignorados:
-
-- `.env`
-- `.env.local`
-- `node_modules`
-- `dist`
-- `*.log`
-- `.vite`
-
-## Fluxo de Desenvolvimento Recomendado
-
-1. Ajustar codigo.
-2. Rodar testes:
-
-   ```bash
-   npm run test
-   ```
-
-3. Rodar build:
-
-   ```bash
-   npm run build
-   ```
-
-4. Testar manualmente no navegador:
-
-   ```bash
-   npm run dev
-   ```
-
-5. Fazer commit.
-
-## Proximos Passos Tecnicos
-
-Prioridades recomendadas:
-
-- Extrair o parser de consultas para um modulo puro separado.
-- Melhorar o vinculo entre hosts e problemas usando IDs ou um mapa mais confiavel do Zabbix.
-- Implementar criterio real para identificar enlaces.
-- Adicionar filtros de periodo em eventos.
-- Adicionar ordenacao por criterios como recente, nome, severidade.
-- Evoluir `mcpClient.ts` para uma integracao MCP real.
-- Adicionar mais testes para consultas de negacao, ausencia, ordenacao e limites.
-
-## Troubleshooting
-
-### Tela mostra erro de conexao
-
-Verifique:
-
-- `VITE_API_BASE_URL`
-- token ou usuario/senha
-- acesso de rede ao Zabbix
-- se a URL foi normalizada corretamente para `/api_jsonrpc.php`
-
-### Zabbix retorna "Not authorized"
-
-Possiveis causas:
-
-- token invalido
-- token sem permissao
-- usuario sem permissao
-- API esperando `auth` no corpo em vez de header
-
-O cliente ja tenta fallback de token via `auth`, mas em alguns ambientes pode ser melhor usar `VITE_ZABBIX_USER` e `VITE_ZABBIX_PASSWORD`.
-
-### Busca IA nao retorna o esperado
-
-Rode:
-
-```bash
-npm run test
-```
-
-Depois valide manualmente em `/ia` com consultas simples antes de testar filtros compostos.
-
-### Agente IA nao responde
-
-Verifique:
-
-- `npm run ai:server` esta rodando em outro terminal
-- `GROQ_API_KEY` existe no `.env.local`
-- a rota `http://localhost:8787/ai-api/health` responde
-- o Vite esta rodando com `npm run dev`
-
-Se o agente falhar, a tela `/ia` usa automaticamente o parser local.
-
-## Licenca
-
-Projeto privado/interno. Defina uma licenca antes de distribuir publicamente.
+- Persistir historico NightOps em banco ou arquivo.
+- Melhorar correlacao com tags/servicos reais do Zabbix.
+- Adicionar filtros de periodo reais para eventos e problemas.
+- Evoluir para workflow de aprovacao humana antes de qualquer acao externa.
