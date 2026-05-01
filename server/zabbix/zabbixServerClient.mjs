@@ -240,7 +240,7 @@ export function createZabbixServerClient(config) {
   async function getTriggers(params = {}) {
     return await callZabbix("trigger.get", {
       output: ["triggerid", "description", "priority", "status"],
-      selectHosts: ["hostid", "host", "name"],
+      selectHosts: ["hostid", "host", "name", "status"],
       selectGroups: ["groupid", "name"],
       selectTags: "extend",
       ...params,
@@ -314,6 +314,7 @@ export function createZabbixServerClient(config) {
       const mappedHost = primaryHost?.hostid
         ? hostMap.get(primaryHost.hostid)
         : null;
+      const hostStatusCode = mappedHost?.raw?.status ?? primaryHost?.status ?? null;
 
       return {
         ...problem,
@@ -331,6 +332,8 @@ export function createZabbixServerClient(config) {
             }))
           : [],
         triggerDescription: trigger?.description || problem.name,
+        hostStatusCode,
+        hostEnabled: hostStatusCode !== "1",
       };
     });
 

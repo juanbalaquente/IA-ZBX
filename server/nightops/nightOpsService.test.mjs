@@ -65,6 +65,7 @@ const baseProblem = {
   groups: ["POP-CENTRO"],
   triggerDescription: "Problema de teste",
   acknowledged: false,
+  hostEnabled: true,
 };
 
 describe("createNightOpsService", () => {
@@ -147,5 +148,24 @@ describe("createNightOpsService", () => {
 
     const result = await service.analyzeNightOps();
     expect(result.shadowDecisions[0].decision).toBe("monitor");
+  });
+
+  it("ignora hosts inativos na analise", async () => {
+    const store = createStoreStub();
+    const service = createNightOpsService({
+      config: {},
+      zabbixClient: createZabbixStub([
+        { ...baseProblem, id: "p-enabled", eventid: "e-enabled", hostEnabled: true },
+        { ...baseProblem, id: "p-disabled", eventid: "e-disabled", hostEnabled: false },
+      ]),
+      store,
+      configStore: createBaseConfigStore(),
+    });
+
+    const result = await service.analyzeNightOps();
+
+    expect(result.summary.activeProblems).toBe(1);
+    expect(result.incidents).toHaveLength(1);
+    expect(result.shadowDecisions).toHaveLength(1);
   });
 });

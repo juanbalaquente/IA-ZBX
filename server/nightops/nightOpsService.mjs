@@ -153,7 +153,11 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
       eventLimit: 120,
     });
 
-    const classified = snapshot.problems.map((problem) =>
+    const eligibleProblems = snapshot.problems.filter(
+      (problem) => problem.hostEnabled !== false,
+    );
+
+    const classified = eligibleProblems.map((problem) =>
       classifyProblem(problem, {
         nowTs: Date.now(),
         rules: getRuleOptions().rules,
@@ -164,7 +168,7 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
 
     const incidents = enriched.incidents;
     const summary = {
-      activeProblems: snapshot.problems.length,
+      activeProblems: eligibleProblems.length,
       criticalIncidents: incidents.filter((incident) => incident.severity === "critical").length,
       warningIncidents: incidents.filter((incident) => ["low", "medium"].includes(incident.severity)).length,
       ignoredNoise: incidents.filter((incident) => incident.status === "ignored").length,
