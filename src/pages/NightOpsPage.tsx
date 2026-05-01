@@ -28,6 +28,13 @@ import type {
   NightOpsStoredShiftReport,
 } from "../types";
 
+type ReportMode =
+  | "last_completed"
+  | "current"
+  | "previous_day"
+  | "previous_night"
+  | "manual";
+
 const emptyStatus: NightOpsStatus = {
   status: "ok",
   generatedAt: null,
@@ -135,6 +142,80 @@ async function copyTextToClipboard(text: string) {
   textarea.remove();
 }
 
+function toDateTimeLocalValue(value: Date) {
+  const offsetDate = new Date(value.getTime() - value.getTimezoneOffset() * 60000);
+  return offsetDate.toISOString().slice(0, 16);
+}
+
+function formatPeriodLabel(start: string, end: string) {
+  return `${new Date(start).toLocaleString("pt-BR")} ate ${new Date(end).toLocaleString("pt-BR")}`;
+}
+
+function resolvePreviewPeriod(mode: ReportMode, timezone: string, manualStart: string, manualEnd: string) {
+  if (mode === "manual" && manualStart && manualEnd) {
+    return {
+      start: new Date(manualStart).toISOString(),
+      end: new Date(manualEnd).toISOString(),
+    };
+  }
+
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: timezone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  });
+  const parts = Object.fromEntries(
+    formatter.formatToParts(new Date()).map((part) => [part.type, part.value]),
+  );
+  const currentDate = `${parts.year}-${parts.month}-${parts.day}`;
+  const currentHour = Number(parts.hour);
+  const currentNow = `${currentDate}T${parts.hour}:${parts.minute}:${parts.second}-03:00`;
+  const shiftDate = (datePart: string, days: number) => {
+    const base = new Date(`${datePart}T12:00:00-03:00`);
+    base.setDate(base.getDate() + days);
+    return base.toISOString().slice(0, 10);
+  };
+  const window = (datePart: string, startHour: number, endHour: number) => {
+    const start = `${datePart}T${String(startHour).padStart(2, "0")}:00:00-03:00`;
+    const endDate = endHour <= startHour ? shiftDate(datePart, 1) : datePart;
+    const end = `${endDate}T${String(endHour).padStart(2, "0")}:00:00-03:00`;
+    return { start, end };
+  };
+  const previousDate = shiftDate(currentDate, -1);
+  const twoDaysAgo = shiftDate(currentDate, -2);
+
+  if (mode === "current") {
+    if (currentHour >= 19) {
+      return { ...window(currentDate, 19, 7), end: currentNow };
+    }
+    if (currentHour < 7) {
+      return { ...window(previousDate, 19, 7), end: currentNow };
+    }
+    return { ...window(currentDate, 7, 19), end: currentNow };
+  }
+
+  if (mode === "previous_day") {
+    return currentHour >= 19 ? window(currentDate, 7, 19) : window(previousDate, 7, 19);
+  }
+
+  if (mode === "previous_night") {
+    return currentHour >= 7 ? window(previousDate, 19, 7) : window(twoDaysAgo, 19, 7);
+  }
+
+  if (currentHour >= 19) {
+    return window(currentDate, 7, 19);
+  }
+  if (currentHour >= 7) {
+    return window(previousDate, 19, 7);
+  }
+  return window(previousDate, 7, 19);
+}
+
 function NightOpsPage() {
   const [status, setStatus] = useState<NightOpsStatus>(emptyStatus);
   const [report, setReport] = useState<NightOpsShiftReport | null>(null);
@@ -156,6 +237,11 @@ function NightOpsPage() {
   const [analyzing, setAnalyzing] = useState(false);
   const [reportLoading, setReportLoading] = useState(false);
   const [configSaving, setConfigSaving] = useState(false);
+  const [reportMode, setReportMode] = useState<ReportMode>("last_completed");
+  const [manualRange, setManualRange] = useState(() => ({
+    start: toDateTimeLocalValue(new Date(Date.now() - 12 * 60 * 60 * 1000)),
+    end: toDateTimeLocalValue(new Date()),
+  }));
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [configMessage, setConfigMessage] = useState<string | null>(null);
@@ -225,7 +311,14 @@ function NightOpsPage() {
     try {
       setReportLoading(true);
       setError(null);
-      const generatedReport = await generateShiftReport();
+      const params =
+        reportMode === "manual"
+          ? {
+              start: manualRange.start ? new Date(manualRange.start).toISOString() : undefined,
+              end: manualRange.end ? new Date(manualRange.end).toISOString() : undefined,
+            }
+          : { mode: reportMode };
+      const generatedReport = await generateShiftReport(params);
       setReport(generatedReport);
       await loadSideData();
     } catch (reportError) {
@@ -318,6 +411,13 @@ function NightOpsPage() {
 
   const analysisSummaries = buildAnalysisSummaries(history);
   const reportToDisplay = report || latestStoredReport;
+  const previewPeriod = resolvePreviewPeriod(
+    reportMode,
+    config.timezone || "America/Sao_Paulo",
+    manualRange.start,
+    manualRange.end,
+  );
+  const selectedPeriodLabel = formatPeriodLabel(previewPeriod.start, previewPeriod.end);
 
   return (
     <div className="space-y-6">
@@ -351,6 +451,17 @@ function NightOpsPage() {
             copiedKey={copiedKey}
             onGenerate={handleGenerateReport}
             onCopy={handleCopy}
+            selectedMode={reportMode}
+            selectedPeriodLabel={selectedPeriodLabel}
+            manualStart={manualRange.start}
+            manualEnd={manualRange.end}
+            onModeChange={(mode) => setReportMode(mode as ReportMode)}
+            onManualChange={(field, value) =>
+              setManualRange((current) => ({
+                ...current,
+                [field]: value,
+              }))
+            }
           />
 
           <NightOpsCurrentSituationPanel

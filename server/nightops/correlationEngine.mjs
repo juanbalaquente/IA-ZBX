@@ -60,6 +60,14 @@ export function correlateIncidents(incidents, options = {}) {
       Number(current.durationMinutes || 0),
       Number(incident.durationMinutes || 0),
     );
+    const currentEndTs = current.endedAt ? new Date(current.endedAt).getTime() : null;
+    const incidentEndTs = incident.endedAt ? new Date(incident.endedAt).getTime() : null;
+    const endedAt =
+      current.status === "active" || incident.status === "active"
+        ? null
+        : currentEndTs && incidentEndTs
+          ? new Date(Math.max(currentEndTs, incidentEndTs)).toISOString()
+          : current.endedAt || incident.endedAt || null;
 
     grouped.set(key, {
       ...current,
@@ -79,6 +87,7 @@ export function correlateIncidents(incidents, options = {}) {
           : current.status,
       classification: "correlated-outage",
       startedAt: earliestStart,
+      endedAt,
       durationMinutes,
       affectedHosts: mergeUnique([
         ...(current.affectedHosts || []),

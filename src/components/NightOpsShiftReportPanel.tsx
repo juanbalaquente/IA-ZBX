@@ -7,6 +7,12 @@ interface Props {
   copiedKey: string | null;
   onGenerate: () => Promise<void>;
   onCopy: (key: string, text: string) => Promise<void>;
+  selectedMode: string;
+  selectedPeriodLabel: string;
+  manualStart: string;
+  manualEnd: string;
+  onModeChange: (mode: string) => void;
+  onManualChange: (field: "start" | "end", value: string) => void;
 }
 
 function formatDateTime(value?: string | null) {
@@ -45,6 +51,12 @@ function NightOpsShiftReportPanel({
   copiedKey,
   onGenerate,
   onCopy,
+  selectedMode,
+  selectedPeriodLabel,
+  manualStart,
+  manualEnd,
+  onModeChange,
+  onManualChange,
 }: Props) {
   const handleDownload = () => {
     if (!report) {
@@ -78,16 +90,70 @@ function NightOpsShiftReportPanel({
             Gere o resumo operacional do turno, copie a passagem e registre rapidamente o que precisa seguir para a manha.
           </p>
         </div>
+      </div>
 
-        <button
-          type="button"
-          onClick={onGenerate}
-          disabled={loading}
-          className="inline-flex items-center gap-2 rounded-3xl bg-noc-accent px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          <ClipboardList size={16} />
-          {loading ? "Gerando..." : "Gerar relatorio do turno"}
-        </button>
+      <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
+        <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Periodo do relatorio</p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {[
+            ["last_completed", "Ultimo plantao fechado"],
+            ["current", "Plantao atual"],
+            ["previous_day", "Plantao diurno anterior"],
+            ["previous_night", "Plantao noturno anterior"],
+            ["manual", "Periodo manual"],
+          ].map(([mode, label]) => (
+            <button
+              key={mode}
+              type="button"
+              onClick={() => onModeChange(mode)}
+              className={`rounded-2xl px-3 py-2 text-xs font-medium transition ${
+                selectedMode === mode
+                  ? "bg-sky-400 text-slate-950"
+                  : "border border-slate-700 bg-slate-900 text-slate-200"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {selectedMode === "manual" ? (
+          <div className="mt-4 grid gap-3 md:grid-cols-2">
+            <label className="block">
+              <span className="mb-2 block text-xs text-slate-500">Inicio</span>
+              <input
+                type="datetime-local"
+                value={manualStart}
+                onChange={(event) => onManualChange("start", event.target.value)}
+                className="w-full rounded-2xl border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100"
+              />
+            </label>
+            <label className="block">
+              <span className="mb-2 block text-xs text-slate-500">Fim</span>
+              <input
+                type="datetime-local"
+                value={manualEnd}
+                onChange={(event) => onManualChange("end", event.target.value)}
+                className="w-full rounded-2xl border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100"
+              />
+            </label>
+          </div>
+        ) : null}
+
+        <div className="mt-4 flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+          <p className="text-sm text-slate-300">
+            Relatorio sera gerado para: {selectedPeriodLabel}
+          </p>
+          <button
+            type="button"
+            onClick={onGenerate}
+            disabled={loading}
+            className="inline-flex items-center gap-2 rounded-3xl bg-noc-accent px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            <ClipboardList size={16} />
+            {loading ? "Gerando..." : "Gerar relatorio do turno"}
+          </button>
+        </div>
       </div>
 
       {!report ? (

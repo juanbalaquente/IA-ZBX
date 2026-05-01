@@ -256,10 +256,25 @@ Ele inclui:
 Na tela `/nightops`, o painel principal do topo permite:
 
 - gerar o relatorio do turno;
+- escolher `Ultimo plantao fechado`, `Plantao atual`, `Plantao diurno anterior`, `Plantao noturno anterior` ou periodo manual;
 - copiar o relatorio completo;
 - copiar apenas a passagem de turno;
 - copiar apenas o resumo;
 - baixar o conteudo em `.txt`.
+
+Regra temporal aplicada no relatorio:
+
+- o relatorio considera apenas ocorrencias com interseccao no periodo selecionado;
+- entram ocorrencias que comecaram no periodo, normalizaram no periodo, atravessaram o periodo ou seguiram ativas no fechamento;
+- nao entram ocorrencias que comecaram e terminaram antes do inicio do plantao;
+- nao entram ocorrencias futuras ou sem relacao temporal com o periodo.
+
+Plantao operacional padrao:
+
+- plantao diurno: `07:00` as `19:00`
+- plantao noturno: `19:00` as `07:00`
+
+Para o botao padrao de relatorio, o sistema usa o ultimo plantao completo. Se o operador escolher `Plantao atual`, o periodo vai do inicio do plantao ate o horario atual.
 
 ### Persistencia local do historico
 
@@ -420,11 +435,12 @@ Body opcional:
 ```json
 {
   "start": "2026-04-30T19:00:00-03:00",
-  "end": "2026-05-01T07:00:00-03:00"
+  "end": "2026-05-01T07:00:00-03:00",
+  "mode": "last_completed"
 }
 ```
 
-Sem body, usa o periodo noturno padrao configurado.
+Sem body, usa o ultimo plantao completo.
 
 ## Testes e build
 

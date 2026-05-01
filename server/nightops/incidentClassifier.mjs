@@ -69,6 +69,7 @@ export function classifyProblem(problem, options = {}) {
     status: inferStatus(problem),
     classification: "attention",
     startedAt: new Date(startedAtTs).toISOString(),
+    endedAt: problem.recoveryAtTs ? new Date(problem.recoveryAtTs).toISOString() : null,
     durationMinutes,
     affectedHosts: [problem.host].filter(Boolean),
     affectedGroups: problem.groups || [],

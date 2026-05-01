@@ -79,6 +79,7 @@ export interface NightOpsIncident {
   sourceSeverity?: string;
   status: "active" | "monitoring" | "resolved" | "ignored";
   startedAt: string;
+  endedAt?: string | null;
   durationMinutes: number;
   affectedHosts: string[];
   affectedGroups: string[];

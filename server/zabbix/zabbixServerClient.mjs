@@ -1,3 +1,5 @@
+import { overlapsPeriod } from "../nightops/shiftPeriodUtils.mjs";
+
 function normalizeZabbixApiUrl(rawUrl) {
   try {
     const parsedUrl = new URL(rawUrl);
@@ -231,6 +233,7 @@ export function createZabbixServerClient(config) {
       startedAtTs: toTimestampMs(problem.clock),
       recoveryEventId: problem.r_eventid || null,
       recoveryClock: problem.r_clock || null,
+      recoveryAt: problem.r_clock ? formatClock(problem.r_clock) : null,
       recoveryAtTs: toTimestampMs(problem.r_clock),
       acknowledged: problem.acknowledged === "1",
       raw: problem,
@@ -258,6 +261,7 @@ export function createZabbixServerClient(config) {
         "object",
         "objectid",
         "acknowledged",
+        "value",
       ],
       selectHosts: ["hostid", "host", "name"],
       sortfield: "eventid",
@@ -277,25 +281,16 @@ export function createZabbixServerClient(config) {
       timestampTs: toTimestampMs(event.clock),
       hosts: event.hosts || [],
       acknowledged: event.acknowledged === "1",
+      value: Number(event.value ?? 1),
       raw: event,
     }));
   }
 
-  async function getOperationalSnapshot(options = {}) {
-    const [hosts, problems, events] = await Promise.all([
-      getHosts({ limit: options.hostLimit ?? 100 }),
-      getProblems({
-        severities: options.problemSeverities ?? [4, 5],
-        limit: options.problemLimit ?? 100,
-        recent: options.problemRecent ?? true,
-      }),
-      getEvents({
-        severities: options.eventSeverities ?? [4, 5],
-        limit: options.eventLimit ?? 100,
-      }),
-    ]);
-
-    const triggerIds = [...new Set(problems.map((problem) => problem.triggerid).filter(Boolean))];
+  async function enrichProblems(problems, options = {}) {
+    const hosts = options.hosts || await getHosts({ limit: options.hostLimit ?? 500 });
+    const triggerIds = [
+      ...new Set(problems.map((problem) => problem.triggerid).filter(Boolean)),
+    ];
     const relevantTriggers = triggerIds.length > 0
       ? await getTriggers({
           triggerids: triggerIds,
@@ -307,7 +302,7 @@ export function createZabbixServerClient(config) {
     );
     const hostMap = new Map(hosts.map((host) => [host.hostid, host]));
 
-    const enrichedProblems = problems.map((problem) => {
+    return problems.map((problem) => {
       const trigger = triggerMap.get(problem.triggerid) || null;
       const relatedHosts = trigger?.hosts || [];
       const relatedGroups = trigger?.groups || [];
@@ -337,12 +332,74 @@ export function createZabbixServerClient(config) {
         hostEnabled: hostStatusCode !== "1",
       };
     });
+  }
+
+  async function getOperationalSnapshot(options = {}) {
+    const [hosts, problems, events] = await Promise.all([
+      getHosts({ limit: options.hostLimit ?? 100 }),
+      getProblems({
+        severities: options.problemSeverities ?? [4, 5],
+        limit: options.problemLimit ?? 100,
+        recent: options.problemRecent ?? true,
+      }),
+      getEvents({
+        severities: options.eventSeverities ?? [4, 5],
+        limit: options.eventLimit ?? 100,
+      }),
+    ]);
+    const enrichedProblems = await enrichProblems(problems, { hosts });
 
     return {
       hosts,
       problems: enrichedProblems,
       events,
-      triggers: relevantTriggers,
+      triggers: [],
+    };
+  }
+
+  async function getProblemsForPeriod(options = {}) {
+    const periodStartTs = new Date(options.start).getTime();
+    const periodEndTs = new Date(options.end).getTime();
+    const [hosts, recentProblems, activeProblems, events] = await Promise.all([
+      getHosts({ limit: options.hostLimit ?? 500 }),
+      getProblems({
+        severities: options.problemSeverities ?? [4, 5],
+        recent: true,
+        limit: options.problemLimit ?? 1000,
+      }),
+      getProblems({
+        severities: options.problemSeverities ?? [4, 5],
+        recent: false,
+        limit: options.problemLimit ?? 1000,
+      }),
+      getEvents({
+        severities: options.eventSeverities ?? [4, 5],
+        time_from: Math.floor(periodStartTs / 1000),
+        time_till: Math.floor(periodEndTs / 1000),
+        value: 1,
+        limit: options.eventLimit ?? 1000,
+      }),
+    ]);
+
+    const mergedProblems = [
+      ...new Map(
+        [...recentProblems, ...activeProblems].map((problem) => [problem.id, problem]),
+      ).values(),
+    ];
+    const enrichedProblems = await enrichProblems(mergedProblems, { hosts });
+    const filteredProblems = enrichedProblems.filter((problem) =>
+      overlapsPeriod(
+        new Date(problem.startedAtTs || 0).toISOString(),
+        problem.recoveryAtTs ? new Date(problem.recoveryAtTs).toISOString() : null,
+        options.start,
+        options.end,
+      ),
+    );
+
+    return {
+      hosts,
+      problems: filteredProblems,
+      events,
     };
   }
 
@@ -358,6 +415,7 @@ export function createZabbixServerClient(config) {
     getVersion,
     getHosts,
     getProblems,
+    getProblemsForPeriod,
     getEvents,
     getTriggers,
     getOperationalSnapshot,

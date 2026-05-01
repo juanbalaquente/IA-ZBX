@@ -197,4 +197,51 @@ describe("createNightOpsService", () => {
     expect(result.incidents).toHaveLength(1);
     expect(result.incidents[0].affectedGroups).toContain("10031-SPEEDNET");
   });
+
+  it("createShiftReport usa apenas ocorrencias com interseccao no periodo", async () => {
+    const store = createStoreStub();
+    store.listIncidents.mockReturnValue([
+      {
+        id: "before",
+        title: "ANTES",
+        startedAt: "2026-05-01T10:00:00-03:00",
+        endedAt: "2026-05-01T11:00:00-03:00",
+        status: "resolved",
+        severity: "high",
+        problemIds: ["p1"],
+        affectedHosts: ["H1"],
+        escalation: { required: false, reason: "", target: "NOC" },
+      },
+      {
+        id: "during",
+        title: "DURANTE",
+        startedAt: "2026-05-01T20:00:00-03:00",
+        endedAt: null,
+        status: "active",
+        severity: "critical",
+        problemIds: ["p2"],
+        affectedHosts: ["H2"],
+        recommendedActions: ["Acompanhar"],
+        impact: "Impacto",
+        probableCause: "Causa",
+        escalation: { required: true, reason: "Critico", target: "Supervisor" },
+      },
+    ]);
+
+    const service = createNightOpsService({
+      config: {},
+      zabbixClient: { hasConfiguration: () => false },
+      store,
+      configStore: createBaseConfigStore(),
+    });
+
+    const report = await service.createShiftReport({
+      start: "2026-05-01T19:00:00-03:00",
+      end: "2026-05-02T07:00:00-03:00",
+    });
+
+    expect(report.incidents).toHaveLength(1);
+    expect(report.plainTextReport).toContain("DURANTE");
+    expect(report.plainTextReport).not.toContain("1. ANTES");
+  });
 });

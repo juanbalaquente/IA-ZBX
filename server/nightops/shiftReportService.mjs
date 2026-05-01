@@ -161,7 +161,7 @@ function buildRelevantOccurrence(incident) {
     title: incident.title || "Ocorrencia NightOps",
     status,
     startedAt: incident.startedAt || null,
-    endedAt: incident.status === "resolved" ? incident.recoveryAt || null : null,
+    endedAt: incident.status === "resolved" ? incident.endedAt || null : null,
     durationText: formatHumanDuration(incident.durationMinutes || 0),
     impact: incident.impact || "Impacto nao detalhado.",
     probableCause: incident.probableCause || "Causa provavel nao informada.",
@@ -292,6 +292,7 @@ function buildPlainTextReport({
   numbers,
   handoverText,
   observation,
+  incidentsCount,
 }) {
   const lines = [
     title,
@@ -312,6 +313,9 @@ function buildPlainTextReport({
       lines.push(`${index + 1}. ${occurrence.title}`);
       lines.push(`Status: ${occurrence.status}`);
       lines.push(`Inicio do alarme: ${formatDateTime(occurrence.startedAt)}`);
+      if (occurrence.endedAt) {
+        lines.push(`Normalizacao: ${formatDateTime(occurrence.endedAt)}`);
+      }
       lines.push(
         `${occurrence.isStillActive ? "Tempo em alarme" : "Duracao"}: ${occurrence.durationText}`,
       );
@@ -324,9 +328,9 @@ function buildPlainTextReport({
     });
   }
 
-  if (numbers.totalProblems > relevantOccurrences.length) {
+  if (incidentsCount > relevantOccurrences.length) {
     lines.push(
-      `Outras ${Math.max(numbers.totalProblems - relevantOccurrences.length, 0)} ocorrencias menores foram registradas no periodo.`,
+      `Outras ${Math.max(incidentsCount - relevantOccurrences.length, 0)} ocorrencias menores foram registradas no periodo.`,
     );
     lines.push("");
   }
@@ -357,7 +361,7 @@ export function generateShiftReport({ start, end, incidents, summary }) {
     incidents.length,
   );
   const handoverText = buildHandoverText(relevantOccurrences, summaryText);
-  const title = `RELATORIO NOC NOTURNO - ${formatDate(start)}`;
+  const title = `RELATORIO NOC - ${formatDate(start)}`;
   const plainTextReport = buildPlainTextReport({
     title,
     period: { start, end },
@@ -366,6 +370,7 @@ export function generateShiftReport({ start, end, incidents, summary }) {
     numbers,
     handoverText,
     observation,
+    incidentsCount: incidents.length,
   });
 
   return {

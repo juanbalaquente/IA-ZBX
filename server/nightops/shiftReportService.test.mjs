@@ -36,7 +36,7 @@ describe("shiftReportService", () => {
       incidents: [buildIncident()],
     });
 
-    expect(report.plainTextReport).toContain("RELATORIO NOC NOTURNO");
+    expect(report.plainTextReport).toContain("RELATORIO NOC");
     expect(report.plainTextReport).toContain("PASSAGEM DE TURNO:");
   });
 
@@ -47,7 +47,7 @@ describe("shiftReportService", () => {
       incidents: [],
     });
 
-    expect(report.title).toBe("RELATORIO NOC NOTURNO - 20/04/2026");
+    expect(report.title).toBe("RELATORIO NOC - 20/04/2026");
   });
 
   it("inclui periodo no relatorio", () => {

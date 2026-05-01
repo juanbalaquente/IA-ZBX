@@ -2,6 +2,7 @@ import { buildNightOpsPrompt } from "../ai/prompts/nightOpsPrompt.mjs";
 import { callAIProvider } from "../ai/providers/index.mjs";
 import { classifyProblem } from "./incidentClassifier.mjs";
 import { correlateIncidents } from "./correlationEngine.mjs";
+import { filterItemsByPeriod, resolveShiftPeriod } from "./shiftPeriodUtils.mjs";
 import { generateShiftReport } from "./shiftReportService.mjs";
 
 function normalizeGroupName(value) {
@@ -255,48 +256,70 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
     return latest;
   }
 
-  function resolveShiftPeriod(input = {}) {
-    if (input.start && input.end) {
-      return { start: input.start, end: input.end };
-    }
-
+  function resolveReportPeriod(input = {}) {
     const runtimeConfig = getRuntimeConfig();
-    const timezone = runtimeConfig.timezone || "America/Sao_Paulo";
-    const formatter = new Intl.DateTimeFormat("en-CA", {
-      timeZone: timezone,
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
+    return resolveShiftPeriod(input, {
+      timeZone: runtimeConfig.timezone || "America/Sao_Paulo",
+      dayShiftStartHour: 7,
+      dayShiftEndHour: 19,
+      nightShiftStartHour: 19,
+      nightShiftEndHour: 7,
     });
-    const parts = formatter.formatToParts(new Date());
-    const year = parts.find((part) => part.type === "year")?.value;
-    const month = parts.find((part) => part.type === "month")?.value;
-    const day = parts.find((part) => part.type === "day")?.value;
-    const baseDate = `${year}-${month}-${day}`;
-    const startHour = String(runtimeConfig.defaultStartHour).padStart(2, "0");
-    const endHour = String(runtimeConfig.defaultEndHour).padStart(2, "0");
+  }
 
-    const start = `${baseDate}T${startHour}:00:00-03:00`;
-    const endDate = new Date(`${baseDate}T00:00:00-03:00`);
-    if (Number(runtimeConfig.defaultEndHour) < Number(runtimeConfig.defaultStartHour)) {
-      endDate.setDate(endDate.getDate() + 1);
+  async function buildPeriodIncidents(period) {
+    const runtimeConfig = getRuntimeConfig();
+
+    if (zabbixClient.hasConfiguration()) {
+      try {
+        const snapshot = await zabbixClient.getProblemsForPeriod({
+          start: period.start,
+          end: period.end,
+          hostLimit: 500,
+          problemLimit: 1000,
+          eventLimit: 1000,
+          problemSeverities: [4, 5],
+          eventSeverities: [4, 5],
+        });
+
+        const eligibleProblems = snapshot.problems.filter(
+          (problem) =>
+            problem.hostEnabled !== false &&
+            isProblemInAllowedGroups(problem, runtimeConfig.allowedHostGroups),
+        );
+        const classified = eligibleProblems.map((problem) =>
+          classifyProblem(problem, {
+            nowTs: new Date(period.end).getTime(),
+            rules: getRuleOptions().rules,
+          }),
+        );
+        const correlated = correlateIncidents(classified, getRuleOptions());
+        const enriched = await enrichIncidentsWithAI(config, correlated);
+
+        return {
+          incidents: filterItemsByPeriod(enriched.incidents, period),
+          providerSummary: enriched.providerSummary,
+        };
+      } catch {
+        // fallback abaixo
+      }
     }
-    const nextBase = endDate.toISOString().slice(0, 10);
-    const end = `${nextBase}T${endHour}:00:00-03:00`;
 
-    return { start, end };
+    const storedIncidents = store.listIncidents({});
+    return {
+      incidents: filterItemsByPeriod(storedIncidents, period),
+      providerSummary: "",
+    };
   }
 
   async function createShiftReport(input = {}) {
-    const period = resolveShiftPeriod(input);
-    const analyses = store.getAnalysesBetween(period.start, period.end);
-    const incidents = analyses.flatMap((analysis) => analysis.incidents || []);
-    const latest = analyses.at(-1) || store.getLatestAnalysis();
+    const period = resolveReportPeriod(input);
+    const { incidents, providerSummary } = await buildPeriodIncidents(period);
     const report = generateShiftReport({
       start: period.start,
       end: period.end,
-      incidents: incidents.length > 0 ? incidents : latest?.incidents || [],
-      summary: latest?.providerSummary || undefined,
+      incidents,
+      summary: providerSummary || undefined,
     });
 
     return store.saveShiftReport({
@@ -391,5 +414,6 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
     listShiftReports,
     getShadowMetrics,
     updateShadowDecisionValidation,
+    resolveShiftPeriod: resolveReportPeriod,
   };
 }
