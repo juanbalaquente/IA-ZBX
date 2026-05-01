@@ -74,6 +74,15 @@ const emptyConfig: NightOpsConfig = {
   minDurationMinutes: 5,
   correlationWindowMinutes: 10,
   sameGroupAffectedHostsThreshold: 5,
+  allowedHostGroups: [
+    "1000-SERVIDORES",
+    "10031-SPEEDNET",
+    "10031-SPEEDNET/BACKBONE",
+    "31002-PREFEITURA_SABARA",
+    "31003-FIRETELECOM",
+    "31007-AFS",
+    "ZABBIX SERVERS",
+  ],
   criticalKeywords: ["OLT", "POP", "BGP", "BACKBONE", "CORE", "TRANSPORTE", "ENLACE"],
   autoEscalationEnabled: false,
   shadowModeEnabled: true,
@@ -168,6 +177,9 @@ function NightOpsPage() {
     useState<NightOpsStoredShiftReport | null>(null);
   const [history, setHistory] = useState<NightOpsHistoryItem[]>([]);
   const [config, setConfig] = useState<NightOpsConfig>(emptyConfig);
+  const [hostGroupsInput, setHostGroupsInput] = useState(
+    emptyConfig.allowedHostGroups.join("\n"),
+  );
   const [keywordsInput, setKeywordsInput] = useState(
     emptyConfig.criticalKeywords.join(", "),
   );
@@ -200,6 +212,7 @@ function NightOpsPage() {
     setHistory(historyResponse.items);
     setLatestStoredReport(latestReportResponse);
     setConfig(configResponse.config);
+    setHostGroupsInput(configResponse.config.allowedHostGroups.join("\n"));
     setKeywordsInput(configResponse.config.criticalKeywords.join(", "));
     setShadowDecisions(shadowResponse.items);
     setShadowMetrics(shadowMetricsResponse.metrics);
@@ -286,6 +299,10 @@ function NightOpsPage() {
       setError(null);
       const payload: NightOpsConfig = {
         ...config,
+        allowedHostGroups: hostGroupsInput
+          .split(/\r?\n|,/)
+          .map((item) => item.trim())
+          .filter(Boolean),
         criticalKeywords: keywordsInput
           .split(",")
           .map((item) => item.trim())
@@ -294,6 +311,7 @@ function NightOpsPage() {
       };
       const response = await updateNightOpsConfig(payload);
       setConfig(response.config);
+      setHostGroupsInput(response.config.allowedHostGroups.join("\n"));
       setKeywordsInput(response.config.criticalKeywords.join(", "));
       setConfigMessage("Configuracoes do Sentinel salvas.");
     } catch (saveError) {
@@ -473,6 +491,20 @@ function NightOpsPage() {
           <label className="block">
             <span className="mb-2 block text-sm text-slate-400">Palavras-chave criticas</span>
             <input type="text" value={keywordsInput} onChange={(event) => setKeywordsInput(event.target.value)} placeholder="OLT, POP, BGP, BACKBONE, CORE" className="w-full rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none focus:border-sky-400" />
+          </label>
+
+          <label className="block">
+            <span className="mb-2 block text-sm text-slate-400">Grupos de hosts permitidos</span>
+            <textarea
+              value={hostGroupsInput}
+              onChange={(event) => setHostGroupsInput(event.target.value)}
+              rows={7}
+              placeholder={"1000-SERVIDORES\n10031-SPEEDNET\n10031-SPEEDNET/BACKBONE"}
+              className="w-full rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none focus:border-sky-400"
+            />
+            <p className="mt-2 text-xs text-slate-500">
+              Apenas hosts destes grupos entram na analise do NightOps. Um grupo por linha ou separado por virgula.
+            </p>
           </label>
 
           <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 p-4">

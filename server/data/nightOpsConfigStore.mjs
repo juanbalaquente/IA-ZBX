@@ -9,6 +9,8 @@ import { dirname, resolve } from "node:path";
 
 const maxKeywords = 20;
 const maxKeywordLength = 40;
+const maxAllowedHostGroups = 50;
+const maxHostGroupLength = 120;
 
 function cloneConfig(config) {
   return JSON.parse(JSON.stringify(config));
@@ -21,6 +23,12 @@ function normalizeKeyword(value) {
     .replace(/\s+/g, " ");
 }
 
+function normalizeHostGroup(value) {
+  return String(value || "")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
 export function validateNightOpsConfig(input, defaults) {
   const errors = [];
   const nextConfig = {
@@ -30,6 +38,11 @@ export function validateNightOpsConfig(input, defaults) {
     minDurationMinutes: Number(input.minDurationMinutes),
     correlationWindowMinutes: Number(input.correlationWindowMinutes),
     sameGroupAffectedHostsThreshold: Number(input.sameGroupAffectedHostsThreshold),
+    allowedHostGroups: Array.isArray(input.allowedHostGroups)
+      ? input.allowedHostGroups.map(normalizeHostGroup).filter(Boolean)
+      : Array.isArray(defaults.allowedHostGroups)
+        ? defaults.allowedHostGroups.map(normalizeHostGroup).filter(Boolean)
+        : [],
     criticalKeywords: Array.isArray(input.criticalKeywords)
       ? input.criticalKeywords.map(normalizeKeyword).filter(Boolean)
       : [],
@@ -69,6 +82,18 @@ export function validateNightOpsConfig(input, defaults) {
     errors.push("sameGroupAffectedHostsThreshold invalido.");
   }
 
+  if (nextConfig.allowedHostGroups.length === 0) {
+    errors.push("allowedHostGroups nao pode ficar vazio.");
+  }
+
+  if (nextConfig.allowedHostGroups.length > maxAllowedHostGroups) {
+    errors.push("allowedHostGroups excede o limite permitido.");
+  }
+
+  if (nextConfig.allowedHostGroups.some((group) => group.length > maxHostGroupLength)) {
+    errors.push("allowedHostGroups contem item muito longo.");
+  }
+
   if (nextConfig.criticalKeywords.length === 0) {
     errors.push("criticalKeywords nao pode ficar vazio.");
   }
@@ -95,6 +120,7 @@ export function validateNightOpsConfig(input, defaults) {
     value: {
       ...cloneConfig(defaults),
       ...nextConfig,
+      allowedHostGroups: [...new Set(nextConfig.allowedHostGroups)],
       criticalKeywords: [...new Set(nextConfig.criticalKeywords)],
       autoEscalationEnabled: false,
     },

@@ -5,6 +5,15 @@
   "minDurationMinutes": 5,
   "correlationWindowMinutes": 10,
   "sameGroupAffectedHostsThreshold": 5,
+  "allowedHostGroups": [
+    "1000-SERVIDORES",
+    "10031-SPEEDNET",
+    "10031-SPEEDNET/BACKBONE",
+    "31002-PREFEITURA_SABARA",
+    "31003-FIRETELECOM",
+    "31007-AFS",
+    "ZABBIX SERVERS"
+  ],
   "criticalKeywords": [
     "OLT",
     "POP",

@@ -20,6 +20,15 @@ const defaults = {
   minDurationMinutes: 5,
   correlationWindowMinutes: 10,
   sameGroupAffectedHostsThreshold: 5,
+  allowedHostGroups: [
+    "1000-SERVIDORES",
+    "10031-SPEEDNET",
+    "10031-SPEEDNET/BACKBONE",
+    "31002-PREFEITURA_SABARA",
+    "31003-FIRETELECOM",
+    "31007-AFS",
+    "ZABBIX SERVERS",
+  ],
   criticalKeywords: ["OLT", "POP", "BGP", "BACKBONE", "CORE", "TRANSPORTE", "ENLACE"],
   autoEscalationEnabled: false,
   shadowModeEnabled: true,
@@ -57,6 +66,7 @@ describe("nightOpsConfigStore", () => {
     expect(store.getConfig().defaultStartHour).toBe(19);
     expect(store.getConfig().autoEscalationEnabled).toBe(false);
     expect(store.getConfig().shadowModeEnabled).toBe(true);
+    expect(store.getConfig().allowedHostGroups).toContain("10031-SPEEDNET");
   });
 
   it("salva configuracao valida", () => {
@@ -67,6 +77,7 @@ describe("nightOpsConfigStore", () => {
     const result = store.updateConfig({
       ...defaults,
       minDurationMinutes: 8,
+      allowedHostGroups: ["1000-SERVIDORES", "ZABBIX SERVERS"],
       criticalKeywords: ["OLT", "POP", "CORE"],
       autoEscalationEnabled: true,
       shadowModeRetentionDays: 45,
@@ -76,6 +87,10 @@ describe("nightOpsConfigStore", () => {
     expect(store.getConfig().minDurationMinutes).toBe(8);
     expect(store.getConfig().autoEscalationEnabled).toBe(false);
     expect(store.getConfig().shadowModeRetentionDays).toBe(45);
+    expect(store.getConfig().allowedHostGroups).toEqual([
+      "1000-SERVIDORES",
+      "ZABBIX SERVERS",
+    ]);
   });
 
   it("rejeita valores invalidos", () => {
@@ -83,6 +98,7 @@ describe("nightOpsConfigStore", () => {
       {
         ...defaults,
         correlationWindowMinutes: 0,
+        allowedHostGroups: new Array(80).fill("grupo"),
         criticalKeywords: new Array(30).fill("A"),
         shadowModeRetentionDays: 500,
       },

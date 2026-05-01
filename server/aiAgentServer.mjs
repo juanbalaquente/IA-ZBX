@@ -46,6 +46,13 @@ const config = {
   nightOpsSameGroupAffectedHostsThreshold: Number(
     process.env.NIGHTOPS_SAME_GROUP_AFFECTED_HOSTS_THRESHOLD || 5,
   ),
+  nightOpsAllowedHostGroups: (
+    process.env.NIGHTOPS_ALLOWED_HOST_GROUPS ||
+    "1000-SERVIDORES,10031-SPEEDNET,10031-SPEEDNET/BACKBONE,31002-PREFEITURA_SABARA,31003-FIRETELECOM,31007-AFS,ZABBIX SERVERS"
+  )
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean),
   nightOpsCriticalKeywords: (
     process.env.NIGHTOPS_CRITICAL_KEYWORDS ||
     "OLT,POP,BGP,BACKBONE,CORE,TRANSPORTE,ENLACE"
@@ -130,6 +137,7 @@ const nightOpsConfigStore = createNightOpsConfigStore({
     correlationWindowMinutes: config.nightOpsCorrelationWindowMinutes,
     sameGroupAffectedHostsThreshold:
       config.nightOpsSameGroupAffectedHostsThreshold,
+    allowedHostGroups: config.nightOpsAllowedHostGroups,
     criticalKeywords: config.nightOpsCriticalKeywords,
     autoEscalationEnabled: false,
     shadowModeEnabled: config.nightOpsShadowModeEnabled,

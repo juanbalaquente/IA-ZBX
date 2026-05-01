@@ -10898,6 +10898,1745 @@
       },
       "analysisId": "analysis-2026-05-01T03:03:55.274Z",
       "generatedAt": "2026-05-01T03:03:55.274Z"
+    },
+    {
+      "id": "INC-20260501-0041-ODEG",
+      "title": "100GE0/0/1 Lane 2 está com sinal alto: -10.68 dBm limiar: -10.6 dBm",
+      "severity": "critical",
+      "sourceSeverity": "High",
+      "status": "active",
+      "classification": "attention",
+      "startedAt": "2026-05-01T03:37:55.000Z",
+      "durationMinutes": 3,
+      "affectedHosts": [
+        "10031-SW_HAUWEI_100G_LIBERDADE"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "14290651"
+      ],
+      "eventIds": [
+        "14290651"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: 100GE0/0/1 Lane 2 está com sinal alto: -10.68 dBm limiar: -10.6 dBm",
+        "Severidade original: High",
+        "Host: 10031-SW_HAUWEI_100G_LIBERDADE",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Aguardando regras deterministicas.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "10031-SW_HAUWEI_100G_LIBERDADE",
+        "hostId": "11584",
+        "triggerId": "101537",
+        "keywords": [
+          "100ge0",
+          "0",
+          "1",
+          "lane",
+          "2",
+          "esta",
+          "com",
+          "sinal",
+          "alto",
+          "10",
+          "68",
+          "dbm",
+          "limiar",
+          "10",
+          "6",
+          "dbm"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-L5OL",
+      "title": "GPON 0/3/12 se encontra com todos os clientes offline",
+      "severity": "critical",
+      "sourceSeverity": "Disaster",
+      "status": "monitoring",
+      "classification": "attention",
+      "startedAt": "2026-04-30T16:53:38.000Z",
+      "durationMinutes": 648,
+      "affectedHosts": [
+        "10031-OLT_LAGUNA"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "14284343"
+      ],
+      "eventIds": [
+        "14284343"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta 10031-OLT_LAGUNA no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: GPON 0/3/12 se encontra com todos os clientes offline",
+        "Severidade original: Disaster",
+        "Host: 10031-OLT_LAGUNA",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": true,
+        "reason": "Incidente Disaster com duracao acima do limite operacional.",
+        "target": "Supervisor"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "10031-OLT_LAGUNA",
+        "hostId": "11197",
+        "triggerId": "107093",
+        "keywords": [
+          "gpon",
+          "0",
+          "3",
+          "12",
+          "se",
+          "encontra",
+          "com",
+          "todos",
+          "os",
+          "clientes",
+          "offline"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-QC3U",
+      "title": "Equipamento Offline",
+      "severity": "critical",
+      "sourceSeverity": "Disaster",
+      "status": "monitoring",
+      "classification": "attention",
+      "startedAt": "2026-04-27T19:43:02.000Z",
+      "durationMinutes": 4798,
+      "affectedHosts": [
+        "260GS_PSF_RECREIO_RETIRO"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET"
+      ],
+      "problemIds": [
+        "14244133"
+      ],
+      "eventIds": [
+        "14244133"
+      ],
+      "probableCause": "Necessaria validacao operacional no host e na trigger associada.",
+      "impact": "Afeta 260GS_PSF_RECREIO_RETIRO no grupo 10031-SPEEDNET.",
+      "evidence": [
+        "Problema: Equipamento Offline",
+        "Severidade original: Disaster",
+        "Host: 260GS_PSF_RECREIO_RETIRO"
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": true,
+        "reason": "Incidente Disaster com duracao acima do limite operacional.",
+        "target": "Supervisor"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "260GS_PSF_RECREIO_RETIRO",
+        "hostId": "11160",
+        "triggerId": "69759",
+        "keywords": [
+          "equipamento",
+          "offline"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-CXLE",
+      "title": "Interface XGigabitEthernet0/0/17 está down: -40 dBm",
+      "severity": "critical",
+      "sourceSeverity": "Disaster",
+      "status": "monitoring",
+      "classification": "attention",
+      "startedAt": "2026-04-23T10:43:37.000Z",
+      "durationMinutes": 11098,
+      "affectedHosts": [
+        "SW_HW_100G_ROSARIO"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "14173698"
+      ],
+      "eventIds": [
+        "14173698"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta SW_HW_100G_ROSARIO no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/17 está down: -40 dBm",
+        "Severidade original: Disaster",
+        "Host: SW_HW_100G_ROSARIO",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": true,
+        "reason": "Incidente Disaster com duracao acima do limite operacional.",
+        "target": "Supervisor"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "SW_HW_100G_ROSARIO",
+        "hostId": "11078",
+        "triggerId": "104626",
+        "keywords": [
+          "interface",
+          "xgigabitethernet0",
+          "0",
+          "17",
+          "esta",
+          "down",
+          "40",
+          "dbm"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-QH6G",
+      "title": "Incidente correlacionado - 10031-SPEEDNET",
+      "severity": "critical",
+      "sourceSeverity": "High",
+      "status": "monitoring",
+      "classification": "correlated-outage",
+      "startedAt": "2026-04-19T16:47:14.000Z",
+      "durationMinutes": 16494,
+      "affectedHosts": [
+        "NE8000"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "14126145",
+        "14126144"
+      ],
+      "eventIds": [
+        "14126145",
+        "14126144"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta NE8000 no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: Peer 10.15.1.90-272479 esta fora",
+        "Severidade original: High",
+        "Host: NE8000",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Problema: Peer 10.15.1.86-272479 esta fora",
+        "Incidentes agrupados por grupo/host/severidade/janela de tempo.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Aguardando regras deterministicas.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.6799999999999999,
+      "metadata": {
+        "host": "NE8000",
+        "hostId": "10995",
+        "triggerId": "71046",
+        "keywords": [
+          "peer",
+          "10",
+          "15",
+          "1",
+          "90",
+          "272479",
+          "esta",
+          "fora"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-SP50",
+      "title": "Interface XGigabitEthernet0/0/3 está com sinal alto: -18.89 dBm limiar: -18.01 dBm",
+      "severity": "critical",
+      "sourceSeverity": "High",
+      "status": "active",
+      "classification": "attention",
+      "startedAt": "2026-04-09T20:47:48.000Z",
+      "durationMinutes": 30653,
+      "affectedHosts": [
+        "SW_HUAWEI_100G_SANTA_INES"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "13961382"
+      ],
+      "eventIds": [
+        "13961382"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta SW_HUAWEI_100G_SANTA_INES no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/3 está com sinal alto: -18.89 dBm limiar: -18.01 dBm",
+        "Severidade original: High",
+        "Host: SW_HUAWEI_100G_SANTA_INES",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Aguardando regras deterministicas.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "SW_HUAWEI_100G_SANTA_INES",
+        "hostId": "10600",
+        "triggerId": "101797",
+        "keywords": [
+          "interface",
+          "xgigabitethernet0",
+          "0",
+          "3",
+          "esta",
+          "com",
+          "sinal",
+          "alto",
+          "18",
+          "89",
+          "dbm",
+          "limiar",
+          "18",
+          "01",
+          "dbm"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-MMLR",
+      "title": "Equipamento Offline",
+      "severity": "critical",
+      "sourceSeverity": "Disaster",
+      "status": "monitoring",
+      "classification": "attention",
+      "startedAt": "2026-04-06T20:17:00.000Z",
+      "durationMinutes": 35004,
+      "affectedHosts": [
+        "X9_NIVEL_AGUA_AQUARIO"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "13873129"
+      ],
+      "eventIds": [
+        "13873129"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta X9_NIVEL_AGUA_AQUARIO no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: Equipamento Offline",
+        "Severidade original: Disaster",
+        "Host: X9_NIVEL_AGUA_AQUARIO",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": true,
+        "reason": "Incidente Disaster com duracao acima do limite operacional.",
+        "target": "Supervisor"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "X9_NIVEL_AGUA_AQUARIO",
+        "hostId": "11150",
+        "triggerId": "44376",
+        "keywords": [
+          "equipamento",
+          "offline"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-7OIM",
+      "title": "Peer 10.15.1.118-262663 esta fora",
+      "severity": "critical",
+      "sourceSeverity": "High",
+      "status": "monitoring",
+      "classification": "attention",
+      "startedAt": "2026-04-06T14:28:14.000Z",
+      "durationMinutes": 35353,
+      "affectedHosts": [
+        "NE8000"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "13869282"
+      ],
+      "eventIds": [
+        "13869282"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta NE8000 no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: Peer 10.15.1.118-262663 esta fora",
+        "Severidade original: High",
+        "Host: NE8000",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Aguardando regras deterministicas.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "NE8000",
+        "hostId": "10995",
+        "triggerId": "105619",
+        "keywords": [
+          "peer",
+          "10",
+          "15",
+          "1",
+          "118",
+          "262663",
+          "esta",
+          "fora"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-FLNJ",
+      "title": "100GE0/0/1 Lane 1 está com sinal alto: -11.07 dBm limiar: -10.6 dBm",
+      "severity": "critical",
+      "sourceSeverity": "High",
+      "status": "active",
+      "classification": "attention",
+      "startedAt": "2026-04-04T16:34:55.000Z",
+      "durationMinutes": 38106,
+      "affectedHosts": [
+        "10031-SW_HAUWEI_100G_LIBERDADE"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "13827052"
+      ],
+      "eventIds": [
+        "13827052"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: 100GE0/0/1 Lane 1 está com sinal alto: -11.07 dBm limiar: -10.6 dBm",
+        "Severidade original: High",
+        "Host: 10031-SW_HAUWEI_100G_LIBERDADE",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Aguardando regras deterministicas.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "10031-SW_HAUWEI_100G_LIBERDADE",
+        "hostId": "11584",
+        "triggerId": "101535",
+        "keywords": [
+          "100ge0",
+          "0",
+          "1",
+          "lane",
+          "1",
+          "esta",
+          "com",
+          "sinal",
+          "alto",
+          "11",
+          "07",
+          "dbm",
+          "limiar",
+          "10",
+          "6",
+          "dbm"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-L3HK",
+      "title": "Incidente correlacionado - 10031-SPEEDNET",
+      "severity": "critical",
+      "sourceSeverity": "High",
+      "status": "active",
+      "classification": "correlated-outage",
+      "startedAt": "2026-03-24T17:00:37.000Z",
+      "durationMinutes": 53921,
+      "affectedHosts": [
+        "SW_HUAWEI_100G_BETIM"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "13514735",
+        "13514734"
+      ],
+      "eventIds": [
+        "13514735",
+        "13514734"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta SW_HUAWEI_100G_BETIM no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/3 está com sinal alto: -5.24 dBm limiar: -0.01 dBm",
+        "Severidade original: High",
+        "Host: SW_HUAWEI_100G_BETIM",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Problema: Interface XGigabitEthernet0/0/1 está com sinal alto: -13.88 dBm limiar: -0.01 dBm",
+        "Incidentes agrupados por grupo/host/severidade/janela de tempo.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Aguardando regras deterministicas.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.6799999999999999,
+      "metadata": {
+        "host": "SW_HUAWEI_100G_BETIM",
+        "hostId": "10596",
+        "triggerId": "105391",
+        "keywords": [
+          "interface",
+          "xgigabitethernet0",
+          "0",
+          "3",
+          "esta",
+          "com",
+          "sinal",
+          "alto",
+          "5",
+          "24",
+          "dbm",
+          "limiar",
+          "0",
+          "01",
+          "dbm"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-1IGI",
+      "title": "Interface XGigabitEthernet0/0/1 está com sinal alto: -6.82 dBm limiar: -0.01 dBm",
+      "severity": "critical",
+      "sourceSeverity": "High",
+      "status": "active",
+      "classification": "attention",
+      "startedAt": "2026-03-24T16:59:46.000Z",
+      "durationMinutes": 53921,
+      "affectedHosts": [
+        "SW_HUAWEI_100G_VIANOPOLIS"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "13514710"
+      ],
+      "eventIds": [
+        "13514710"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta SW_HUAWEI_100G_VIANOPOLIS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/1 está com sinal alto: -6.82 dBm limiar: -0.01 dBm",
+        "Severidade original: High",
+        "Host: SW_HUAWEI_100G_VIANOPOLIS",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Aguardando regras deterministicas.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "SW_HUAWEI_100G_VIANOPOLIS",
+        "hostId": "10603",
+        "triggerId": "105392",
+        "keywords": [
+          "interface",
+          "xgigabitethernet0",
+          "0",
+          "1",
+          "esta",
+          "com",
+          "sinal",
+          "alto",
+          "6",
+          "82",
+          "dbm",
+          "limiar",
+          "0",
+          "01",
+          "dbm"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-2JWF",
+      "title": "Interface XGigabitEthernet0/0/5 está com sinal alto: -21.25 dBm limiar: -0.01 dBm",
+      "severity": "critical",
+      "sourceSeverity": "High",
+      "status": "active",
+      "classification": "attention",
+      "startedAt": "2026-03-24T16:59:32.000Z",
+      "durationMinutes": 53922,
+      "affectedHosts": [
+        "10031-SW_HUAWEI_40GB_JAQUELINE"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "13514706"
+      ],
+      "eventIds": [
+        "13514706"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta 10031-SW_HUAWEI_40GB_JAQUELINE no grupo 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/5 está com sinal alto: -21.25 dBm limiar: -0.01 dBm",
+        "Severidade original: High",
+        "Host: 10031-SW_HUAWEI_40GB_JAQUELINE",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Aguardando regras deterministicas.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "10031-SW_HUAWEI_40GB_JAQUELINE",
+        "hostId": "11561",
+        "triggerId": "105393",
+        "keywords": [
+          "interface",
+          "xgigabitethernet0",
+          "0",
+          "5",
+          "esta",
+          "com",
+          "sinal",
+          "alto",
+          "21",
+          "25",
+          "dbm",
+          "limiar",
+          "0",
+          "01",
+          "dbm"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-JI9K",
+      "title": "Interface XGigabitEthernet0/0/6 está com sinal alto: -12.82 dBm limiar: -0.01 dBm",
+      "severity": "critical",
+      "sourceSeverity": "High",
+      "status": "active",
+      "classification": "attention",
+      "startedAt": "2026-03-23T15:17:32.000Z",
+      "durationMinutes": 55464,
+      "affectedHosts": [
+        "10031-SW_HUAWEI_40GB_JAQUELINE"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "13478150"
+      ],
+      "eventIds": [
+        "13478150"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta 10031-SW_HUAWEI_40GB_JAQUELINE no grupo 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/6 está com sinal alto: -12.82 dBm limiar: -0.01 dBm",
+        "Severidade original: High",
+        "Host: 10031-SW_HUAWEI_40GB_JAQUELINE",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Aguardando regras deterministicas.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "10031-SW_HUAWEI_40GB_JAQUELINE",
+        "hostId": "11561",
+        "triggerId": "105394",
+        "keywords": [
+          "interface",
+          "xgigabitethernet0",
+          "0",
+          "6",
+          "esta",
+          "com",
+          "sinal",
+          "alto",
+          "12",
+          "82",
+          "dbm",
+          "limiar",
+          "0",
+          "01",
+          "dbm"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-CXH7",
+      "title": "Incidente correlacionado - 10031-SPEEDNET",
+      "severity": "critical",
+      "sourceSeverity": "Disaster",
+      "status": "monitoring",
+      "classification": "correlated-outage",
+      "startedAt": "2026-03-02T19:01:36.000Z",
+      "durationMinutes": 85480,
+      "affectedHosts": [
+        "SW_HUAWEI_100G_VENEZA",
+        "SW_HUAWEI_100G_ESMERALDAS",
+        "SW_HUAWEI_100G_AGUAS_MARINHAS"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "12785356",
+        "12785355",
+        "12785354"
+      ],
+      "eventIds": [
+        "12785356",
+        "12785355",
+        "12785354"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta SW_HUAWEI_100G_VENEZA no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/17 está down: -40 dBm",
+        "Severidade original: Disaster",
+        "Host: SW_HUAWEI_100G_VENEZA",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Problema: Interface XGigabitEthernet0/0/5 está down: -40 dBm",
+        "Host: SW_HUAWEI_100G_ESMERALDAS",
+        "Incidentes agrupados por grupo/host/severidade/janela de tempo.",
+        "Problema: Interface XGigabitEthernet0/0/18 está down: -40 dBm",
+        "Host: SW_HUAWEI_100G_AGUAS_MARINHAS",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": true,
+        "reason": "Incidente Disaster com duracao acima do limite operacional.",
+        "target": "Supervisor"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.7799999999999999,
+      "metadata": {
+        "host": "SW_HUAWEI_100G_VENEZA",
+        "hostId": "10602",
+        "triggerId": "104715",
+        "keywords": [
+          "interface",
+          "xgigabitethernet0",
+          "0",
+          "17",
+          "esta",
+          "down",
+          "40",
+          "dbm"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-WONY",
+      "title": "Interface XGigabitEthernet0/0/4 está down: -40 dBm",
+      "severity": "critical",
+      "sourceSeverity": "Disaster",
+      "status": "monitoring",
+      "classification": "attention",
+      "startedAt": "2026-03-02T18:17:55.000Z",
+      "durationMinutes": 85523,
+      "affectedHosts": [
+        "10031-SW_HAUWEI_100G_LIBERDADE"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "12784370"
+      ],
+      "eventIds": [
+        "12784370"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/4 está down: -40 dBm",
+        "Severidade original: Disaster",
+        "Host: 10031-SW_HAUWEI_100G_LIBERDADE",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": true,
+        "reason": "Incidente Disaster com duracao acima do limite operacional.",
+        "target": "Supervisor"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "10031-SW_HAUWEI_100G_LIBERDADE",
+        "hostId": "11584",
+        "triggerId": "104640",
+        "keywords": [
+          "interface",
+          "xgigabitethernet0",
+          "0",
+          "4",
+          "esta",
+          "down",
+          "40",
+          "dbm"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-F1TN",
+      "title": "Interface XGigabitEthernet0/0/18 está down: -40 dBm",
+      "severity": "critical",
+      "sourceSeverity": "Disaster",
+      "status": "monitoring",
+      "classification": "attention",
+      "startedAt": "2026-03-02T18:09:36.000Z",
+      "durationMinutes": 85532,
+      "affectedHosts": [
+        "SW_HW_100G_ROSARIO"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "12784186"
+      ],
+      "eventIds": [
+        "12784186"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta SW_HW_100G_ROSARIO no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/18 está down: -40 dBm",
+        "Severidade original: Disaster",
+        "Host: SW_HW_100G_ROSARIO",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": true,
+        "reason": "Incidente Disaster com duracao acima do limite operacional.",
+        "target": "Supervisor"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "SW_HW_100G_ROSARIO",
+        "hostId": "11078",
+        "triggerId": "104627",
+        "keywords": [
+          "interface",
+          "xgigabitethernet0",
+          "0",
+          "18",
+          "esta",
+          "down",
+          "40",
+          "dbm"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-H6R5",
+      "title": "Interface XGigabitEthernet0/0/4 está com sinal alto: -40 dBm limiar: -27.2 dBm",
+      "severity": "critical",
+      "sourceSeverity": "High",
+      "status": "active",
+      "classification": "attention",
+      "startedAt": "2026-01-21T12:27:55.000Z",
+      "durationMinutes": 143473,
+      "affectedHosts": [
+        "10031-SW_HAUWEI_100G_LIBERDADE"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "12156959"
+      ],
+      "eventIds": [
+        "12156959"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/4 está com sinal alto: -40 dBm limiar: -27.2 dBm",
+        "Severidade original: High",
+        "Host: 10031-SW_HAUWEI_100G_LIBERDADE",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Aguardando regras deterministicas.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "10031-SW_HAUWEI_100G_LIBERDADE",
+        "hostId": "11584",
+        "triggerId": "101319",
+        "keywords": [
+          "interface",
+          "xgigabitethernet0",
+          "0",
+          "4",
+          "esta",
+          "com",
+          "sinal",
+          "alto",
+          "40",
+          "dbm",
+          "limiar",
+          "27",
+          "2",
+          "dbm"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-ZWMF",
+      "title": "100GE0/0/6 Lane 1 está com sinal alto: -12.06 dBm limiar: -12.01 dBm",
+      "severity": "critical",
+      "sourceSeverity": "High",
+      "status": "monitoring",
+      "classification": "attention",
+      "startedAt": "2025-12-15T14:40:40.000Z",
+      "durationMinutes": 196621,
+      "affectedHosts": [
+        "SW_HW_100G_ROSARIO"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "11668817"
+      ],
+      "eventIds": [
+        "11668817"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta SW_HW_100G_ROSARIO no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: 100GE0/0/6 Lane 1 está com sinal alto: -12.06 dBm limiar: -12.01 dBm",
+        "Severidade original: High",
+        "Host: SW_HW_100G_ROSARIO",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Aguardando regras deterministicas.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "SW_HW_100G_ROSARIO",
+        "hostId": "11078",
+        "triggerId": "101730",
+        "keywords": [
+          "100ge0",
+          "0",
+          "6",
+          "lane",
+          "1",
+          "esta",
+          "com",
+          "sinal",
+          "alto",
+          "12",
+          "06",
+          "dbm",
+          "limiar",
+          "12",
+          "01",
+          "dbm"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-H8JY",
+      "title": "Incidente correlacionado - 10031-SPEEDNET",
+      "severity": "critical",
+      "sourceSeverity": "High",
+      "status": "monitoring",
+      "classification": "correlated-outage",
+      "startedAt": "2025-12-11T19:01:36.000Z",
+      "durationMinutes": 202120,
+      "affectedHosts": [
+        "SW_HW_100G_ROSARIO",
+        "SW_HUAWEI_100G_VENEZA",
+        "SW_HUAWEI_100G_ESMERALDAS",
+        "SW_HUAWEI_100G_AGUAS_MARINHAS"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "11616086",
+        "11616001",
+        "11616000",
+        "11615997"
+      ],
+      "eventIds": [
+        "11616086",
+        "11616001",
+        "11616000",
+        "11615997"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta SW_HW_100G_ROSARIO no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/18 está com sinal alto: -40 dBm limiar: -17.01 dBm",
+        "Severidade original: High",
+        "Host: SW_HW_100G_ROSARIO",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Problema: Interface XGigabitEthernet0/0/17 está com sinal alto: -40 dBm limiar: -15 dBm",
+        "Host: SW_HUAWEI_100G_VENEZA",
+        "Incidentes agrupados por grupo/host/severidade/janela de tempo.",
+        "Problema: Interface XGigabitEthernet0/0/5 está com sinal alto: -40 dBm limiar: -27.2 dBm",
+        "Host: SW_HUAWEI_100G_ESMERALDAS",
+        "Problema: Interface XGigabitEthernet0/0/18 está com sinal alto: -40 dBm limiar: -15 dBm",
+        "Host: SW_HUAWEI_100G_AGUAS_MARINHAS",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Aguardando regras deterministicas.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.8799999999999999,
+      "metadata": {
+        "host": "SW_HW_100G_ROSARIO",
+        "hostId": "11078",
+        "triggerId": "101752",
+        "keywords": [
+          "interface",
+          "xgigabitethernet0",
+          "0",
+          "18",
+          "esta",
+          "com",
+          "sinal",
+          "alto",
+          "40",
+          "dbm",
+          "limiar",
+          "17",
+          "01",
+          "dbm"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-MTVK",
+      "title": "Interface XGigabitEthernet0/0/16 está com sinal alto: -15.32 dBm limiar: -14.39 dBm",
+      "severity": "critical",
+      "sourceSeverity": "High",
+      "status": "monitoring",
+      "classification": "attention",
+      "startedAt": "2025-12-11T18:48:12.000Z",
+      "durationMinutes": 202133,
+      "affectedHosts": [
+        "SW_HUAWEI_100G_ABILIO"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "11615860"
+      ],
+      "eventIds": [
+        "11615860"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta SW_HUAWEI_100G_ABILIO no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/16 está com sinal alto: -15.32 dBm limiar: -14.39 dBm",
+        "Severidade original: High",
+        "Host: SW_HUAWEI_100G_ABILIO",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Aguardando regras deterministicas.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "SW_HUAWEI_100G_ABILIO",
+        "hostId": "10577",
+        "triggerId": "101576",
+        "keywords": [
+          "interface",
+          "xgigabitethernet0",
+          "0",
+          "16",
+          "esta",
+          "com",
+          "sinal",
+          "alto",
+          "15",
+          "32",
+          "dbm",
+          "limiar",
+          "14",
+          "39",
+          "dbm"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-PN8O",
+      "title": "Interface ether3 está negociando a 10Mbps.",
+      "severity": "medium",
+      "sourceSeverity": "High",
+      "status": "active",
+      "classification": "monitoring",
+      "startedAt": "2025-12-09T20:02:22.000Z",
+      "durationMinutes": 204939,
+      "affectedHosts": [
+        "RB2011_REGIONAL_NOVORETIRO"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET"
+      ],
+      "problemIds": [
+        "11597676"
+      ],
+      "eventIds": [
+        "11597676"
+      ],
+      "probableCause": "Necessaria validacao operacional no host e na trigger associada.",
+      "impact": "Afeta RB2011_REGIONAL_NOVORETIRO no grupo 10031-SPEEDNET.",
+      "evidence": [
+        "Problema: Interface ether3 está negociando a 10Mbps.",
+        "Severidade original: High",
+        "Host: RB2011_REGIONAL_NOVORETIRO"
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Host isolado com impacto contido. Monitorar antes de escalar.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "RB2011_REGIONAL_NOVORETIRO",
+        "hostId": "11064",
+        "triggerId": "91966",
+        "keywords": [
+          "interface",
+          "ether3",
+          "esta",
+          "negociando",
+          "a",
+          "10mbps"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-AA2C",
+      "title": "Interface ether1 está negociando a 10Mbps.",
+      "severity": "medium",
+      "sourceSeverity": "High",
+      "status": "active",
+      "classification": "monitoring",
+      "startedAt": "2025-11-27T17:08:22.000Z",
+      "durationMinutes": 222393,
+      "affectedHosts": [
+        "RB2011_REGIONAL_NOVORETIRO"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET"
+      ],
+      "problemIds": [
+        "11446557"
+      ],
+      "eventIds": [
+        "11446557"
+      ],
+      "probableCause": "Necessaria validacao operacional no host e na trigger associada.",
+      "impact": "Afeta RB2011_REGIONAL_NOVORETIRO no grupo 10031-SPEEDNET.",
+      "evidence": [
+        "Problema: Interface ether1 está negociando a 10Mbps.",
+        "Severidade original: High",
+        "Host: RB2011_REGIONAL_NOVORETIRO"
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Host isolado com impacto contido. Monitorar antes de escalar.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "RB2011_REGIONAL_NOVORETIRO",
+        "hostId": "11064",
+        "triggerId": "61302",
+        "keywords": [
+          "interface",
+          "ether1",
+          "esta",
+          "negociando",
+          "a",
+          "10mbps"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-CMXT",
+      "title": "Todos os users pppoe da 904 estão desconectados",
+      "severity": "critical",
+      "sourceSeverity": "Disaster",
+      "status": "monitoring",
+      "classification": "attention",
+      "startedAt": "2025-11-05T03:16:12.000Z",
+      "durationMinutes": 254905,
+      "affectedHosts": [
+        "NE40_HUAWE_PPPoE"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "11161144"
+      ],
+      "eventIds": [
+        "11161144"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta NE40_HUAWE_PPPoE no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: Todos os users pppoe da 904 estão desconectados",
+        "Severidade original: Disaster",
+        "Host: NE40_HUAWE_PPPoE",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": true,
+        "reason": "Incidente Disaster com duracao acima do limite operacional.",
+        "target": "Supervisor"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "NE40_HUAWE_PPPoE",
+        "hostId": "10994",
+        "triggerId": "93691",
+        "keywords": [
+          "todos",
+          "os",
+          "users",
+          "pppoe",
+          "da",
+          "904",
+          "estao",
+          "desconectados"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-PUH0",
+      "title": "GPON 0/2/13 está no limite de ONU por porta 121",
+      "severity": "critical",
+      "sourceSeverity": "High",
+      "status": "active",
+      "classification": "attention",
+      "startedAt": "2025-08-30T14:01:31.000Z",
+      "durationMinutes": 350740,
+      "affectedHosts": [
+        "10031-OLT_ESMERALDAS"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "10241386"
+      ],
+      "eventIds": [
+        "10241386"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta 10031-OLT_ESMERALDAS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: GPON 0/2/13 está no limite de ONU por porta 121",
+        "Severidade original: High",
+        "Host: 10031-OLT_ESMERALDAS",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Aguardando regras deterministicas.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "10031-OLT_ESMERALDAS",
+        "hostId": "10583",
+        "triggerId": "67211",
+        "keywords": [
+          "gpon",
+          "0",
+          "2",
+          "13",
+          "esta",
+          "no",
+          "limite",
+          "de",
+          "onu",
+          "por",
+          "porta",
+          "121"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-S8NO",
+      "title": "ten-gigabit-ethernet-1/1/1  está com sinal alto -23.27 dBm",
+      "severity": "critical",
+      "sourceSeverity": "High",
+      "status": "monitoring",
+      "classification": "attention",
+      "startedAt": "2025-08-28T17:12:14.000Z",
+      "durationMinutes": 353429,
+      "affectedHosts": [
+        "10031-SW_DATACOM_ICAIVERA"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "10205105"
+      ],
+      "eventIds": [
+        "10205105"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta 10031-SW_DATACOM_ICAIVERA no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: ten-gigabit-ethernet-1/1/1  está com sinal alto -23.27 dBm",
+        "Severidade original: High",
+        "Host: 10031-SW_DATACOM_ICAIVERA",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Aguardando regras deterministicas.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "10031-SW_DATACOM_ICAIVERA",
+        "hostId": "10876",
+        "triggerId": "95069",
+        "keywords": [
+          "ten",
+          "gigabit",
+          "ethernet",
+          "1",
+          "1",
+          "1",
+          "esta",
+          "com",
+          "sinal",
+          "alto",
+          "23",
+          "27",
+          "dbm"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-E6OA",
+      "title": "Perda de Pacote: 33.33 %",
+      "severity": "medium",
+      "sourceSeverity": "High",
+      "status": "active",
+      "classification": "monitoring",
+      "startedAt": "2025-05-20T20:06:53.000Z",
+      "durationMinutes": 497254,
+      "affectedHosts": [
+        "10031-CAM_CSA_ESUTAQUIO_VARANDA_2ANDAR"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET"
+      ],
+      "problemIds": [
+        "8580554"
+      ],
+      "eventIds": [
+        "8580554"
+      ],
+      "probableCause": "Necessaria validacao operacional no host e na trigger associada.",
+      "impact": "Afeta 10031-CAM_CSA_ESUTAQUIO_VARANDA_2ANDAR no grupo 10031-SPEEDNET.",
+      "evidence": [
+        "Problema: Perda de Pacote: 33.33 %",
+        "Severidade original: High",
+        "Host: 10031-CAM_CSA_ESUTAQUIO_VARANDA_2ANDAR"
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Host isolado com impacto contido. Monitorar antes de escalar.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "10031-CAM_CSA_ESUTAQUIO_VARANDA_2ANDAR",
+        "hostId": "11521",
+        "triggerId": "89610",
+        "keywords": [
+          "perda",
+          "de",
+          "pacote",
+          "33",
+          "33"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
+    },
+    {
+      "id": "INC-20260501-0041-LCQJ",
+      "title": "GPON 0/2/1 está no limite de ONU por porta 121",
+      "severity": "critical",
+      "sourceSeverity": "High",
+      "status": "active",
+      "classification": "attention",
+      "startedAt": "2025-04-12T19:01:17.000Z",
+      "durationMinutes": 552040,
+      "affectedHosts": [
+        "10031-OLT_ESMERALDAS"
+      ],
+      "affectedGroups": [
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE"
+      ],
+      "problemIds": [
+        "8002307"
+      ],
+      "eventIds": [
+        "8002307"
+      ],
+      "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+      "impact": "Afeta 10031-OLT_ESMERALDAS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+      "evidence": [
+        "Problema: GPON 0/2/1 está no limite de ONU por porta 121",
+        "Severidade original: High",
+        "Host: 10031-OLT_ESMERALDAS",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "recommendedActions": [
+        "Validar o host e a trigger no Zabbix.",
+        "Confirmar alcance do impacto com a equipe de monitoracao."
+      ],
+      "escalation": {
+        "required": false,
+        "reason": "Aguardando regras deterministicas.",
+        "target": "NOC"
+      },
+      "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+      "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+      "confidence": 0.58,
+      "metadata": {
+        "host": "10031-OLT_ESMERALDAS",
+        "hostId": "10583",
+        "triggerId": "91985",
+        "keywords": [
+          "gpon",
+          "0",
+          "2",
+          "1",
+          "esta",
+          "no",
+          "limite",
+          "de",
+          "onu",
+          "por",
+          "porta",
+          "121"
+        ]
+      },
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z"
     }
   ],
   "analyses": [
@@ -21468,6 +23207,1712 @@
         "totalIncidents": 93,
         "escalationRecommended": 47
       }
+    },
+    {
+      "id": "analysis-2026-05-01T03:41:13.176Z",
+      "generatedAt": "2026-05-01T03:41:13.176Z",
+      "status": "ok",
+      "summary": {
+        "activeProblems": 34,
+        "criticalIncidents": 24,
+        "warningIncidents": 3,
+        "ignoredNoise": 0,
+        "escalationRecommended": 8
+      },
+      "incidents": [
+        {
+          "id": "INC-20260501-0041-ODEG",
+          "title": "100GE0/0/1 Lane 2 está com sinal alto: -10.68 dBm limiar: -10.6 dBm",
+          "severity": "critical",
+          "sourceSeverity": "High",
+          "status": "active",
+          "classification": "attention",
+          "startedAt": "2026-05-01T03:37:55.000Z",
+          "durationMinutes": 3,
+          "affectedHosts": [
+            "10031-SW_HAUWEI_100G_LIBERDADE"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "14290651"
+          ],
+          "eventIds": [
+            "14290651"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: 100GE0/0/1 Lane 2 está com sinal alto: -10.68 dBm limiar: -10.6 dBm",
+            "Severidade original: High",
+            "Host: 10031-SW_HAUWEI_100G_LIBERDADE",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "10031-SW_HAUWEI_100G_LIBERDADE",
+            "hostId": "11584",
+            "triggerId": "101537",
+            "keywords": [
+              "100ge0",
+              "0",
+              "1",
+              "lane",
+              "2",
+              "esta",
+              "com",
+              "sinal",
+              "alto",
+              "10",
+              "68",
+              "dbm",
+              "limiar",
+              "10",
+              "6",
+              "dbm"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-L5OL",
+          "title": "GPON 0/3/12 se encontra com todos os clientes offline",
+          "severity": "critical",
+          "sourceSeverity": "Disaster",
+          "status": "monitoring",
+          "classification": "attention",
+          "startedAt": "2026-04-30T16:53:38.000Z",
+          "durationMinutes": 648,
+          "affectedHosts": [
+            "10031-OLT_LAGUNA"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "14284343"
+          ],
+          "eventIds": [
+            "14284343"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta 10031-OLT_LAGUNA no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: GPON 0/3/12 se encontra com todos os clientes offline",
+            "Severidade original: Disaster",
+            "Host: 10031-OLT_LAGUNA",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": true,
+            "reason": "Incidente Disaster com duracao acima do limite operacional.",
+            "target": "Supervisor"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "10031-OLT_LAGUNA",
+            "hostId": "11197",
+            "triggerId": "107093",
+            "keywords": [
+              "gpon",
+              "0",
+              "3",
+              "12",
+              "se",
+              "encontra",
+              "com",
+              "todos",
+              "os",
+              "clientes",
+              "offline"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-QC3U",
+          "title": "Equipamento Offline",
+          "severity": "critical",
+          "sourceSeverity": "Disaster",
+          "status": "monitoring",
+          "classification": "attention",
+          "startedAt": "2026-04-27T19:43:02.000Z",
+          "durationMinutes": 4798,
+          "affectedHosts": [
+            "260GS_PSF_RECREIO_RETIRO"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET"
+          ],
+          "problemIds": [
+            "14244133"
+          ],
+          "eventIds": [
+            "14244133"
+          ],
+          "probableCause": "Necessaria validacao operacional no host e na trigger associada.",
+          "impact": "Afeta 260GS_PSF_RECREIO_RETIRO no grupo 10031-SPEEDNET.",
+          "evidence": [
+            "Problema: Equipamento Offline",
+            "Severidade original: Disaster",
+            "Host: 260GS_PSF_RECREIO_RETIRO"
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": true,
+            "reason": "Incidente Disaster com duracao acima do limite operacional.",
+            "target": "Supervisor"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "260GS_PSF_RECREIO_RETIRO",
+            "hostId": "11160",
+            "triggerId": "69759",
+            "keywords": [
+              "equipamento",
+              "offline"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-CXLE",
+          "title": "Interface XGigabitEthernet0/0/17 está down: -40 dBm",
+          "severity": "critical",
+          "sourceSeverity": "Disaster",
+          "status": "monitoring",
+          "classification": "attention",
+          "startedAt": "2026-04-23T10:43:37.000Z",
+          "durationMinutes": 11098,
+          "affectedHosts": [
+            "SW_HW_100G_ROSARIO"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "14173698"
+          ],
+          "eventIds": [
+            "14173698"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta SW_HW_100G_ROSARIO no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Interface XGigabitEthernet0/0/17 está down: -40 dBm",
+            "Severidade original: Disaster",
+            "Host: SW_HW_100G_ROSARIO",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": true,
+            "reason": "Incidente Disaster com duracao acima do limite operacional.",
+            "target": "Supervisor"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "SW_HW_100G_ROSARIO",
+            "hostId": "11078",
+            "triggerId": "104626",
+            "keywords": [
+              "interface",
+              "xgigabitethernet0",
+              "0",
+              "17",
+              "esta",
+              "down",
+              "40",
+              "dbm"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-QH6G",
+          "title": "Incidente correlacionado - 10031-SPEEDNET",
+          "severity": "critical",
+          "sourceSeverity": "High",
+          "status": "monitoring",
+          "classification": "correlated-outage",
+          "startedAt": "2026-04-19T16:47:14.000Z",
+          "durationMinutes": 16494,
+          "affectedHosts": [
+            "NE8000"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "14126145",
+            "14126144"
+          ],
+          "eventIds": [
+            "14126145",
+            "14126144"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta NE8000 no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Peer 10.15.1.90-272479 esta fora",
+            "Severidade original: High",
+            "Host: NE8000",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Problema: Peer 10.15.1.86-272479 esta fora",
+            "Incidentes agrupados por grupo/host/severidade/janela de tempo.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.6799999999999999,
+          "metadata": {
+            "host": "NE8000",
+            "hostId": "10995",
+            "triggerId": "71046",
+            "keywords": [
+              "peer",
+              "10",
+              "15",
+              "1",
+              "90",
+              "272479",
+              "esta",
+              "fora"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-SP50",
+          "title": "Interface XGigabitEthernet0/0/3 está com sinal alto: -18.89 dBm limiar: -18.01 dBm",
+          "severity": "critical",
+          "sourceSeverity": "High",
+          "status": "active",
+          "classification": "attention",
+          "startedAt": "2026-04-09T20:47:48.000Z",
+          "durationMinutes": 30653,
+          "affectedHosts": [
+            "SW_HUAWEI_100G_SANTA_INES"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "13961382"
+          ],
+          "eventIds": [
+            "13961382"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta SW_HUAWEI_100G_SANTA_INES no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Interface XGigabitEthernet0/0/3 está com sinal alto: -18.89 dBm limiar: -18.01 dBm",
+            "Severidade original: High",
+            "Host: SW_HUAWEI_100G_SANTA_INES",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "SW_HUAWEI_100G_SANTA_INES",
+            "hostId": "10600",
+            "triggerId": "101797",
+            "keywords": [
+              "interface",
+              "xgigabitethernet0",
+              "0",
+              "3",
+              "esta",
+              "com",
+              "sinal",
+              "alto",
+              "18",
+              "89",
+              "dbm",
+              "limiar",
+              "18",
+              "01",
+              "dbm"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-MMLR",
+          "title": "Equipamento Offline",
+          "severity": "critical",
+          "sourceSeverity": "Disaster",
+          "status": "monitoring",
+          "classification": "attention",
+          "startedAt": "2026-04-06T20:17:00.000Z",
+          "durationMinutes": 35004,
+          "affectedHosts": [
+            "X9_NIVEL_AGUA_AQUARIO"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "13873129"
+          ],
+          "eventIds": [
+            "13873129"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta X9_NIVEL_AGUA_AQUARIO no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Equipamento Offline",
+            "Severidade original: Disaster",
+            "Host: X9_NIVEL_AGUA_AQUARIO",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": true,
+            "reason": "Incidente Disaster com duracao acima do limite operacional.",
+            "target": "Supervisor"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "X9_NIVEL_AGUA_AQUARIO",
+            "hostId": "11150",
+            "triggerId": "44376",
+            "keywords": [
+              "equipamento",
+              "offline"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-7OIM",
+          "title": "Peer 10.15.1.118-262663 esta fora",
+          "severity": "critical",
+          "sourceSeverity": "High",
+          "status": "monitoring",
+          "classification": "attention",
+          "startedAt": "2026-04-06T14:28:14.000Z",
+          "durationMinutes": 35353,
+          "affectedHosts": [
+            "NE8000"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "13869282"
+          ],
+          "eventIds": [
+            "13869282"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta NE8000 no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Peer 10.15.1.118-262663 esta fora",
+            "Severidade original: High",
+            "Host: NE8000",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "NE8000",
+            "hostId": "10995",
+            "triggerId": "105619",
+            "keywords": [
+              "peer",
+              "10",
+              "15",
+              "1",
+              "118",
+              "262663",
+              "esta",
+              "fora"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-FLNJ",
+          "title": "100GE0/0/1 Lane 1 está com sinal alto: -11.07 dBm limiar: -10.6 dBm",
+          "severity": "critical",
+          "sourceSeverity": "High",
+          "status": "active",
+          "classification": "attention",
+          "startedAt": "2026-04-04T16:34:55.000Z",
+          "durationMinutes": 38106,
+          "affectedHosts": [
+            "10031-SW_HAUWEI_100G_LIBERDADE"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "13827052"
+          ],
+          "eventIds": [
+            "13827052"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: 100GE0/0/1 Lane 1 está com sinal alto: -11.07 dBm limiar: -10.6 dBm",
+            "Severidade original: High",
+            "Host: 10031-SW_HAUWEI_100G_LIBERDADE",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "10031-SW_HAUWEI_100G_LIBERDADE",
+            "hostId": "11584",
+            "triggerId": "101535",
+            "keywords": [
+              "100ge0",
+              "0",
+              "1",
+              "lane",
+              "1",
+              "esta",
+              "com",
+              "sinal",
+              "alto",
+              "11",
+              "07",
+              "dbm",
+              "limiar",
+              "10",
+              "6",
+              "dbm"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-L3HK",
+          "title": "Incidente correlacionado - 10031-SPEEDNET",
+          "severity": "critical",
+          "sourceSeverity": "High",
+          "status": "active",
+          "classification": "correlated-outage",
+          "startedAt": "2026-03-24T17:00:37.000Z",
+          "durationMinutes": 53921,
+          "affectedHosts": [
+            "SW_HUAWEI_100G_BETIM"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "13514735",
+            "13514734"
+          ],
+          "eventIds": [
+            "13514735",
+            "13514734"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta SW_HUAWEI_100G_BETIM no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Interface XGigabitEthernet0/0/3 está com sinal alto: -5.24 dBm limiar: -0.01 dBm",
+            "Severidade original: High",
+            "Host: SW_HUAWEI_100G_BETIM",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Problema: Interface XGigabitEthernet0/0/1 está com sinal alto: -13.88 dBm limiar: -0.01 dBm",
+            "Incidentes agrupados por grupo/host/severidade/janela de tempo.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.6799999999999999,
+          "metadata": {
+            "host": "SW_HUAWEI_100G_BETIM",
+            "hostId": "10596",
+            "triggerId": "105391",
+            "keywords": [
+              "interface",
+              "xgigabitethernet0",
+              "0",
+              "3",
+              "esta",
+              "com",
+              "sinal",
+              "alto",
+              "5",
+              "24",
+              "dbm",
+              "limiar",
+              "0",
+              "01",
+              "dbm"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-1IGI",
+          "title": "Interface XGigabitEthernet0/0/1 está com sinal alto: -6.82 dBm limiar: -0.01 dBm",
+          "severity": "critical",
+          "sourceSeverity": "High",
+          "status": "active",
+          "classification": "attention",
+          "startedAt": "2026-03-24T16:59:46.000Z",
+          "durationMinutes": 53921,
+          "affectedHosts": [
+            "SW_HUAWEI_100G_VIANOPOLIS"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "13514710"
+          ],
+          "eventIds": [
+            "13514710"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta SW_HUAWEI_100G_VIANOPOLIS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Interface XGigabitEthernet0/0/1 está com sinal alto: -6.82 dBm limiar: -0.01 dBm",
+            "Severidade original: High",
+            "Host: SW_HUAWEI_100G_VIANOPOLIS",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "SW_HUAWEI_100G_VIANOPOLIS",
+            "hostId": "10603",
+            "triggerId": "105392",
+            "keywords": [
+              "interface",
+              "xgigabitethernet0",
+              "0",
+              "1",
+              "esta",
+              "com",
+              "sinal",
+              "alto",
+              "6",
+              "82",
+              "dbm",
+              "limiar",
+              "0",
+              "01",
+              "dbm"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-2JWF",
+          "title": "Interface XGigabitEthernet0/0/5 está com sinal alto: -21.25 dBm limiar: -0.01 dBm",
+          "severity": "critical",
+          "sourceSeverity": "High",
+          "status": "active",
+          "classification": "attention",
+          "startedAt": "2026-03-24T16:59:32.000Z",
+          "durationMinutes": 53922,
+          "affectedHosts": [
+            "10031-SW_HUAWEI_40GB_JAQUELINE"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "13514706"
+          ],
+          "eventIds": [
+            "13514706"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta 10031-SW_HUAWEI_40GB_JAQUELINE no grupo 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Interface XGigabitEthernet0/0/5 está com sinal alto: -21.25 dBm limiar: -0.01 dBm",
+            "Severidade original: High",
+            "Host: 10031-SW_HUAWEI_40GB_JAQUELINE",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "10031-SW_HUAWEI_40GB_JAQUELINE",
+            "hostId": "11561",
+            "triggerId": "105393",
+            "keywords": [
+              "interface",
+              "xgigabitethernet0",
+              "0",
+              "5",
+              "esta",
+              "com",
+              "sinal",
+              "alto",
+              "21",
+              "25",
+              "dbm",
+              "limiar",
+              "0",
+              "01",
+              "dbm"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-JI9K",
+          "title": "Interface XGigabitEthernet0/0/6 está com sinal alto: -12.82 dBm limiar: -0.01 dBm",
+          "severity": "critical",
+          "sourceSeverity": "High",
+          "status": "active",
+          "classification": "attention",
+          "startedAt": "2026-03-23T15:17:32.000Z",
+          "durationMinutes": 55464,
+          "affectedHosts": [
+            "10031-SW_HUAWEI_40GB_JAQUELINE"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "13478150"
+          ],
+          "eventIds": [
+            "13478150"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta 10031-SW_HUAWEI_40GB_JAQUELINE no grupo 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Interface XGigabitEthernet0/0/6 está com sinal alto: -12.82 dBm limiar: -0.01 dBm",
+            "Severidade original: High",
+            "Host: 10031-SW_HUAWEI_40GB_JAQUELINE",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "10031-SW_HUAWEI_40GB_JAQUELINE",
+            "hostId": "11561",
+            "triggerId": "105394",
+            "keywords": [
+              "interface",
+              "xgigabitethernet0",
+              "0",
+              "6",
+              "esta",
+              "com",
+              "sinal",
+              "alto",
+              "12",
+              "82",
+              "dbm",
+              "limiar",
+              "0",
+              "01",
+              "dbm"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-CXH7",
+          "title": "Incidente correlacionado - 10031-SPEEDNET",
+          "severity": "critical",
+          "sourceSeverity": "Disaster",
+          "status": "monitoring",
+          "classification": "correlated-outage",
+          "startedAt": "2026-03-02T19:01:36.000Z",
+          "durationMinutes": 85480,
+          "affectedHosts": [
+            "SW_HUAWEI_100G_VENEZA",
+            "SW_HUAWEI_100G_ESMERALDAS",
+            "SW_HUAWEI_100G_AGUAS_MARINHAS"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "12785356",
+            "12785355",
+            "12785354"
+          ],
+          "eventIds": [
+            "12785356",
+            "12785355",
+            "12785354"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta SW_HUAWEI_100G_VENEZA no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Interface XGigabitEthernet0/0/17 está down: -40 dBm",
+            "Severidade original: Disaster",
+            "Host: SW_HUAWEI_100G_VENEZA",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Problema: Interface XGigabitEthernet0/0/5 está down: -40 dBm",
+            "Host: SW_HUAWEI_100G_ESMERALDAS",
+            "Incidentes agrupados por grupo/host/severidade/janela de tempo.",
+            "Problema: Interface XGigabitEthernet0/0/18 está down: -40 dBm",
+            "Host: SW_HUAWEI_100G_AGUAS_MARINHAS",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": true,
+            "reason": "Incidente Disaster com duracao acima do limite operacional.",
+            "target": "Supervisor"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.7799999999999999,
+          "metadata": {
+            "host": "SW_HUAWEI_100G_VENEZA",
+            "hostId": "10602",
+            "triggerId": "104715",
+            "keywords": [
+              "interface",
+              "xgigabitethernet0",
+              "0",
+              "17",
+              "esta",
+              "down",
+              "40",
+              "dbm"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-WONY",
+          "title": "Interface XGigabitEthernet0/0/4 está down: -40 dBm",
+          "severity": "critical",
+          "sourceSeverity": "Disaster",
+          "status": "monitoring",
+          "classification": "attention",
+          "startedAt": "2026-03-02T18:17:55.000Z",
+          "durationMinutes": 85523,
+          "affectedHosts": [
+            "10031-SW_HAUWEI_100G_LIBERDADE"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "12784370"
+          ],
+          "eventIds": [
+            "12784370"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Interface XGigabitEthernet0/0/4 está down: -40 dBm",
+            "Severidade original: Disaster",
+            "Host: 10031-SW_HAUWEI_100G_LIBERDADE",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": true,
+            "reason": "Incidente Disaster com duracao acima do limite operacional.",
+            "target": "Supervisor"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "10031-SW_HAUWEI_100G_LIBERDADE",
+            "hostId": "11584",
+            "triggerId": "104640",
+            "keywords": [
+              "interface",
+              "xgigabitethernet0",
+              "0",
+              "4",
+              "esta",
+              "down",
+              "40",
+              "dbm"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-F1TN",
+          "title": "Interface XGigabitEthernet0/0/18 está down: -40 dBm",
+          "severity": "critical",
+          "sourceSeverity": "Disaster",
+          "status": "monitoring",
+          "classification": "attention",
+          "startedAt": "2026-03-02T18:09:36.000Z",
+          "durationMinutes": 85532,
+          "affectedHosts": [
+            "SW_HW_100G_ROSARIO"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "12784186"
+          ],
+          "eventIds": [
+            "12784186"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta SW_HW_100G_ROSARIO no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Interface XGigabitEthernet0/0/18 está down: -40 dBm",
+            "Severidade original: Disaster",
+            "Host: SW_HW_100G_ROSARIO",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": true,
+            "reason": "Incidente Disaster com duracao acima do limite operacional.",
+            "target": "Supervisor"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "SW_HW_100G_ROSARIO",
+            "hostId": "11078",
+            "triggerId": "104627",
+            "keywords": [
+              "interface",
+              "xgigabitethernet0",
+              "0",
+              "18",
+              "esta",
+              "down",
+              "40",
+              "dbm"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-H6R5",
+          "title": "Interface XGigabitEthernet0/0/4 está com sinal alto: -40 dBm limiar: -27.2 dBm",
+          "severity": "critical",
+          "sourceSeverity": "High",
+          "status": "active",
+          "classification": "attention",
+          "startedAt": "2026-01-21T12:27:55.000Z",
+          "durationMinutes": 143473,
+          "affectedHosts": [
+            "10031-SW_HAUWEI_100G_LIBERDADE"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "12156959"
+          ],
+          "eventIds": [
+            "12156959"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta 10031-SW_HAUWEI_100G_LIBERDADE no grupo 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Interface XGigabitEthernet0/0/4 está com sinal alto: -40 dBm limiar: -27.2 dBm",
+            "Severidade original: High",
+            "Host: 10031-SW_HAUWEI_100G_LIBERDADE",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "10031-SW_HAUWEI_100G_LIBERDADE",
+            "hostId": "11584",
+            "triggerId": "101319",
+            "keywords": [
+              "interface",
+              "xgigabitethernet0",
+              "0",
+              "4",
+              "esta",
+              "com",
+              "sinal",
+              "alto",
+              "40",
+              "dbm",
+              "limiar",
+              "27",
+              "2",
+              "dbm"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-ZWMF",
+          "title": "100GE0/0/6 Lane 1 está com sinal alto: -12.06 dBm limiar: -12.01 dBm",
+          "severity": "critical",
+          "sourceSeverity": "High",
+          "status": "monitoring",
+          "classification": "attention",
+          "startedAt": "2025-12-15T14:40:40.000Z",
+          "durationMinutes": 196621,
+          "affectedHosts": [
+            "SW_HW_100G_ROSARIO"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "11668817"
+          ],
+          "eventIds": [
+            "11668817"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta SW_HW_100G_ROSARIO no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: 100GE0/0/6 Lane 1 está com sinal alto: -12.06 dBm limiar: -12.01 dBm",
+            "Severidade original: High",
+            "Host: SW_HW_100G_ROSARIO",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "SW_HW_100G_ROSARIO",
+            "hostId": "11078",
+            "triggerId": "101730",
+            "keywords": [
+              "100ge0",
+              "0",
+              "6",
+              "lane",
+              "1",
+              "esta",
+              "com",
+              "sinal",
+              "alto",
+              "12",
+              "06",
+              "dbm",
+              "limiar",
+              "12",
+              "01",
+              "dbm"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-H8JY",
+          "title": "Incidente correlacionado - 10031-SPEEDNET",
+          "severity": "critical",
+          "sourceSeverity": "High",
+          "status": "monitoring",
+          "classification": "correlated-outage",
+          "startedAt": "2025-12-11T19:01:36.000Z",
+          "durationMinutes": 202120,
+          "affectedHosts": [
+            "SW_HW_100G_ROSARIO",
+            "SW_HUAWEI_100G_VENEZA",
+            "SW_HUAWEI_100G_ESMERALDAS",
+            "SW_HUAWEI_100G_AGUAS_MARINHAS"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "11616086",
+            "11616001",
+            "11616000",
+            "11615997"
+          ],
+          "eventIds": [
+            "11616086",
+            "11616001",
+            "11616000",
+            "11615997"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta SW_HW_100G_ROSARIO no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Interface XGigabitEthernet0/0/18 está com sinal alto: -40 dBm limiar: -17.01 dBm",
+            "Severidade original: High",
+            "Host: SW_HW_100G_ROSARIO",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Problema: Interface XGigabitEthernet0/0/17 está com sinal alto: -40 dBm limiar: -15 dBm",
+            "Host: SW_HUAWEI_100G_VENEZA",
+            "Incidentes agrupados por grupo/host/severidade/janela de tempo.",
+            "Problema: Interface XGigabitEthernet0/0/5 está com sinal alto: -40 dBm limiar: -27.2 dBm",
+            "Host: SW_HUAWEI_100G_ESMERALDAS",
+            "Problema: Interface XGigabitEthernet0/0/18 está com sinal alto: -40 dBm limiar: -15 dBm",
+            "Host: SW_HUAWEI_100G_AGUAS_MARINHAS",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.8799999999999999,
+          "metadata": {
+            "host": "SW_HW_100G_ROSARIO",
+            "hostId": "11078",
+            "triggerId": "101752",
+            "keywords": [
+              "interface",
+              "xgigabitethernet0",
+              "0",
+              "18",
+              "esta",
+              "com",
+              "sinal",
+              "alto",
+              "40",
+              "dbm",
+              "limiar",
+              "17",
+              "01",
+              "dbm"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-MTVK",
+          "title": "Interface XGigabitEthernet0/0/16 está com sinal alto: -15.32 dBm limiar: -14.39 dBm",
+          "severity": "critical",
+          "sourceSeverity": "High",
+          "status": "monitoring",
+          "classification": "attention",
+          "startedAt": "2025-12-11T18:48:12.000Z",
+          "durationMinutes": 202133,
+          "affectedHosts": [
+            "SW_HUAWEI_100G_ABILIO"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "11615860"
+          ],
+          "eventIds": [
+            "11615860"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta SW_HUAWEI_100G_ABILIO no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Interface XGigabitEthernet0/0/16 está com sinal alto: -15.32 dBm limiar: -14.39 dBm",
+            "Severidade original: High",
+            "Host: SW_HUAWEI_100G_ABILIO",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "SW_HUAWEI_100G_ABILIO",
+            "hostId": "10577",
+            "triggerId": "101576",
+            "keywords": [
+              "interface",
+              "xgigabitethernet0",
+              "0",
+              "16",
+              "esta",
+              "com",
+              "sinal",
+              "alto",
+              "15",
+              "32",
+              "dbm",
+              "limiar",
+              "14",
+              "39",
+              "dbm"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-PN8O",
+          "title": "Interface ether3 está negociando a 10Mbps.",
+          "severity": "medium",
+          "sourceSeverity": "High",
+          "status": "active",
+          "classification": "monitoring",
+          "startedAt": "2025-12-09T20:02:22.000Z",
+          "durationMinutes": 204939,
+          "affectedHosts": [
+            "RB2011_REGIONAL_NOVORETIRO"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET"
+          ],
+          "problemIds": [
+            "11597676"
+          ],
+          "eventIds": [
+            "11597676"
+          ],
+          "probableCause": "Necessaria validacao operacional no host e na trigger associada.",
+          "impact": "Afeta RB2011_REGIONAL_NOVORETIRO no grupo 10031-SPEEDNET.",
+          "evidence": [
+            "Problema: Interface ether3 está negociando a 10Mbps.",
+            "Severidade original: High",
+            "Host: RB2011_REGIONAL_NOVORETIRO"
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Host isolado com impacto contido. Monitorar antes de escalar.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "RB2011_REGIONAL_NOVORETIRO",
+            "hostId": "11064",
+            "triggerId": "91966",
+            "keywords": [
+              "interface",
+              "ether3",
+              "esta",
+              "negociando",
+              "a",
+              "10mbps"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-AA2C",
+          "title": "Interface ether1 está negociando a 10Mbps.",
+          "severity": "medium",
+          "sourceSeverity": "High",
+          "status": "active",
+          "classification": "monitoring",
+          "startedAt": "2025-11-27T17:08:22.000Z",
+          "durationMinutes": 222393,
+          "affectedHosts": [
+            "RB2011_REGIONAL_NOVORETIRO"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET"
+          ],
+          "problemIds": [
+            "11446557"
+          ],
+          "eventIds": [
+            "11446557"
+          ],
+          "probableCause": "Necessaria validacao operacional no host e na trigger associada.",
+          "impact": "Afeta RB2011_REGIONAL_NOVORETIRO no grupo 10031-SPEEDNET.",
+          "evidence": [
+            "Problema: Interface ether1 está negociando a 10Mbps.",
+            "Severidade original: High",
+            "Host: RB2011_REGIONAL_NOVORETIRO"
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Host isolado com impacto contido. Monitorar antes de escalar.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "RB2011_REGIONAL_NOVORETIRO",
+            "hostId": "11064",
+            "triggerId": "61302",
+            "keywords": [
+              "interface",
+              "ether1",
+              "esta",
+              "negociando",
+              "a",
+              "10mbps"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-CMXT",
+          "title": "Todos os users pppoe da 904 estão desconectados",
+          "severity": "critical",
+          "sourceSeverity": "Disaster",
+          "status": "monitoring",
+          "classification": "attention",
+          "startedAt": "2025-11-05T03:16:12.000Z",
+          "durationMinutes": 254905,
+          "affectedHosts": [
+            "NE40_HUAWE_PPPoE"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "11161144"
+          ],
+          "eventIds": [
+            "11161144"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta NE40_HUAWE_PPPoE no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: Todos os users pppoe da 904 estão desconectados",
+            "Severidade original: Disaster",
+            "Host: NE40_HUAWE_PPPoE",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": true,
+            "reason": "Incidente Disaster com duracao acima do limite operacional.",
+            "target": "Supervisor"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "NE40_HUAWE_PPPoE",
+            "hostId": "10994",
+            "triggerId": "93691",
+            "keywords": [
+              "todos",
+              "os",
+              "users",
+              "pppoe",
+              "da",
+              "904",
+              "estao",
+              "desconectados"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-PUH0",
+          "title": "GPON 0/2/13 está no limite de ONU por porta 121",
+          "severity": "critical",
+          "sourceSeverity": "High",
+          "status": "active",
+          "classification": "attention",
+          "startedAt": "2025-08-30T14:01:31.000Z",
+          "durationMinutes": 350740,
+          "affectedHosts": [
+            "10031-OLT_ESMERALDAS"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "10241386"
+          ],
+          "eventIds": [
+            "10241386"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta 10031-OLT_ESMERALDAS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: GPON 0/2/13 está no limite de ONU por porta 121",
+            "Severidade original: High",
+            "Host: 10031-OLT_ESMERALDAS",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "10031-OLT_ESMERALDAS",
+            "hostId": "10583",
+            "triggerId": "67211",
+            "keywords": [
+              "gpon",
+              "0",
+              "2",
+              "13",
+              "esta",
+              "no",
+              "limite",
+              "de",
+              "onu",
+              "por",
+              "porta",
+              "121"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-S8NO",
+          "title": "ten-gigabit-ethernet-1/1/1  está com sinal alto -23.27 dBm",
+          "severity": "critical",
+          "sourceSeverity": "High",
+          "status": "monitoring",
+          "classification": "attention",
+          "startedAt": "2025-08-28T17:12:14.000Z",
+          "durationMinutes": 353429,
+          "affectedHosts": [
+            "10031-SW_DATACOM_ICAIVERA"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "10205105"
+          ],
+          "eventIds": [
+            "10205105"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta 10031-SW_DATACOM_ICAIVERA no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: ten-gigabit-ethernet-1/1/1  está com sinal alto -23.27 dBm",
+            "Severidade original: High",
+            "Host: 10031-SW_DATACOM_ICAIVERA",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "10031-SW_DATACOM_ICAIVERA",
+            "hostId": "10876",
+            "triggerId": "95069",
+            "keywords": [
+              "ten",
+              "gigabit",
+              "ethernet",
+              "1",
+              "1",
+              "1",
+              "esta",
+              "com",
+              "sinal",
+              "alto",
+              "23",
+              "27",
+              "dbm"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-E6OA",
+          "title": "Perda de Pacote: 33.33 %",
+          "severity": "medium",
+          "sourceSeverity": "High",
+          "status": "active",
+          "classification": "monitoring",
+          "startedAt": "2025-05-20T20:06:53.000Z",
+          "durationMinutes": 497254,
+          "affectedHosts": [
+            "10031-CAM_CSA_ESUTAQUIO_VARANDA_2ANDAR"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET"
+          ],
+          "problemIds": [
+            "8580554"
+          ],
+          "eventIds": [
+            "8580554"
+          ],
+          "probableCause": "Necessaria validacao operacional no host e na trigger associada.",
+          "impact": "Afeta 10031-CAM_CSA_ESUTAQUIO_VARANDA_2ANDAR no grupo 10031-SPEEDNET.",
+          "evidence": [
+            "Problema: Perda de Pacote: 33.33 %",
+            "Severidade original: High",
+            "Host: 10031-CAM_CSA_ESUTAQUIO_VARANDA_2ANDAR"
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Host isolado com impacto contido. Monitorar antes de escalar.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "10031-CAM_CSA_ESUTAQUIO_VARANDA_2ANDAR",
+            "hostId": "11521",
+            "triggerId": "89610",
+            "keywords": [
+              "perda",
+              "de",
+              "pacote",
+              "33",
+              "33"
+            ]
+          }
+        },
+        {
+          "id": "INC-20260501-0041-LCQJ",
+          "title": "GPON 0/2/1 está no limite de ONU por porta 121",
+          "severity": "critical",
+          "sourceSeverity": "High",
+          "status": "active",
+          "classification": "attention",
+          "startedAt": "2025-04-12T19:01:17.000Z",
+          "durationMinutes": 552040,
+          "affectedHosts": [
+            "10031-OLT_ESMERALDAS"
+          ],
+          "affectedGroups": [
+            "10031-SPEEDNET",
+            "10031-SPEEDNET/BACKBONE"
+          ],
+          "problemIds": [
+            "8002307"
+          ],
+          "eventIds": [
+            "8002307"
+          ],
+          "probableCause": "Indicativo de indisponibilidade ou degradacao de transporte/enlace.",
+          "impact": "Afeta 10031-OLT_ESMERALDAS no grupo 10031-SPEEDNET, 10031-SPEEDNET/BACKBONE.",
+          "evidence": [
+            "Problema: GPON 0/2/1 está no limite de ONU por porta 121",
+            "Severidade original: High",
+            "Host: 10031-OLT_ESMERALDAS",
+            "Palavra-chave operacional critica detectada no incidente.",
+            "Palavra-chave operacional critica detectada no incidente."
+          ],
+          "recommendedActions": [
+            "Validar o host e a trigger no Zabbix.",
+            "Confirmar alcance do impacto com a equipe de monitoracao."
+          ],
+          "escalation": {
+            "required": false,
+            "reason": "Aguardando regras deterministicas.",
+            "target": "NOC"
+          },
+          "customerMessage": "Estamos validando um evento monitorado. No momento, a equipe acompanha o comportamento antes de qualquer acionamento.",
+          "internalMessage": "Evento classificado automaticamente para triagem inicial do NOC. Validar host, grupo e historico recente.",
+          "confidence": 0.58,
+          "metadata": {
+            "host": "10031-OLT_ESMERALDAS",
+            "hostId": "10583",
+            "triggerId": "91985",
+            "keywords": [
+              "gpon",
+              "0",
+              "2",
+              "1",
+              "esta",
+              "no",
+              "limite",
+              "de",
+              "onu",
+              "por",
+              "porta",
+              "121"
+            ]
+          }
+        }
+      ],
+      "analysisSource": "deterministic",
+      "providerSummary": "",
+      "metadata": {
+        "totalProblems": 34,
+        "totalIncidents": 27,
+        "escalationRecommended": 8
+      }
     }
   ],
   "shiftReports": [
@@ -26758,5 +30203,662 @@
       "handoverText": "Passagem de turno: 93 incidentes consolidados no turno, com 91 criticidade alta/critica e 48 recomendacoes de escalonamento. Priorizar a revisao dos incidentes com escalonamento recomendado e validar eventual necessidade de acao manual."
     }
   ],
-  "shadowDecisions": []
+  "shadowDecisions": [
+    {
+      "id": "SHADOW-20260501-004113-HGGO",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-ODEG",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "critical",
+      "reason": "Aguardando regras deterministicas.",
+      "evidence": [
+        "Problema: 100GE0/0/1 Lane 2 está com sinal alto: -10.68 dBm limiar: -10.6 dBm",
+        "Severidade original: High",
+        "Host: 10031-SW_HAUWEI_100G_LIBERDADE",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-5FIX",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-L5OL",
+      "decision": "recommend_escalation",
+      "wouldNotify": true,
+      "severity": "critical",
+      "reason": "Incidente Disaster com duracao acima do limite operacional.",
+      "evidence": [
+        "Problema: GPON 0/3/12 se encontra com todos os clientes offline",
+        "Severidade original: Disaster",
+        "Host: 10031-OLT_LAGUNA",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-FFE2",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-QC3U",
+      "decision": "recommend_escalation",
+      "wouldNotify": true,
+      "severity": "critical",
+      "reason": "Incidente Disaster com duracao acima do limite operacional.",
+      "evidence": [
+        "Problema: Equipamento Offline",
+        "Severidade original: Disaster",
+        "Host: 260GS_PSF_RECREIO_RETIRO"
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-5MW8",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-CXLE",
+      "decision": "recommend_escalation",
+      "wouldNotify": true,
+      "severity": "critical",
+      "reason": "Incidente Disaster com duracao acima do limite operacional.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/17 está down: -40 dBm",
+        "Severidade original: Disaster",
+        "Host: SW_HW_100G_ROSARIO",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-OSB0",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-QH6G",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "critical",
+      "reason": "Aguardando regras deterministicas.",
+      "evidence": [
+        "Problema: Peer 10.15.1.90-272479 esta fora",
+        "Severidade original: High",
+        "Host: NE8000",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Problema: Peer 10.15.1.86-272479 esta fora",
+        "Incidentes agrupados por grupo/host/severidade/janela de tempo.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.6799999999999999,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-29IQ",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-SP50",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "critical",
+      "reason": "Aguardando regras deterministicas.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/3 está com sinal alto: -18.89 dBm limiar: -18.01 dBm",
+        "Severidade original: High",
+        "Host: SW_HUAWEI_100G_SANTA_INES",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-9D9O",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-MMLR",
+      "decision": "recommend_escalation",
+      "wouldNotify": true,
+      "severity": "critical",
+      "reason": "Incidente Disaster com duracao acima do limite operacional.",
+      "evidence": [
+        "Problema: Equipamento Offline",
+        "Severidade original: Disaster",
+        "Host: X9_NIVEL_AGUA_AQUARIO",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-E8BG",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-7OIM",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "critical",
+      "reason": "Aguardando regras deterministicas.",
+      "evidence": [
+        "Problema: Peer 10.15.1.118-262663 esta fora",
+        "Severidade original: High",
+        "Host: NE8000",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-COTH",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-FLNJ",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "critical",
+      "reason": "Aguardando regras deterministicas.",
+      "evidence": [
+        "Problema: 100GE0/0/1 Lane 1 está com sinal alto: -11.07 dBm limiar: -10.6 dBm",
+        "Severidade original: High",
+        "Host: 10031-SW_HAUWEI_100G_LIBERDADE",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-GYP2",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-L3HK",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "critical",
+      "reason": "Aguardando regras deterministicas.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/3 está com sinal alto: -5.24 dBm limiar: -0.01 dBm",
+        "Severidade original: High",
+        "Host: SW_HUAWEI_100G_BETIM",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Problema: Interface XGigabitEthernet0/0/1 está com sinal alto: -13.88 dBm limiar: -0.01 dBm",
+        "Incidentes agrupados por grupo/host/severidade/janela de tempo.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.6799999999999999,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-WDYN",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-1IGI",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "critical",
+      "reason": "Aguardando regras deterministicas.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/1 está com sinal alto: -6.82 dBm limiar: -0.01 dBm",
+        "Severidade original: High",
+        "Host: SW_HUAWEI_100G_VIANOPOLIS",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-IXHJ",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-2JWF",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "critical",
+      "reason": "Aguardando regras deterministicas.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/5 está com sinal alto: -21.25 dBm limiar: -0.01 dBm",
+        "Severidade original: High",
+        "Host: 10031-SW_HUAWEI_40GB_JAQUELINE",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-HHT5",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-JI9K",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "critical",
+      "reason": "Aguardando regras deterministicas.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/6 está com sinal alto: -12.82 dBm limiar: -0.01 dBm",
+        "Severidade original: High",
+        "Host: 10031-SW_HUAWEI_40GB_JAQUELINE",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-C22R",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-CXH7",
+      "decision": "recommend_escalation",
+      "wouldNotify": true,
+      "severity": "critical",
+      "reason": "Incidente Disaster com duracao acima do limite operacional.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/17 está down: -40 dBm",
+        "Severidade original: Disaster",
+        "Host: SW_HUAWEI_100G_VENEZA",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Problema: Interface XGigabitEthernet0/0/5 está down: -40 dBm",
+        "Host: SW_HUAWEI_100G_ESMERALDAS",
+        "Incidentes agrupados por grupo/host/severidade/janela de tempo.",
+        "Problema: Interface XGigabitEthernet0/0/18 está down: -40 dBm",
+        "Host: SW_HUAWEI_100G_AGUAS_MARINHAS",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.7799999999999999,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-Z8HF",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-WONY",
+      "decision": "recommend_escalation",
+      "wouldNotify": true,
+      "severity": "critical",
+      "reason": "Incidente Disaster com duracao acima do limite operacional.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/4 está down: -40 dBm",
+        "Severidade original: Disaster",
+        "Host: 10031-SW_HAUWEI_100G_LIBERDADE",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-E9H1",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-F1TN",
+      "decision": "recommend_escalation",
+      "wouldNotify": true,
+      "severity": "critical",
+      "reason": "Incidente Disaster com duracao acima do limite operacional.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/18 está down: -40 dBm",
+        "Severidade original: Disaster",
+        "Host: SW_HW_100G_ROSARIO",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-MWGB",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-H6R5",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "critical",
+      "reason": "Aguardando regras deterministicas.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/4 está com sinal alto: -40 dBm limiar: -27.2 dBm",
+        "Severidade original: High",
+        "Host: 10031-SW_HAUWEI_100G_LIBERDADE",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-S640",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-ZWMF",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "critical",
+      "reason": "Aguardando regras deterministicas.",
+      "evidence": [
+        "Problema: 100GE0/0/6 Lane 1 está com sinal alto: -12.06 dBm limiar: -12.01 dBm",
+        "Severidade original: High",
+        "Host: SW_HW_100G_ROSARIO",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-QKRH",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-H8JY",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "critical",
+      "reason": "Aguardando regras deterministicas.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/18 está com sinal alto: -40 dBm limiar: -17.01 dBm",
+        "Severidade original: High",
+        "Host: SW_HW_100G_ROSARIO",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Problema: Interface XGigabitEthernet0/0/17 está com sinal alto: -40 dBm limiar: -15 dBm",
+        "Host: SW_HUAWEI_100G_VENEZA",
+        "Incidentes agrupados por grupo/host/severidade/janela de tempo.",
+        "Problema: Interface XGigabitEthernet0/0/5 está com sinal alto: -40 dBm limiar: -27.2 dBm",
+        "Host: SW_HUAWEI_100G_ESMERALDAS",
+        "Problema: Interface XGigabitEthernet0/0/18 está com sinal alto: -40 dBm limiar: -15 dBm",
+        "Host: SW_HUAWEI_100G_AGUAS_MARINHAS",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.8799999999999999,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-ZAIR",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-MTVK",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "critical",
+      "reason": "Aguardando regras deterministicas.",
+      "evidence": [
+        "Problema: Interface XGigabitEthernet0/0/16 está com sinal alto: -15.32 dBm limiar: -14.39 dBm",
+        "Severidade original: High",
+        "Host: SW_HUAWEI_100G_ABILIO",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-Z3K6",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-PN8O",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "medium",
+      "reason": "Host isolado com impacto contido. Monitorar antes de escalar.",
+      "evidence": [
+        "Problema: Interface ether3 está negociando a 10Mbps.",
+        "Severidade original: High",
+        "Host: RB2011_REGIONAL_NOVORETIRO"
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-XLXK",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-AA2C",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "medium",
+      "reason": "Host isolado com impacto contido. Monitorar antes de escalar.",
+      "evidence": [
+        "Problema: Interface ether1 está negociando a 10Mbps.",
+        "Severidade original: High",
+        "Host: RB2011_REGIONAL_NOVORETIRO"
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-F4HV",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-CMXT",
+      "decision": "recommend_escalation",
+      "wouldNotify": true,
+      "severity": "critical",
+      "reason": "Incidente Disaster com duracao acima do limite operacional.",
+      "evidence": [
+        "Problema: Todos os users pppoe da 904 estão desconectados",
+        "Severidade original: Disaster",
+        "Host: NE40_HUAWE_PPPoE",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-5A46",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-PUH0",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "critical",
+      "reason": "Aguardando regras deterministicas.",
+      "evidence": [
+        "Problema: GPON 0/2/13 está no limite de ONU por porta 121",
+        "Severidade original: High",
+        "Host: 10031-OLT_ESMERALDAS",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-VGID",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-S8NO",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "critical",
+      "reason": "Aguardando regras deterministicas.",
+      "evidence": [
+        "Problema: ten-gigabit-ethernet-1/1/1  está com sinal alto -23.27 dBm",
+        "Severidade original: High",
+        "Host: 10031-SW_DATACOM_ICAIVERA",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-CXIK",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-E6OA",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "medium",
+      "reason": "Host isolado com impacto contido. Monitorar antes de escalar.",
+      "evidence": [
+        "Problema: Perda de Pacote: 33.33 %",
+        "Severidade original: High",
+        "Host: 10031-CAM_CSA_ESUTAQUIO_VARANDA_2ANDAR"
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "SHADOW-20260501-004113-Z6ZW",
+      "createdAt": "2026-05-01T03:41:13.176Z",
+      "analysisId": "analysis-2026-05-01T03:41:13.176Z",
+      "incidentId": "INC-20260501-0041-LCQJ",
+      "decision": "monitor",
+      "wouldNotify": false,
+      "severity": "critical",
+      "reason": "Aguardando regras deterministicas.",
+      "evidence": [
+        "Problema: GPON 0/2/1 está no limite de ONU por porta 121",
+        "Severidade original: High",
+        "Host: 10031-OLT_ESMERALDAS",
+        "Palavra-chave operacional critica detectada no incidente.",
+        "Palavra-chave operacional critica detectada no incidente."
+      ],
+      "confidence": 0.58,
+      "humanValidation": {
+        "status": "pending",
+        "validatedBy": null,
+        "validatedAt": null,
+        "notes": ""
+      }
+    }
+  ]
 }

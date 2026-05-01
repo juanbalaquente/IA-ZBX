@@ -159,6 +159,7 @@ export interface NightOpsConfig {
   minDurationMinutes: number;
   correlationWindowMinutes: number;
   sameGroupAffectedHostsThreshold: number;
+  allowedHostGroups: string[];
   criticalKeywords: string[];
   autoEscalationEnabled: boolean;
   shadowModeEnabled: boolean;

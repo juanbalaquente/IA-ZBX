@@ -32,6 +32,16 @@ function createBaseConfigStore(overrides = {}) {
       minDurationMinutes: 5,
       correlationWindowMinutes: 10,
       sameGroupAffectedHostsThreshold: 5,
+      allowedHostGroups: [
+        "1000-SERVIDORES",
+        "10031-SPEEDNET",
+        "10031-SPEEDNET/BACKBONE",
+        "31002-PREFEITURA_SABARA",
+        "31003-FIRETELECOM",
+        "31007-AFS",
+        "ZABBIX SERVERS",
+        "POP-CENTRO",
+      ],
       criticalKeywords: ["OLT", "POP", "BGP", "BACKBONE", "CORE", "TRANSPORTE", "ENLACE"],
       autoEscalationEnabled: false,
       shadowModeEnabled: true,
@@ -167,5 +177,24 @@ describe("createNightOpsService", () => {
     expect(result.summary.activeProblems).toBe(1);
     expect(result.incidents).toHaveLength(1);
     expect(result.shadowDecisions).toHaveLength(1);
+  });
+
+  it("considera apenas problemas dos grupos permitidos", async () => {
+    const store = createStoreStub();
+    const service = createNightOpsService({
+      config: {},
+      zabbixClient: createZabbixStub([
+        { ...baseProblem, id: "p-allowed", eventid: "e-allowed", groups: ["10031-SPEEDNET"] },
+        { ...baseProblem, id: "p-blocked", eventid: "e-blocked", groups: ["GRUPO-NAO-PERMITIDO"] },
+      ]),
+      store,
+      configStore: createBaseConfigStore(),
+    });
+
+    const result = await service.analyzeNightOps();
+
+    expect(result.summary.activeProblems).toBe(1);
+    expect(result.incidents).toHaveLength(1);
+    expect(result.incidents[0].affectedGroups).toContain("10031-SPEEDNET");
   });
 });

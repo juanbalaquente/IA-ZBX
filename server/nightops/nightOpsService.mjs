@@ -4,6 +4,24 @@ import { classifyProblem } from "./incidentClassifier.mjs";
 import { correlateIncidents } from "./correlationEngine.mjs";
 import { generateShiftReport } from "./shiftReportService.mjs";
 
+function normalizeGroupName(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+}
+
+function isProblemInAllowedGroups(problem, allowedHostGroups) {
+  if (!Array.isArray(allowedHostGroups) || allowedHostGroups.length === 0) {
+    return true;
+  }
+
+  const allowedGroups = new Set(allowedHostGroups.map(normalizeGroupName));
+  return (problem.groups || []).some((group) =>
+    allowedGroups.has(normalizeGroupName(group)),
+  );
+}
+
 function buildShadowDecisionId(now = new Date()) {
   const pad = (value) => String(value).padStart(2, "0");
   const random = Math.random().toString(36).slice(2, 6).toUpperCase();
@@ -120,6 +138,7 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
       minDurationMinutes: config.nightOpsMinDurationMinutes,
       correlationWindowMinutes: config.nightOpsCorrelationWindowMinutes,
       sameGroupAffectedHostsThreshold: config.nightOpsSameGroupAffectedHostsThreshold,
+      allowedHostGroups: config.nightOpsAllowedHostGroups,
       criticalKeywords: config.nightOpsCriticalKeywords,
       autoEscalationEnabled: false,
       shadowModeEnabled: true,
@@ -136,6 +155,7 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
         minDurationMinutes: runtimeConfig.minDurationMinutes,
         sameGroupAffectedHostsThreshold:
           runtimeConfig.sameGroupAffectedHostsThreshold,
+        allowedHostGroups: runtimeConfig.allowedHostGroups,
         criticalKeywords: runtimeConfig.criticalKeywords,
         autoEscalationEnabled: runtimeConfig.autoEscalationEnabled,
       },
@@ -152,10 +172,15 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
       problemLimit: 500,
       eventLimit: 200,
       problemRecent: false,
+      problemSeverities: [4, 5],
+      eventSeverities: [4, 5],
     });
+    const runtimeConfig = getRuntimeConfig();
 
     const eligibleProblems = snapshot.problems.filter(
-      (problem) => problem.hostEnabled !== false,
+      (problem) =>
+        problem.hostEnabled !== false &&
+        isProblemInAllowedGroups(problem, runtimeConfig.allowedHostGroups),
     );
 
     const classified = eligibleProblems.map((problem) =>
@@ -189,7 +214,6 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
     };
 
     const savedAnalysis = store.saveAnalysis(result);
-    const runtimeConfig = getRuntimeConfig();
 
     if (runtimeConfig.shadowModeEnabled) {
       store.clearOldShadowDecisions(runtimeConfig.shadowModeRetentionDays);
