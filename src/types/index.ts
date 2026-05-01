@@ -129,8 +129,21 @@ export interface NightOpsShiftReport {
     escalations: number;
   };
   incidents: NightOpsIncident[];
+  relevantOccurrences?: Array<{
+    title: string;
+    status: "ATIVO" | "OFFLINE" | "NORMALIZADO" | "MONITORAMENTO" | "IGNORADO";
+    startedAt: string;
+    endedAt?: string | null;
+    durationText: string;
+    impact: string;
+    probableCause: string;
+    recommendedAction: string;
+    isStillActive: boolean;
+    relatedCount: number;
+  }>;
   recommendations: string[];
   handoverText: string;
+  plainTextReport?: string;
 }
 
 export interface NightOpsStoredAnalysis extends NightOpsStatus {
