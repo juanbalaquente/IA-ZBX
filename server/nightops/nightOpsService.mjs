@@ -148,9 +148,10 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
     }
 
     const snapshot = await zabbixClient.getOperationalSnapshot({
-      hostLimit: 120,
-      problemLimit: 120,
-      eventLimit: 120,
+      hostLimit: 500,
+      problemLimit: 500,
+      eventLimit: 200,
+      problemRecent: false,
     });
 
     const eligibleProblems = snapshot.problems.filter(

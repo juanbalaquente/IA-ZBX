@@ -287,6 +287,7 @@ export function createZabbixServerClient(config) {
       getProblems({
         severities: options.problemSeverities ?? [4, 5],
         limit: options.problemLimit ?? 100,
+        recent: options.problemRecent ?? true,
       }),
       getEvents({
         severities: options.eventSeverities ?? [4, 5],
