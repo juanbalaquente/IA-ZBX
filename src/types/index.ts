@@ -131,3 +131,22 @@ export interface NightOpsShiftReport {
   recommendations: string[];
   handoverText: string;
 }
+
+export interface NightOpsStoredAnalysis extends NightOpsStatus {
+  id: string;
+  metadata: {
+    totalProblems: number;
+    totalIncidents: number;
+    escalationRecommended: number;
+  };
+}
+
+export interface NightOpsHistoryItem extends NightOpsIncident {
+  analysisId: string;
+  generatedAt: string;
+}
+
+export interface NightOpsStoredShiftReport extends NightOpsShiftReport {
+  id: string;
+  generatedAt: string;
+}

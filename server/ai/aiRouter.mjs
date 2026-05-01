@@ -92,6 +92,10 @@ function buildOperationalContext(query, snapshot) {
 }
 
 export function createAiRouter({ config, zabbixClient, nightOpsService }) {
+  function getRequestUrl(request) {
+    return new URL(request.url || "/", "http://localhost");
+  }
+
   async function handleHealth(_request, response, sendJson) {
     let zabbixVersion = null;
 
@@ -224,9 +228,46 @@ export function createAiRouter({ config, zabbixClient, nightOpsService }) {
     return sendJson(response, 200, nightOpsService.getStatus());
   }
 
+  async function handleNightOpsHistory(request, response, sendJson) {
+    const requestUrl = getRequestUrl(request);
+    const filters = {
+      severity: requestUrl.searchParams.get("severity") || undefined,
+      status: requestUrl.searchParams.get("status") || undefined,
+      start: requestUrl.searchParams.get("start") || undefined,
+      end: requestUrl.searchParams.get("end") || undefined,
+      escalationRequired:
+        requestUrl.searchParams.get("escalationRequired") || undefined,
+    };
+    const items = nightOpsService.listHistory(filters);
+
+    return sendJson(response, 200, {
+      status: "ok",
+      items,
+      count: items.length,
+    });
+  }
+
   async function handleNightOpsAnalyze(_request, response, sendJson) {
     const result = await nightOpsService.analyzeNightOps();
     return sendJson(response, 200, result);
+  }
+
+  async function handleNightOpsReports(request, response, sendJson) {
+    const requestUrl = getRequestUrl(request);
+    const items = nightOpsService.listShiftReports({
+      start: requestUrl.searchParams.get("start") || undefined,
+      end: requestUrl.searchParams.get("end") || undefined,
+    });
+
+    return sendJson(response, 200, {
+      status: "ok",
+      items,
+      count: items.length,
+    });
+  }
+
+  async function handleNightOpsLatestReport(_request, response, sendJson) {
+    return sendJson(response, 200, nightOpsService.getLatestShiftReport());
   }
 
   async function handleNightOpsShiftReport(request, response, sendJson, readJsonBody) {
@@ -239,27 +280,41 @@ export function createAiRouter({ config, zabbixClient, nightOpsService }) {
     async route(request, response, helpers) {
       const { sendJson, readJsonBody } = helpers;
 
-      if (request.method === "GET" && request.url === "/ai-api/health") {
+      const pathname = getRequestUrl(request).pathname;
+
+      if (request.method === "GET" && pathname === "/ai-api/health") {
         return await handleHealth(request, response, sendJson);
       }
 
-      if (request.method === "POST" && request.url === "/ai-api/query") {
+      if (request.method === "POST" && pathname === "/ai-api/query") {
         return await handleQuery(request, response, sendJson, readJsonBody);
       }
 
-      if (request.method === "POST" && request.url === "/ai-api/analyze-problem") {
+      if (request.method === "POST" && pathname === "/ai-api/analyze-problem") {
         return await handleProblemAnalysis(request, response, sendJson, readJsonBody);
       }
 
-      if (request.method === "GET" && request.url === "/ai-api/nightops/status") {
+      if (request.method === "GET" && pathname === "/ai-api/nightops/status") {
         return await handleNightOpsStatus(request, response, sendJson);
       }
 
-      if (request.method === "POST" && request.url === "/ai-api/nightops/analyze") {
+      if (request.method === "GET" && pathname === "/ai-api/nightops/history") {
+        return await handleNightOpsHistory(request, response, sendJson);
+      }
+
+      if (request.method === "GET" && pathname === "/ai-api/nightops/reports") {
+        return await handleNightOpsReports(request, response, sendJson);
+      }
+
+      if (request.method === "GET" && pathname === "/ai-api/nightops/reports/latest") {
+        return await handleNightOpsLatestReport(request, response, sendJson);
+      }
+
+      if (request.method === "POST" && pathname === "/ai-api/nightops/analyze") {
         return await handleNightOpsAnalyze(request, response, sendJson);
       }
 
-      if (request.method === "POST" && request.url === "/ai-api/nightops/shift-report") {
+      if (request.method === "POST" && pathname === "/ai-api/nightops/shift-report") {
         return await handleNightOpsShiftReport(request, response, sendJson, readJsonBody);
       }
 

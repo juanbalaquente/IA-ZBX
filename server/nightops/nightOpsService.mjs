@@ -111,6 +111,7 @@ export function createNightOpsService({ config, zabbixClient, store }) {
     };
 
     const result = {
+      id: `analysis-${new Date().toISOString()}`,
       status: "ok",
       generatedAt: new Date().toISOString(),
       summary,
@@ -120,8 +121,7 @@ export function createNightOpsService({ config, zabbixClient, store }) {
       providerSummary: enriched.providerSummary,
     };
 
-    store.setLatestAnalysis(result);
-    return result;
+    return store.saveAnalysis(result);
   }
 
   function getStatus() {
@@ -187,13 +187,31 @@ export function createNightOpsService({ config, zabbixClient, store }) {
       summary: latest?.providerSummary || undefined,
     });
 
-    store.setLatestShiftReport(report);
-    return report;
+    return store.saveShiftReport({
+      ...report,
+      id: `report-${period.start}-${period.end}`,
+      generatedAt: new Date().toISOString(),
+    });
+  }
+
+  function listHistory(filters = {}) {
+    return store.listIncidents(filters);
+  }
+
+  function listShiftReports(filters = {}) {
+    return store.listShiftReports(filters);
+  }
+
+  function getLatestShiftReport() {
+    return store.getLastShiftReport();
   }
 
   return {
     analyzeNightOps,
     getStatus,
     createShiftReport,
+    getLatestShiftReport,
+    listHistory,
+    listShiftReports,
   };
 }

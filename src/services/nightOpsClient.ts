@@ -1,4 +1,9 @@
-import type { NightOpsShiftReport, NightOpsStatus } from "../types";
+import type {
+  NightOpsHistoryItem,
+  NightOpsShiftReport,
+  NightOpsStatus,
+  NightOpsStoredShiftReport,
+} from "../types";
 
 const agentBaseUrl = import.meta.env.VITE_AI_AGENT_URL || "/ai-api";
 
@@ -45,4 +50,56 @@ export async function generateShiftReport(
   }
 
   return (await response.json()) as NightOpsShiftReport;
+}
+
+export async function getNightOpsHistory(
+  filters?: Record<string, string | boolean | undefined>,
+): Promise<{ status: "ok"; items: NightOpsHistoryItem[]; count: number }> {
+  const searchParams = new URLSearchParams();
+
+  Object.entries(filters || {}).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      searchParams.set(key, String(value));
+    }
+  });
+
+  const response = await fetch(
+    `${agentBaseUrl}/nightops/history${searchParams.toString() ? `?${searchParams.toString()}` : ""}`,
+  );
+
+  if (!response.ok) {
+    throw new Error(`Historico NightOps indisponivel (${response.status}).`);
+  }
+
+  return (await response.json()) as {
+    status: "ok";
+    items: NightOpsHistoryItem[];
+    count: number;
+  };
+}
+
+export async function getShiftReports(): Promise<{
+  status: "ok";
+  items: NightOpsStoredShiftReport[];
+  count: number;
+}> {
+  const response = await fetch(`${agentBaseUrl}/nightops/reports`);
+  if (!response.ok) {
+    throw new Error(`Relatorios NightOps indisponiveis (${response.status}).`);
+  }
+
+  return (await response.json()) as {
+    status: "ok";
+    items: NightOpsStoredShiftReport[];
+    count: number;
+  };
+}
+
+export async function getLatestShiftReport(): Promise<NightOpsStoredShiftReport | null> {
+  const response = await fetch(`${agentBaseUrl}/nightops/reports/latest`);
+  if (!response.ok) {
+    throw new Error(`Ultimo relatorio NightOps indisponivel (${response.status}).`);
+  }
+
+  return (await response.json()) as NightOpsStoredShiftReport | null;
 }
