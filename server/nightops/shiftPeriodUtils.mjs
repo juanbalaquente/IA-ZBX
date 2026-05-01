@@ -116,7 +116,10 @@ export function resolveShiftPeriod(input = {}, options = {}) {
   const currentHour = Number(parts.hour);
   const currentMinute = Number(parts.minute);
   const nowIso = `${currentDate}T${parts.hour}:${parts.minute}:${parts.second}-03:00`;
-  const mode = input.mode || "last_completed";
+  const mode =
+    input.periodPreset ||
+    input.mode ||
+    "last_closed_shift";
 
   const currentDayShift = createShiftWindow(
     currentDate,
@@ -146,7 +149,7 @@ export function resolveShiftPeriod(input = {}, options = {}) {
     (currentHour === dayShiftStartHour && currentMinute >= 0);
   const isDuringNightShift = !isDuringDayShift;
 
-  if (mode === "current") {
+  if (mode === "current_shift" || mode === "current") {
     if (currentHour >= nightShiftStartHour) {
       return {
         start: currentNightShift.start,
@@ -170,7 +173,7 @@ export function resolveShiftPeriod(input = {}, options = {}) {
     };
   }
 
-  if (mode === "previous_day") {
+  if (mode === "previous_day_shift" || mode === "previous_day") {
     const completedDayShift = currentHour >= dayShiftEndHour
       ? currentDayShift
       : previousDayShift;
@@ -180,7 +183,7 @@ export function resolveShiftPeriod(input = {}, options = {}) {
     };
   }
 
-  if (mode === "previous_night") {
+  if (mode === "previous_night_shift" || mode === "previous_night") {
     const completedNightShift = currentHour >= nightShiftEndHour
       ? previousNightShift
       : createShiftWindow(shiftDate(currentDate, -2), nightShiftStartHour, nightShiftEndHour);
