@@ -314,12 +314,14 @@ export function createNightOpsService({ config, zabbixClient, store, configStore
 
   async function createShiftReport(input = {}) {
     const period = resolveReportPeriod(input);
+    const runtimeConfig = getRuntimeConfig();
     const { incidents, providerSummary } = await buildPeriodIncidents(period);
     const report = generateShiftReport({
       start: period.start,
       end: period.end,
       incidents,
       summary: providerSummary || undefined,
+      config: runtimeConfig,
     });
 
     return store.saveShiftReport({

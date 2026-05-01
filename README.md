@@ -269,6 +269,13 @@ Regra temporal aplicada no relatorio:
 - nao entram ocorrencias que comecaram e terminaram antes do inicio do plantao;
 - nao entram ocorrencias futuras ou sem relacao temporal com o periodo.
 
+Regra operacional do relatorio principal:
+
+- o relatorio principal mostra apenas eventos que ocorreram no periodo;
+- alarmes antigos ainda ativos, sem alteracao no plantao, sao tratados como `pendencias herdadas`;
+- pendencias herdadas nao entram nas ocorrencias relevantes por padrao;
+- isso evita que alarmes antigos de semanas ou meses anteriores poluam o fechamento do plantao.
+
 Plantao operacional padrao:
 
 - plantao diurno: `07:00` as `19:00`
@@ -318,6 +325,9 @@ Parametros atuais:
 - grupos de hosts permitidos para a analise;
 - palavras-chave criticas;
 - `autoEscalationEnabled`, visivel mas mantido desativado nesta fase.
+- `includeCarryOverInMainReport`, desligado por padrao;
+- `maxCarryOverItemsInReport`, para limitar pendencias herdadas listadas no texto;
+- `carryOverMinSeverity`, para filtrar pendencias herdadas exibidas;
 - `shadowModeEnabled`, ativo por padrao;
 - `shadowModeRetentionDays`, para limpeza do historico de observacao.
 

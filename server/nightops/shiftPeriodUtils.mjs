@@ -53,19 +53,27 @@ export function timestampInPeriod(value, periodStart, periodEnd) {
 }
 
 export function occurredInPeriod(item = {}, periodStart, periodEnd) {
-  return [
+  const primaryTimestamps = [
     item.startedAt,
     item.endedAt,
     item.resolvedAt,
     item.recoveryAt,
-    item.createdAt,
-    item.generatedAt,
     item.eventTime,
     item.eventClock,
     item.lastChangedAt,
-  ]
-    .filter(Boolean)
-    .some((value) => timestampInPeriod(value, periodStart, periodEnd));
+  ].filter(Boolean);
+
+  if (primaryTimestamps.some((value) => timestampInPeriod(value, periodStart, periodEnd))) {
+    return true;
+  }
+
+  if (primaryTimestamps.length === 0) {
+    return [item.createdAt, item.generatedAt]
+      .filter(Boolean)
+      .some((value) => timestampInPeriod(value, periodStart, periodEnd));
+  }
+
+  return false;
 }
 
 export function isCarryOverActive(item = {}, periodStart) {

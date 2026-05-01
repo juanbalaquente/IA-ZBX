@@ -168,6 +168,9 @@ function NightOpsShiftReportPanel({
               <p className="mt-2 text-sm text-slate-200">
                 {formatDateTime(report.period.start)} ate {formatDateTime(report.period.end)}
               </p>
+              <p className="mt-3 text-xs text-slate-500">
+                O relatorio lista apenas eventos ocorridos no periodo selecionado. Alarmes antigos sem alteracao aparecem apenas como pendencias herdadas.
+              </p>
             </div>
 
             <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
@@ -229,6 +232,16 @@ function NightOpsShiftReportPanel({
                 {"generatedAt" in report && report.generatedAt
                   ? formatDateTime(report.generatedAt)
                   : "Gerado nesta sessao"}
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Totais</p>
+              <p className="mt-2 text-sm text-slate-200">
+                {report.periodEventCount ?? report.numbers.periodEventCount ?? report.numbers.totalProblems} ocorrencia(s) do periodo
+              </p>
+              <p className="mt-1 text-sm text-slate-400">
+                {report.inheritedPendingCount || 0} pendencia(s) herdada(s)
               </p>
             </div>
 
