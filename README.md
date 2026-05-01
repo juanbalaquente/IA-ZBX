@@ -57,6 +57,13 @@ Importante: esta versao nao aciona pessoas automaticamente. Ela apenas analisa, 
 
 ```text
 src/
+  components/
+    NightOpsAdvancedPanel.tsx
+    NightOpsCurrentSituationPanel.tsx
+    NightOpsOccurrencesPanel.tsx
+    NightOpsRecentHistoryPanel.tsx
+    NightOpsShadowPanel.tsx
+    NightOpsShiftReportPanel.tsx
   pages/
     NightOpsPage.tsx
   services/
@@ -202,6 +209,35 @@ O modulo NightOps:
 - correlaciona alarmes por grupo, host, severidade, horario e palavras-chave;
 - usa IA apenas para explicacao, causa provavel, mensagens e resumo;
 - gera relatorio de turno.
+
+### Uso diario
+
+Fluxo recomendado para o operador:
+
+1. Abrir `/nightops`.
+2. Gerar o relatorio do turno.
+3. Validar a situacao atual.
+4. Revisar as ocorrencias detectadas.
+5. Copiar a passagem de turno e o resumo quando necessario.
+
+Na interface atual, a hierarquia foi reorganizada para priorizar:
+
+1. Relatorio do turno
+2. Situacao atual
+3. Ocorrencias detectadas
+4. Historico recente
+5. Configuracoes e auditoria
+
+### Uso de supervisao
+
+Para supervisao e calibracao do modulo:
+
+- revisar Shadow Mode;
+- validar falso positivo e falso negativo;
+- ajustar configuracoes do Sentinel;
+- consultar historico persistido.
+
+Shadow Mode continua ativo como auditoria, mas nao e a funcao principal do operador no uso diario.
 
 ### Persistencia local do historico
 
@@ -421,6 +457,8 @@ O Shadow Mode e uma fase de observacao operacional:
 - permite validacao humana posterior;
 - ajuda a medir falso positivo e falso negativo;
 - e recomendado rodar por 7 a 15 dias antes de considerar qualquer notificacao externa.
+
+Na interface `/nightops`, o Shadow Mode fica em uma area secundaria de auditoria para nao competir com a operacao principal do turno.
 
 Decisoes registradas:
 
