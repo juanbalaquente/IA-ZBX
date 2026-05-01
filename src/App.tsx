@@ -12,6 +12,7 @@ import DashboardPage from "./pages/DashboardPage";
 import HostsPage from "./pages/HostsPage";
 import LinksPage from "./pages/LinksPage";
 import LogsPage from "./pages/LogsPage";
+import NightOpsPage from "./pages/NightOpsPage";
 import ProblemsPage from "./pages/ProblemsPage";
 import SettingsPage from "./pages/SettingsPage";
 
@@ -36,6 +37,7 @@ function App() {
                   element={<DashboardPage apiStatus={apiStatus} />}
                 />
                 <Route path="/hosts" element={<HostsPage />} />
+                <Route path="/nightops" element={<NightOpsPage />} />
                 <Route path="/ia" element={<AIQueriesPage />} />
                 <Route path="/problems" element={<ProblemsPage />} />
                 <Route path="/links" element={<LinksPage />} />

@@ -45,15 +45,6 @@ function toTimestampMs(clock) {
   return timestamp * 1000;
 }
 
-function truncateText(value, maxLength = 180) {
-  const text = String(value || "");
-  if (text.length <= maxLength) {
-    return text;
-  }
-
-  return `${text.slice(0, maxLength - 3)}...`;
-}
-
 function mapHostStatus(host, mainInterface) {
   const available = mainInterface?.available;
   if (host.status === "1") {
@@ -291,12 +282,7 @@ export function createZabbixServerClient(config) {
   }
 
   async function getOperationalSnapshot(options = {}) {
-    const [
-      hosts,
-      problems,
-      events,
-      triggers,
-    ] = await Promise.all([
+    const [hosts, problems, events] = await Promise.all([
       getHosts({ limit: options.hostLimit ?? 100 }),
       getProblems({
         severities: options.problemSeverities ?? [4, 5],
@@ -305,9 +291,6 @@ export function createZabbixServerClient(config) {
       getEvents({
         severities: options.eventSeverities ?? [4, 5],
         limit: options.eventLimit ?? 100,
-      }),
-      getTriggers({
-        triggerids: [],
       }),
     ]);
 

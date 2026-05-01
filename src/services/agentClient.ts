@@ -10,7 +10,7 @@ export interface AgentContextCounts {
 
 export interface AgentQueryResponse {
   answer: string;
-  source: "groq-agent" | "local-parser";
+  source: "groq-agent" | "openrouter-agent" | "local-parser";
   model?: string;
   contextCounts?: AgentContextCounts;
 }
@@ -22,7 +22,7 @@ export interface ProblemAIAnalysis {
   evidence: string[];
   recommendedActions: string[];
   whatsappMessage: string;
-  source: "groq-agent" | "local-parser";
+  source: "groq-agent" | "openrouter-agent" | "local-parser";
   model?: string;
 }
 

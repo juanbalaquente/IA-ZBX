@@ -50,7 +50,7 @@ export interface AIConversation {
   role: "operator" | "assistant";
   message: string;
   timestamp: string;
-  source?: "groq-agent" | "local-parser";
+  source?: "groq-agent" | "openrouter-agent" | "local-parser";
   model?: string;
   contextCounts?: {
     hosts: number;
@@ -62,4 +62,72 @@ export interface AIConversation {
 export interface AIExample {
   label: string;
   prompt: string;
+}
+
+export type NightOpsSeverity = "low" | "medium" | "high" | "critical";
+
+export interface NightOpsEscalation {
+  required: boolean;
+  reason: string;
+  target: "NOC" | "Engenharia" | "Campo" | "Supervisor";
+}
+
+export interface NightOpsIncident {
+  id: string;
+  title: string;
+  severity: NightOpsSeverity;
+  sourceSeverity?: string;
+  status: "active" | "monitoring" | "resolved" | "ignored";
+  startedAt: string;
+  durationMinutes: number;
+  affectedHosts: string[];
+  affectedGroups: string[];
+  problemIds: string[];
+  eventIds: string[];
+  probableCause: string;
+  impact: string;
+  evidence: string[];
+  recommendedActions: string[];
+  escalation: NightOpsEscalation;
+  customerMessage: string;
+  internalMessage: string;
+  confidence: number;
+  classification?: string;
+}
+
+export interface NightOpsSummary {
+  activeProblems: number;
+  criticalIncidents: number;
+  warningIncidents: number;
+  ignoredNoise: number;
+  escalationRecommended: number;
+}
+
+export interface NightOpsStatus {
+  status: "ok";
+  generatedAt: string | null;
+  summary: NightOpsSummary;
+  incidents: NightOpsIncident[];
+  analysisSource?: string;
+  analysisModel?: string;
+  providerSummary?: string;
+}
+
+export interface NightOpsShiftReport {
+  title: string;
+  period: {
+    start: string;
+    end: string;
+  };
+  summary: string;
+  numbers: {
+    totalProblems: number;
+    criticalIncidents: number;
+    monitoredEvents: number;
+    ignoredNoise: number;
+    escalations: number;
+  };
+  incidents: NightOpsIncident[];
+  recommendations: string[];
+  handoverText: string;
 }
