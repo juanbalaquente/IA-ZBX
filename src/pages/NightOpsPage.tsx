@@ -7,18 +7,23 @@ import {
   MoonStar,
   Radar,
   RefreshCcw,
+  Save,
+  Settings2,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import HelpTooltip from "../components/HelpTooltip";
 import StatCard from "../components/StatCard";
 import {
   analyzeNightOps,
   generateShiftReport,
   getLatestShiftReport,
+  getNightOpsConfig,
   getNightOpsHistory,
   getNightOpsStatus,
+  updateNightOpsConfig,
 } from "../services/nightOpsClient";
 import type {
+  NightOpsConfig,
   NightOpsHistoryItem,
   NightOpsIncident,
   NightOpsShiftReport,
@@ -52,6 +57,17 @@ const emptyStatus: NightOpsStatus = {
     escalationRecommended: 0,
   },
   incidents: [],
+};
+
+const emptyConfig: NightOpsConfig = {
+  defaultStartHour: 19,
+  defaultEndHour: 7,
+  timezone: "America/Sao_Paulo",
+  minDurationMinutes: 5,
+  correlationWindowMinutes: 10,
+  sameGroupAffectedHostsThreshold: 5,
+  criticalKeywords: ["OLT", "POP", "BGP", "BACKBONE", "CORE", "TRANSPORTE", "ENLACE"],
+  autoEscalationEnabled: false,
 };
 
 function formatDateTime(value: string | null) {
@@ -118,69 +134,6 @@ function IncidentCard({ incident }: { incident: NightOpsIncident }) {
           </p>
         </div>
       </div>
-
-      <div className="mt-4 grid gap-4 xl:grid-cols-2">
-        <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
-            Evidencias
-          </p>
-          <div className="mt-2 space-y-2">
-            {incident.evidence.map((item) => (
-              <div
-                key={item}
-                className="rounded-2xl border border-slate-800 bg-slate-900/60 px-3 py-2 text-sm text-slate-300"
-              >
-                {item}
-              </div>
-            ))}
-          </div>
-        </div>
-        <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
-            Acoes recomendadas
-          </p>
-          <div className="mt-2 space-y-2">
-            {incident.recommendedActions.map((item) => (
-              <div
-                key={item}
-                className="rounded-2xl border border-slate-800 bg-slate-900/60 px-3 py-2 text-sm text-slate-300"
-              >
-                {item}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-4 grid gap-4 xl:grid-cols-2">
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
-            Mensagem interna
-          </p>
-          <p className="mt-2 text-sm leading-6 text-slate-200">
-            {incident.internalMessage}
-          </p>
-        </div>
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
-            Mensagem ao cliente
-          </p>
-          <p className="mt-2 text-sm leading-6 text-slate-200">
-            {incident.customerMessage}
-          </p>
-        </div>
-      </div>
-
-      <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
-        <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
-          Escalonamento
-        </p>
-        <p className="mt-2 text-sm text-slate-200">
-          {incident.escalation.required
-            ? `${incident.escalation.target}: ${incident.escalation.reason}`
-            : incident.escalation.reason}
-        </p>
-      </div>
     </article>
   );
 }
@@ -191,20 +144,29 @@ function NightOpsPage() {
   const [latestStoredReport, setLatestStoredReport] =
     useState<NightOpsStoredShiftReport | null>(null);
   const [history, setHistory] = useState<NightOpsHistoryItem[]>([]);
+  const [config, setConfig] = useState<NightOpsConfig>(emptyConfig);
+  const [keywordsInput, setKeywordsInput] = useState(
+    emptyConfig.criticalKeywords.join(", "),
+  );
   const [loading, setLoading] = useState(true);
   const [analyzing, setAnalyzing] = useState(false);
   const [reportLoading, setReportLoading] = useState(false);
+  const [configSaving, setConfigSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [configMessage, setConfigMessage] = useState<string | null>(null);
   const [expandedHistoryId, setExpandedHistoryId] = useState<string | null>(null);
 
   const loadSideData = async () => {
-    const [historyResponse, latestReportResponse] = await Promise.all([
+    const [historyResponse, latestReportResponse, configResponse] = await Promise.all([
       getNightOpsHistory(),
       getLatestShiftReport(),
+      getNightOpsConfig(),
     ]);
 
     setHistory(historyResponse.items);
     setLatestStoredReport(latestReportResponse);
+    setConfig(configResponse.config);
+    setKeywordsInput(configResponse.config.criticalKeywords.join(", "));
   };
 
   useEffect(() => {
@@ -255,6 +217,48 @@ function NightOpsPage() {
     }
   };
 
+  const handleConfigNumberChange =
+    (field: keyof NightOpsConfig) => (event: ChangeEvent<HTMLInputElement>) => {
+      setConfig((current) => ({
+        ...current,
+        [field]: Number(event.target.value),
+      }));
+    };
+
+  const handleConfigTextChange =
+    (field: keyof NightOpsConfig) => (event: ChangeEvent<HTMLInputElement>) => {
+      setConfig((current) => ({
+        ...current,
+        [field]: event.target.value,
+      }));
+    };
+
+  const handleSaveConfig = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      setConfigSaving(true);
+      setConfigMessage(null);
+      setError(null);
+      const payload: NightOpsConfig = {
+        ...config,
+        criticalKeywords: keywordsInput
+          .split(",")
+          .map((item) => item.trim())
+          .filter(Boolean),
+        autoEscalationEnabled: false,
+      };
+      const response = await updateNightOpsConfig(payload);
+      setConfig(response.config);
+      setKeywordsInput(response.config.criticalKeywords.join(", "));
+      setConfigMessage("Configuracoes do Sentinel salvas.");
+    } catch (saveError) {
+      setError((saveError as Error).message);
+    } finally {
+      setConfigSaving(false);
+    }
+  };
+
   const metrics: StatMetric[] = [
     {
       title: "Sistema operacional",
@@ -267,10 +271,12 @@ function NightOpsPage() {
     },
     {
       title: "Ultima analise",
-      value: status.generatedAt ? new Date(status.generatedAt).toLocaleTimeString("pt-BR", {
-        hour: "2-digit",
-        minute: "2-digit",
-      }) : "--:--",
+      value: status.generatedAt
+        ? new Date(status.generatedAt).toLocaleTimeString("pt-BR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        : "--:--",
       delta: formatDateTime(status.generatedAt),
       icon: "Clock3",
       tone: "info",
@@ -343,6 +349,12 @@ function NightOpsPage() {
         </section>
       ) : null}
 
+      {configMessage ? (
+        <section className="rounded-3xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-100">
+          {configMessage}
+        </section>
+      ) : null}
+
       <section className="grid gap-4 xl:grid-cols-4">
         {loading ? (
           <div className="col-span-4 rounded-3xl border border-slate-800 bg-slate-950/80 p-10 text-center text-slate-400">
@@ -351,6 +363,129 @@ function NightOpsPage() {
         ) : (
           metrics.map((item) => <StatCard key={item.title} item={item} />)
         )}
+      </section>
+
+      <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
+        <div className="flex items-center gap-2">
+          <Settings2 size={18} className="text-sky-300" />
+          <div>
+            <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
+              Configuracoes do Sentinel
+            </p>
+            <h3 className="mt-2 text-xl font-semibold text-slate-100">
+              Regras operacionais ajustaveis
+            </h3>
+          </div>
+        </div>
+
+        <form className="mt-6 space-y-4" onSubmit={handleSaveConfig}>
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <label className="block">
+              <span className="mb-2 block text-sm text-slate-400">Horario inicial do turno</span>
+              <input
+                type="number"
+                min={0}
+                max={23}
+                value={config.defaultStartHour}
+                onChange={handleConfigNumberChange("defaultStartHour")}
+                className="w-full rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none focus:border-sky-400"
+              />
+            </label>
+            <label className="block">
+              <span className="mb-2 block text-sm text-slate-400">Horario final do turno</span>
+              <input
+                type="number"
+                min={0}
+                max={23}
+                value={config.defaultEndHour}
+                onChange={handleConfigNumberChange("defaultEndHour")}
+                className="w-full rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none focus:border-sky-400"
+              />
+            </label>
+            <label className="block">
+              <span className="mb-2 block text-sm text-slate-400">Timezone</span>
+              <input
+                type="text"
+                value={config.timezone}
+                onChange={handleConfigTextChange("timezone")}
+                className="w-full rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none focus:border-sky-400"
+              />
+            </label>
+            <label className="block">
+              <span className="mb-2 block text-sm text-slate-400">Duracao minima do incidente</span>
+              <input
+                type="number"
+                min={1}
+                value={config.minDurationMinutes}
+                onChange={handleConfigNumberChange("minDurationMinutes")}
+                className="w-full rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none focus:border-sky-400"
+              />
+            </label>
+            <label className="block">
+              <span className="mb-2 block text-sm text-slate-400">Janela de correlacao</span>
+              <input
+                type="number"
+                min={1}
+                value={config.correlationWindowMinutes}
+                onChange={handleConfigNumberChange("correlationWindowMinutes")}
+                className="w-full rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none focus:border-sky-400"
+              />
+            </label>
+            <label className="block">
+              <span className="mb-2 block text-sm text-slate-400">Limite de hosts no mesmo grupo</span>
+              <input
+                type="number"
+                min={1}
+                value={config.sameGroupAffectedHostsThreshold}
+                onChange={handleConfigNumberChange("sameGroupAffectedHostsThreshold")}
+                className="w-full rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none focus:border-sky-400"
+              />
+            </label>
+          </div>
+
+          <label className="block">
+            <span className="mb-2 block text-sm text-slate-400">Palavras-chave criticas</span>
+            <input
+              type="text"
+              value={keywordsInput}
+              onChange={(event) => setKeywordsInput(event.target.value)}
+              placeholder="OLT, POP, BGP, BACKBONE, CORE"
+              className="w-full rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none focus:border-sky-400"
+            />
+          </label>
+
+          <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 p-4">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-sm font-medium text-amber-100">Auto escalation</p>
+                <p className="mt-1 text-xs text-amber-200">
+                  Visivel para configuracao futura, mas bloqueado nesta versao. Nenhum acionamento automatico sera executado.
+                </p>
+              </div>
+              <label className="inline-flex items-center gap-3 text-sm text-slate-300">
+                <input
+                  type="checkbox"
+                  checked={false}
+                  disabled
+                  readOnly
+                  className="h-4 w-4 rounded border-slate-700 bg-slate-900"
+                />
+                Desativado
+              </label>
+            </div>
+          </div>
+
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              disabled={configSaving}
+              className="inline-flex items-center gap-2 rounded-3xl bg-noc-accent px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <Save size={16} />
+              {configSaving ? "Salvando..." : "Salvar configuracoes"}
+            </button>
+          </div>
+        </form>
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
@@ -450,16 +585,6 @@ function NightOpsPage() {
                               ? `${item.escalation.target}: ${item.escalation.reason}`
                               : item.escalation.reason}
                           </p>
-                          <div className="space-y-2">
-                            {item.recommendedActions.slice(0, 3).map((action) => (
-                              <div
-                                key={action}
-                                className="rounded-2xl border border-slate-800 bg-slate-900/60 px-3 py-2 text-sm text-slate-300"
-                              >
-                                {action}
-                              </div>
-                            ))}
-                          </div>
                         </div>
                       ) : null}
                     </article>
@@ -510,63 +635,6 @@ function NightOpsPage() {
                 </p>
               </div>
             </div>
-          </section>
-
-          <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">
-            <div className="flex items-center gap-2">
-              <ClipboardList size={18} className="text-sky-300" />
-              <div>
-                <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-                  Relatorio
-                </p>
-                <h3 className="mt-2 text-xl font-semibold text-slate-100">
-                  Passagem de turno
-                </h3>
-              </div>
-            </div>
-
-            {!report ? (
-              <div className="mt-6 rounded-3xl border border-slate-800 bg-slate-950/80 p-6 text-sm text-slate-400">
-                Gere o relatorio para obter o texto pronto de handover do turno noturno.
-              </div>
-            ) : (
-              <div className="mt-6 space-y-4">
-                <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
-                  <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
-                    Periodo
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-slate-200">
-                    {formatDateTime(report.period.start)} ate {formatDateTime(report.period.end)}
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
-                  <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
-                    Resumo
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-slate-200">
-                    {report.summary}
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
-                  <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
-                    Handover
-                  </p>
-                  <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-200">
-                    {report.handoverText}
-                  </p>
-                </div>
-                <div className="space-y-2">
-                  {report.recommendations.map((item) => (
-                    <div
-                      key={item}
-                      className="rounded-2xl border border-slate-800 bg-slate-950/80 px-3 py-2 text-sm text-slate-300"
-                    >
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </section>
 
           <section className="rounded-3xl border border-slate-800 bg-noc-surface3 p-6 shadow-soft">

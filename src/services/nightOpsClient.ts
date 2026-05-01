@@ -1,4 +1,5 @@
 import type {
+  NightOpsConfig,
   NightOpsHistoryItem,
   NightOpsShiftReport,
   NightOpsStatus,
@@ -102,4 +103,44 @@ export async function getLatestShiftReport(): Promise<NightOpsStoredShiftReport 
   }
 
   return (await response.json()) as NightOpsStoredShiftReport | null;
+}
+
+export async function getNightOpsConfig(): Promise<{
+  status: "ok";
+  config: NightOpsConfig;
+}> {
+  const response = await fetch(`${agentBaseUrl}/nightops/config`);
+  if (!response.ok) {
+    throw new Error(`Configuracao NightOps indisponivel (${response.status}).`);
+  }
+
+  return (await response.json()) as {
+    status: "ok";
+    config: NightOpsConfig;
+  };
+}
+
+export async function updateNightOpsConfig(
+  config: NightOpsConfig,
+): Promise<{
+  status: "ok";
+  config: NightOpsConfig;
+}> {
+  const response = await fetch(`${agentBaseUrl}/nightops/config`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(config),
+  });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.error || `Falha ao salvar configuracao (${response.status}).`);
+  }
+
+  return (await response.json()) as {
+    status: "ok";
+    config: NightOpsConfig;
+  };
 }

@@ -67,6 +67,7 @@ server/
     prompts/
     providers/
   data/
+    nightops-config.json
     nightops-history.json
     nightOpsStore.mjs
   nightops/
@@ -210,6 +211,30 @@ Comportamento atual:
 
 Essa persistencia e adequada para MVP local, mas nao substitui armazenamento transacional.
 
+### Configuracao ajustavel do Sentinel
+
+As regras operacionais ajustaveis do NightOps ficam em:
+
+```text
+server/data/nightops-config.json
+```
+
+Hierarquia atual:
+
+- `.env` e `.env.local` continuam como default inicial;
+- `nightops-config.json` passa a ser a configuracao persistida e ajustavel pelo frontend;
+- a tela `/nightops` permite editar os parametros sem alterar codigo.
+
+Parametros atuais:
+
+- horario inicial e final do turno;
+- timezone;
+- duracao minima para considerar incidente;
+- janela de correlacao;
+- limite de hosts afetados no mesmo grupo;
+- palavras-chave criticas;
+- `autoEscalationEnabled`, visivel mas mantido desativado nesta fase.
+
 ### Regras deterministicas atuais
 
 - `Disaster` com duracao acima do limite recomenda escalonamento.
@@ -334,6 +359,7 @@ Cobertura minima adicionada:
 
 - A correlacao usa grupos, nomes e palavras-chave como fallback; nao depende de tags perfeitas do Zabbix.
 - O historico do NightOps usa arquivo JSON local, sem concorrencia sofisticada nem locking distribuido.
+- A configuracao operacional do NightOps tambem usa arquivo JSON local.
 - O relatorio de turno usa as analises salvas no backend ativo.
 - A qualidade da explicacao por IA depende do contexto compacto enviado ao modelo.
 - Para evolucao futura, o recomendado e migrar a persistencia para SQLite ou PostgreSQL.

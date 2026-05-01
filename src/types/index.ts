@@ -150,3 +150,14 @@ export interface NightOpsStoredShiftReport extends NightOpsShiftReport {
   id: string;
   generatedAt: string;
 }
+
+export interface NightOpsConfig {
+  defaultStartHour: number;
+  defaultEndHour: number;
+  timezone: string;
+  minDurationMinutes: number;
+  correlationWindowMinutes: number;
+  sameGroupAffectedHostsThreshold: number;
+  criticalKeywords: string[];
+  autoEscalationEnabled: boolean;
+}

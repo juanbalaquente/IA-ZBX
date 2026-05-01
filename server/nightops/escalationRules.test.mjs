@@ -75,4 +75,21 @@ describe("applyEscalationRules", () => {
 
     expect(result.severity).toBe("high");
   });
+
+  it("aplica limite customizado de hosts por grupo", () => {
+    const result = applyEscalationRules(
+      createIncident({
+        affectedHosts: ["A", "B", "C"],
+        affectedGroups: ["POP-CENTRO"],
+        sourceSeverity: "High",
+      }),
+      {
+        minDurationMinutes: 5,
+        sameGroupAffectedHostsThreshold: 2,
+      },
+    );
+
+    expect(result.escalation.required).toBe(true);
+    expect(result.classification).toBe("correlated-outage");
+  });
 });
