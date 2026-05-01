@@ -23,6 +23,18 @@ const severityStyles = {
   Low: "bg-slate-800 text-slate-300",
 };
 
+function getAnalysisSourceLabel(source: ProblemAIAnalysis["source"]) {
+  if (source === "openrouter-agent") {
+    return "Agente OpenRouter";
+  }
+
+  if (source === "groq-agent") {
+    return "Agente Groq";
+  }
+
+  return "Fallback local";
+}
+
 function ProblemsPage() {
   const [searchParams] = useSearchParams();
   const initialHostFilter = searchParams.get("host") ?? "";
@@ -434,7 +446,7 @@ function ProblemsPage() {
                 <div className="space-y-4 rounded-3xl border border-cyan-500/20 bg-cyan-500/5 p-4">
                   <div className="flex flex-wrap gap-2 text-xs text-slate-400">
                     <span className="rounded-full border border-cyan-500/20 bg-slate-950 px-3 py-1 text-cyan-200">
-                      Fonte: {analysis.source === "groq-agent" ? "Agente Groq" : "Fallback local"}
+                      Fonte: {getAnalysisSourceLabel(analysis.source)}
                     </span>
                     {analysis.model ? (
                       <span className="rounded-full border border-slate-800 bg-slate-950 px-3 py-1">

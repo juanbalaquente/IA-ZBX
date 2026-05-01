@@ -14,7 +14,12 @@ import {
   generateShiftReport,
   getNightOpsStatus,
 } from "../services/nightOpsClient";
-import type { NightOpsIncident, NightOpsShiftReport, NightOpsStatus } from "../types";
+import type {
+  NightOpsIncident,
+  NightOpsShiftReport,
+  NightOpsStatus,
+  StatMetric,
+} from "../types";
 
 const severityStyles = {
   low: "bg-slate-800 text-slate-300",
@@ -222,7 +227,7 @@ function NightOpsPage() {
     }
   };
 
-  const metrics = [
+  const metrics: StatMetric[] = [
     {
       title: "Sistema operacional",
       value: status.status === "ok" ? "Ativo" : "Indefinido",

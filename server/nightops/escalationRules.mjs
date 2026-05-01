@@ -97,6 +97,7 @@ export function applyEscalationRules(incident, options = {}) {
     Number(result.affectedHosts?.length || 0) <= 1 &&
     Number(result.affectedGroups?.length || 0) <= 1 &&
     !keywordBoost &&
+    !["ignored", "resolved"].includes(result.status) &&
     result.severity === "high"
   ) {
     result.severity = "medium";

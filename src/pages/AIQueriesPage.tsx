@@ -22,6 +22,18 @@ function getTimestampLabel() {
   });
 }
 
+function getSourceLabel(source?: AIConversation["source"]) {
+  if (source === "openrouter-agent") {
+    return "Agente OpenRouter";
+  }
+
+  if (source === "groq-agent") {
+    return "Agente Groq";
+  }
+
+  return "Parser local";
+}
+
 function AIQueriesPage() {
   const [history, setHistory] =
     useState<AIConversation[]>(initialConversation);
@@ -160,10 +172,10 @@ function AIQueriesPage() {
                   {entry.source ? (
                     <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-400">
                       <span className="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
-                        Fonte: {entry.source === "groq-agent" ? "Agente Groq" : "Parser local"}
+                        Fonte: {getSourceLabel(entry.source)}
                         <HelpTooltip
                           label="Explicar fonte da resposta"
-                          text="Agente Groq indica resposta gerada pelo LLM com contexto do Zabbix. Parser local indica regra interna usada quando o agente nao respondeu."
+                          text="Agente Groq ou OpenRouter indica resposta gerada pelo LLM com contexto do Zabbix. Parser local indica regra interna usada quando o agente nao respondeu."
                         />
                       </span>
                       {entry.model ? (
