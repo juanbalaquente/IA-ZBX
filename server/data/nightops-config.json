@@ -24,6 +24,9 @@
     "ENLACE"
   ],
   "autoEscalationEnabled": false,
+  "includeCarryOverInMainReport": false,
+  "maxCarryOverItemsInReport": 5,
+  "carryOverMinSeverity": "critical",
   "shadowModeEnabled": true,
   "shadowModeRetentionDays": 30
 }

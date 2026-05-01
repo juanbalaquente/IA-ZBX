@@ -40,6 +40,47 @@ export function overlapsPeriod(itemStart, itemEnd, periodStart, periodEnd) {
   return start <= pEnd && end >= pStart;
 }
 
+export function timestampInPeriod(value, periodStart, periodEnd) {
+  const timestamp = new Date(value).getTime();
+  const pStart = new Date(periodStart).getTime();
+  const pEnd = new Date(periodEnd).getTime();
+
+  if (![timestamp, pStart, pEnd].every(Number.isFinite)) {
+    return false;
+  }
+
+  return timestamp >= pStart && timestamp <= pEnd;
+}
+
+export function occurredInPeriod(item = {}, periodStart, periodEnd) {
+  return [
+    item.startedAt,
+    item.endedAt,
+    item.resolvedAt,
+    item.recoveryAt,
+    item.createdAt,
+    item.generatedAt,
+    item.eventTime,
+    item.eventClock,
+    item.lastChangedAt,
+  ]
+    .filter(Boolean)
+    .some((value) => timestampInPeriod(value, periodStart, periodEnd));
+}
+
+export function isCarryOverActive(item = {}, periodStart) {
+  const startTs = new Date(item.startedAt || item.createdAt || item.generatedAt || "").getTime();
+  const periodStartTs = new Date(periodStart).getTime();
+  const endValue = item.endedAt || item.resolvedAt || item.recoveryAt || null;
+  const endTs = endValue ? new Date(endValue).getTime() : Number.POSITIVE_INFINITY;
+
+  if (![startTs, periodStartTs].every(Number.isFinite)) {
+    return false;
+  }
+
+  return startTs < periodStartTs && endTs === Number.POSITIVE_INFINITY;
+}
+
 function createShiftWindow(datePart, startHour, endHour) {
   const start = buildIsoString(datePart, startHour);
   const endDate = endHour <= startHour ? shiftDate(datePart, 1) : datePart;

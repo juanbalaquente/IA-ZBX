@@ -31,6 +31,9 @@ const defaults = {
   ],
   criticalKeywords: ["OLT", "POP", "BGP", "BACKBONE", "CORE", "TRANSPORTE", "ENLACE"],
   autoEscalationEnabled: false,
+  includeCarryOverInMainReport: false,
+  maxCarryOverItemsInReport: 5,
+  carryOverMinSeverity: "critical",
   shadowModeEnabled: true,
   shadowModeRetentionDays: 30,
 };
@@ -67,6 +70,7 @@ describe("nightOpsConfigStore", () => {
     expect(store.getConfig().autoEscalationEnabled).toBe(false);
     expect(store.getConfig().shadowModeEnabled).toBe(true);
     expect(store.getConfig().allowedHostGroups).toContain("10031-SPEEDNET");
+    expect(store.getConfig().includeCarryOverInMainReport).toBe(false);
   });
 
   it("salva configuracao valida", () => {
@@ -80,6 +84,9 @@ describe("nightOpsConfigStore", () => {
       allowedHostGroups: ["1000-SERVIDORES", "ZABBIX SERVERS"],
       criticalKeywords: ["OLT", "POP", "CORE"],
       autoEscalationEnabled: true,
+      includeCarryOverInMainReport: true,
+      maxCarryOverItemsInReport: 3,
+      carryOverMinSeverity: "high",
       shadowModeRetentionDays: 45,
     });
 
@@ -87,6 +94,9 @@ describe("nightOpsConfigStore", () => {
     expect(store.getConfig().minDurationMinutes).toBe(8);
     expect(store.getConfig().autoEscalationEnabled).toBe(false);
     expect(store.getConfig().shadowModeRetentionDays).toBe(45);
+    expect(store.getConfig().includeCarryOverInMainReport).toBe(true);
+    expect(store.getConfig().maxCarryOverItemsInReport).toBe(3);
+    expect(store.getConfig().carryOverMinSeverity).toBe("high");
     expect(store.getConfig().allowedHostGroups).toEqual([
       "1000-SERVIDORES",
       "ZABBIX SERVERS",
@@ -100,6 +110,8 @@ describe("nightOpsConfigStore", () => {
         correlationWindowMinutes: 0,
         allowedHostGroups: new Array(80).fill("grupo"),
         criticalKeywords: new Array(30).fill("A"),
+        maxCarryOverItemsInReport: 50,
+        carryOverMinSeverity: "urgent",
         shadowModeRetentionDays: 500,
       },
       defaults,

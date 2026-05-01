@@ -60,6 +60,14 @@ const config = {
     .split(",")
     .map((item) => item.trim())
     .filter(Boolean),
+  nightOpsIncludeCarryOverInMainReport:
+    String(process.env.NIGHTOPS_INCLUDE_CARRY_OVER_IN_MAIN_REPORT || "false").toLowerCase() ===
+    "true",
+  nightOpsMaxCarryOverItemsInReport: Number(
+    process.env.NIGHTOPS_MAX_CARRY_OVER_ITEMS_IN_REPORT || 5,
+  ),
+  nightOpsCarryOverMinSeverity:
+    process.env.NIGHTOPS_CARRY_OVER_MIN_SEVERITY || "critical",
   nightOpsShadowModeEnabled:
     String(process.env.NIGHTOPS_SHADOW_MODE_ENABLED || "true").toLowerCase() !==
     "false",
@@ -140,6 +148,9 @@ const nightOpsConfigStore = createNightOpsConfigStore({
     allowedHostGroups: config.nightOpsAllowedHostGroups,
     criticalKeywords: config.nightOpsCriticalKeywords,
     autoEscalationEnabled: false,
+    includeCarryOverInMainReport: config.nightOpsIncludeCarryOverInMainReport,
+    maxCarryOverItemsInReport: config.nightOpsMaxCarryOverItemsInReport,
+    carryOverMinSeverity: config.nightOpsCarryOverMinSeverity,
     shadowModeEnabled: config.nightOpsShadowModeEnabled,
     shadowModeRetentionDays: config.nightOpsShadowModeRetentionDays,
   },

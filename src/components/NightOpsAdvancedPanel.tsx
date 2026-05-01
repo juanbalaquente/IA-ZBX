@@ -153,9 +153,21 @@ function NightOpsAdvancedPanel({
               <span className="mb-2 block text-sm text-slate-400">Retencao do Shadow Mode (dias)</span>
               <input type="number" min={1} max={365} value={config.shadowModeRetentionDays} onChange={onConfigNumberChange("shadowModeRetentionDays")} className="w-full rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none focus:border-sky-400" />
             </label>
+            <label className="block">
+              <span className="mb-2 block text-sm text-slate-400">Maximo de pendencias herdadas</span>
+              <input type="number" min={0} max={20} value={config.maxCarryOverItemsInReport} onChange={onConfigNumberChange("maxCarryOverItemsInReport")} className="w-full rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none focus:border-sky-400" />
+            </label>
+            <label className="block">
+              <span className="mb-2 block text-sm text-slate-400">Severidade minima de pendencia herdada</span>
+              <input type="text" value={config.carryOverMinSeverity} onChange={onConfigTextChange("carryOverMinSeverity")} className="w-full rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none focus:border-sky-400" />
+            </label>
             <label className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-3">
               <input type="checkbox" checked={config.shadowModeEnabled} onChange={onConfigCheckboxChange("shadowModeEnabled")} className="h-4 w-4 rounded border-slate-700 bg-slate-900" />
               <span className="text-sm text-slate-200">Shadow Mode habilitado</span>
+            </label>
+            <label className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-3">
+              <input type="checkbox" checked={config.includeCarryOverInMainReport} onChange={onConfigCheckboxChange("includeCarryOverInMainReport")} className="h-4 w-4 rounded border-slate-700 bg-slate-900" />
+              <span className="text-sm text-slate-200">Incluir pendencias herdadas no relatorio principal</span>
             </label>
           </div>
 

@@ -11,6 +11,7 @@ const maxKeywords = 20;
 const maxKeywordLength = 40;
 const maxAllowedHostGroups = 50;
 const maxHostGroupLength = 120;
+const allowedCarryOverSeverities = ["low", "medium", "high", "critical"];
 
 function cloneConfig(config) {
   return JSON.parse(JSON.stringify(config));
@@ -47,6 +48,14 @@ export function validateNightOpsConfig(input, defaults) {
       ? input.criticalKeywords.map(normalizeKeyword).filter(Boolean)
       : [],
     autoEscalationEnabled: false,
+    includeCarryOverInMainReport:
+      typeof input.includeCarryOverInMainReport === "boolean"
+        ? input.includeCarryOverInMainReport
+        : Boolean(defaults.includeCarryOverInMainReport),
+    maxCarryOverItemsInReport: Number(input.maxCarryOverItemsInReport),
+    carryOverMinSeverity: String(
+      input.carryOverMinSeverity || defaults.carryOverMinSeverity || "critical",
+    ).trim().toLowerCase(),
     shadowModeEnabled:
       typeof input.shadowModeEnabled === "boolean"
         ? input.shadowModeEnabled
@@ -107,6 +116,18 @@ export function validateNightOpsConfig(input, defaults) {
   }
 
   if (
+    !Number.isInteger(nextConfig.maxCarryOverItemsInReport) ||
+    nextConfig.maxCarryOverItemsInReport < 0 ||
+    nextConfig.maxCarryOverItemsInReport > 20
+  ) {
+    errors.push("maxCarryOverItemsInReport invalido.");
+  }
+
+  if (!allowedCarryOverSeverities.includes(nextConfig.carryOverMinSeverity)) {
+    errors.push("carryOverMinSeverity invalido.");
+  }
+
+  if (
     !Number.isInteger(nextConfig.shadowModeRetentionDays) ||
     nextConfig.shadowModeRetentionDays < 1 ||
     nextConfig.shadowModeRetentionDays > 365
@@ -123,6 +144,7 @@ export function validateNightOpsConfig(input, defaults) {
       allowedHostGroups: [...new Set(nextConfig.allowedHostGroups)],
       criticalKeywords: [...new Set(nextConfig.criticalKeywords)],
       autoEscalationEnabled: false,
+      carryOverMinSeverity: nextConfig.carryOverMinSeverity,
     },
   };
 }

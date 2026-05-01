@@ -128,6 +128,7 @@ export interface NightOpsShiftReport {
     monitoredEvents: number;
     ignoredNoise: number;
     escalations: number;
+    periodEventCount?: number;
   };
   incidents: NightOpsIncident[];
   relevantOccurrences?: Array<{
@@ -142,6 +143,15 @@ export interface NightOpsShiftReport {
     isStillActive: boolean;
     relatedCount: number;
   }>;
+  carryOverOccurrences?: Array<{
+    title: string;
+    startedAt: string;
+    durationText: string;
+    status: "ATIVO" | "OFFLINE" | "MONITORAMENTO";
+    severity: NightOpsSeverity;
+  }>;
+  inheritedPendingCount?: number;
+  periodEventCount?: number;
   recommendations: string[];
   handoverText: string;
   plainTextReport?: string;
@@ -176,6 +186,9 @@ export interface NightOpsConfig {
   allowedHostGroups: string[];
   criticalKeywords: string[];
   autoEscalationEnabled: boolean;
+  includeCarryOverInMainReport: boolean;
+  maxCarryOverItemsInReport: number;
+  carryOverMinSeverity: NightOpsSeverity;
   shadowModeEnabled: boolean;
   shadowModeRetentionDays: number;
 }

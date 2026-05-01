@@ -67,6 +67,9 @@ const emptyConfig: NightOpsConfig = {
   ],
   criticalKeywords: ["OLT", "POP", "BGP", "BACKBONE", "CORE", "TRANSPORTE", "ENLACE"],
   autoEscalationEnabled: false,
+  includeCarryOverInMainReport: false,
+  maxCarryOverItemsInReport: 5,
+  carryOverMinSeverity: "critical",
   shadowModeEnabled: true,
   shadowModeRetentionDays: 30,
 };
